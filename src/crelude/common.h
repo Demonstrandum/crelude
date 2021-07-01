@@ -28,6 +28,26 @@
 #define TSTR_HELPER(x) #x
 #define TSTR(x) TSTR_HELPER(x)
 
+#if defined(_MSC_VER) || defined(__INTEL_COMPILER)
+	#define PRAGMA_NO_WARNING __pragma(warning(push, 0))
+	#define PRAGMA_POP_WARNING __pragma(warning(pop))
+#elif defined(__clang__)
+	#define PRAGMA_NO_WARNING \
+		_Pragma("clang diagnostic push") \
+		_Pragma("clang diagnostic ignored \"-Wall\"") \
+		_Pragma("clang diagnostic ignored \"-Wextra\"") \
+		_Pragma("clang diagnostic ignored \"-Wpedantic\"")
+	#define PRAGMA_POP_WARNING _Pragma("clang diagnostic pop")
+#elif defined(__GNUC__)
+	// Does not behave as nicely as CLANG version does.
+	#define PRAGMA_NO_WARNING \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wall\"") \
+		_Pragma("GCC diagnostic ignored \"-Wextra\"") \
+		_Pragma("GCC diagnostic ignored \"-Wpedantic\"")
+	#define PRAGMA_POP_WARNING _Pragma("GCC diagnostic pop")
+#endif
+
 /* Version number */
 #define crelude_V_MAJOR 0
 #define crelude_V_MINOR 1
@@ -43,30 +63,40 @@
 /* Syntax helpers */
 #define loop while (1)
 #define unless(cond) if (!(cond))
+#define never if (0)
+#define always if (1)
 #define until(cond) while (!(cond))
 #define newtype(NT, T) typedef struct _##NT { T value; } NT
 #define arrayof(T) struct { \
+	T (*value); \
 	usize len;  \
 	usize cap;  \
-	T (*value); \
 }
 #define newarray(NT, T) typedef arrayof(T) NT
 #define sliceof(T) struct { \
-	usize len;  \
 	T (*value); \
+	usize len;  \
 }
 #define newslice(NT, T) typedef sliceof(T) NT
 #define hashof(T) struct { \
-	u64 hash; \
 	T value;  \
+	u64 hash; \
 }
 #define newhashable(NT, T) typedef hashof(T) NT
 #define unqualify(D, T) typedef D T T
-#define nil NULL
+#define NTH(LIST, N) UNWRAP((LIST))[(N)]
+#define GET(LIST, N) __extension__\
+	({ __auto_type _list = (LIST); \
+	   __auto_type _n = (N); \
+	   usize _index = _n < 0 ? (usize)(_list.len + _n) : (usize)_n; \
+	   UNWRAP(_list)[_index]; })
 
 #define UNUSED(x) (void)(x)
-#define NO_ERROR EXIT_SUCCESS;
-#define OK EXIT_SUCCESS;
+#define NO_ERROR EXIT_SUCCESS
+#define OK EXIT_SUCCESS
+
+#define NOOP ((void)0)
+#define nil NULL
 
 #define PANIC(lit, ...) \
 	panic("\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): " \
@@ -90,10 +120,34 @@ typedef void u0;
 
 /// Explicitly mark functions that return error-codes
 /// as returning `ierr` instead of just `int`.
-typedef int ierr;
+typedef   signed int ierr;
+typedef unsigned int uerr;  ///< Not something very common.
+/// `long` is always the same size as a machine word.
+typedef unsigned long uword;
+typedef   signed long iword;
+/// Size of a machine word.
+#define WORD_SIZE sizeof(long)
+
+/// `int` in most cases is going to have the natural size
+/// suggested by the target architecture, optimal for most things.
+typedef unsigned int ufast;
+typedef   signed int ifast;
+
+typedef ptrdiff_t isize;
+typedef    size_t usize; ///< Use for storing array indices or object sizes.
+
+typedef  intptr_t iptr;
+typedef uintptr_t uptr; ///< Large enough to store a pointer, like (void *).
+
+typedef  intmax_t imax;
+typedef uintmax_t umax;
+
+/// Such that `sizeof(umin) == 1`.
+typedef unsigned char umin;
+/// Such that `sizeof(imin) == 1`.
+typedef   signed char imin;
 
 #define __UCHAR8__ char
-
 #if (CHAR_BIT == 8)
 	typedef   signed char i8;
 	typedef unsigned char u8;
@@ -115,11 +169,6 @@ typedef int ierr;
 #else
 	typedef __uint8_t byte;  ///< Don't use `char' when you want `byte'.
 #endif
-
-/// Such that `sizeof(umin) == 1`.
-typedef unsigned char umin;
-/// Such that `sizeof(imin) == 1`.
-typedef   signed char imin;
 
 typedef  __int16_t i16;
 typedef __uint16_t u16;
@@ -146,15 +195,6 @@ typedef u32 rune;
 	typedef  __int128_t i128;
 	typedef __uint128_t u128;
 #endif
-
-typedef ptrdiff_t isize;
-typedef    size_t usize; ///< Use for storing array indices or object sizes.
-
-typedef  intptr_t iptr;
-typedef uintptr_t uptr; ///< Large enough to store a pointer, like (void *).
-
-typedef  intmax_t imax;
-typedef uintmax_t umax;
 
 #ifdef __STDC_IEC_559__
 	typedef  float f32;
@@ -206,7 +246,19 @@ extern bool is_zeroed(u0 *, usize);
 /// @param[in] width How many bytes to zero.
 /// e.g., for an array `width = lenght * sizeof(elem)`.
 extern u0 zero(u0 *blk, usize width);
+/// Malloc with zeros, and panics when out of memory.
 extern u0 *emalloc(usize, usize);
+/// Given a slice, swap the two blocks within the slice
+/// formed by selecting a pivot point.
+/// ```
+/// [----A----|---B---] -> [---B---|----A----]
+///           ^ pivot
+/// ```
+/// @param[in,out] self Pointer to the slice, cast to (u0 *).
+/// @param[in] pivot The index of the slice that divides the blocks to swap.
+/// @param[in] width The `sizeof(T)` where `T` is
+///                  the type of element in the slice.
+extern u0 swap(u0 *self, usize pivot, usize width);
 /// Push element to array.
 /// @param[in,out] self Pointer to the dynamic array, cast to (u0 *).
 /// @param[in] element Pointer to element to be pushed,  cast to (u0 *).
@@ -214,6 +266,11 @@ extern u0 *emalloc(usize, usize);
 ///                  that is being pushed.
 /// @returns How much capacity increased.
 extern usize push(u0 *self, const u0 *element, usize width);
+/// Pops/removes element from top of the stack (dynamic array).
+/// @returns Pointer to popped element.
+extern u0 *pop(u0 *self, usize width);
+/// Works like `pop` but removes from the front.
+extern u0 *shift(u0 *self, usize width);
 /// Exactly like `push`, except position of element is arbitrary,
 /// with index specified in second argument.
 /// @returns How much capacity increased.
@@ -224,10 +281,27 @@ extern usize insert(u0 *self, usize index, const u0 *element, usize width);
 ///                  (*not* an array, dynamic array, etc.).
 /// @param[in] width The `sizeof(T)` where `T` is the type of the individual
 ///                  elements that are being appended to the array.
+/// @returns How much capacity increased.
 extern usize extend(u0 *self, const u0 *slice, usize width);
-/// Pops/removes element from top of the stack (dynamic array).
-/// @returns Pointer to popped element.
-extern u0 *pop(u0 *self, usize width);
+/// Works like extend, but extends or *splices* the array with a slice
+/// at some given, arbitrary position.
+/// @param[in,out] self A pointer to the dynamic array, of any type.
+/// @param[in] index The location for inserting in the slice.
+/// @param[in] slice The slice you wish to insert at `index`.
+/// @param[in] width The `sizeof(T)` where `T` is the type of the individual
+///                  elements stored within the array and slice.
+/// @returns How much capacity increased.
+extern usize splice(u0 *self, usize index, const u0 *slice, usize width);
+/// Deletes a range of elements from an array, starting from some index.
+/// @param[in,out] self A pointer to the array.
+/// @param[in] from Index to start removing from.
+/// @param[in] upto Index of final element to remove in the range.
+///                 If parameter is negative, it indicates an index from
+///                 the end of the array.
+/// @returns A slice holding a void-pointer to the removed elements,
+//           along with the number of removed bytes (`len` of slice).
+extern GenericSlice cut(u0 *self, usize from, isize upto, usize width);
+
 /// `fputs(...)` with `string`.
 extern ierr fput(string, FILE *);
 /// Same as `fput(..., stdout)`.
@@ -248,15 +322,74 @@ extern ierr novel_fprintf(FILE *, const byte *, ...);
 extern ierr novel_vfprintf_newline(FILE *, const byte *, va_list);
 extern ierr novel_fprintf_newline(FILE *, const byte *, ...);
 extern ierr novel_printf(const byte *, ...);
+/// NUL-terminated string to library string.
+extern string from_cstring(const byte *);
 /// Compare two strings for equality.
 extern bool string_eq(const string, const string);
+/// Compare two strings for alphabetic rank.
 extern i16 string_cmp(const string, const string);
 /// Hash a string.
 extern u64 hash_string(const string);
 
 /* Common Macros */
 
-// ANSI colour code.
+// ---
+// Macros for array functions to avoid use of `sizeof(T)` everywhere.
+// These macros do the referencing and void-pointer casting for you, and thus
+// let you use non-LVALUES as input (except SELF, SELF must sill be an LVALUE).
+// ---
+
+#define SWAP(SELF, PIVOT) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   swap(_self, (PIVOT), sizeof(*_self->value)); })
+
+#define PUSH(SELF, ELEM) __extension__\
+	({ __auto_type           _self = &(SELF); \
+	   typeof(*_self->value) _elem =  (ELEM); \
+	   push(_self, &_elem, sizeof(_elem)); })
+
+#define POP(SELF) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   pop(_self, sizeof(*_self->value)); })
+
+#define SHIFT(SELF) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   shift(_self, sizeof(*_self->value)); })
+
+#define INSERT(SELF, INDEX, ELEM) __extension__\
+	({ __auto_type           _self = &(SELF); \
+	   typeof(*_self->value) _elem =  (ELEM); \
+	   insert(_self, (INDEX), &_elem, sizeof(_elem)); })
+
+#define EXTEND(SELF, SLIC) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   __auto_type _slic =  (SLIC); \
+	   extend(_self, &_slic, sizeof(*_slic.value)); })
+
+#define SPLICE(SELF, INDEX, SLIC) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   __auto_type _slic =  (SLIC); \
+	   splice(_self, (INDEX), &_slic, sizeof(*_slic.value)); })
+
+#define CUT(SELF, FROM, UPTO) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   static GenericSlice _cut; \
+	   _cut = cut(_self, (FROM), (UPTO), sizeof(*_self->value)); \
+	   (u0 *)&_cut; })
+
+// Some aliases and shortcuts:
+#define APPEND(SELF, ELEM) PUSH(SELF, ELEM)
+#define PREPEND(SELF, ELEM) INSERT(SELF, 0, ELEM)
+#define UNSHIFT(SELF, ELEM) PREPEND(SELF, ELEM)
+#define PREFIX(SELF, SLIC) SPLICE(SELF, 0, SLIC)
+#define REMOVE(SELF, INDEX) CUT(SELF, INDEX, INDEX)
+#define HEAD(SELF, END) SLICE(SELF, 0, END)
+#define TAIL(SELF, BEG) SLICE(SELF, BEG, -1)
+#define FIRST(SELF) NTH(SELF, 0)
+#define LAST(SELF) GET(SELF, -1)
+
+// --- ANSI colour codes. ---
+
 #define ANSI(CODE) "\x1b[" CODE "m"
 #define BOLD   "1"
 #define FAINT  "2"
@@ -279,8 +412,14 @@ extern u64 hash_string(const string);
 #define STRIKE_OFF "29"
 #define RESET "0"
 
-#define MIN(A, B) (((A) > (B)) ? (B) : (A))
-#define MAX(A, B) (((A) > (B)) ? (A) : (B))
+#define min(A, B) __extension__({ \
+	typeof(A) _a = (A); \
+	typeof(B) _b = (B); \
+	_a > _b ? _b : _a; })
+#define max(A, B) __extension__({ \
+	typeof(A) _a = (A); \
+	typeof(B) _b = (B); \
+	_b > _a ? _b : _a; })
 
 /// Unwraps pointer/value in sizing wrapper struct.
 #define UNWRAP(STRUCTURE) (STRUCTURE).value
@@ -289,6 +428,16 @@ extern u64 hash_string(const string);
 	.len = sizeof((TYPE[])__VA_ARGS__)/sizeof(TYPE), \
 	.value = (TYPE[])__VA_ARGS__ \
 }
+/// Can be used to make slices from literal arrays.
+#define LIST(TYPE, ...) __extension__({ \
+	TYPE _slice; \
+	typeof(*_slice.value) _elem; \
+	static typeof(_elem) _list[] = __VA_ARGS__; \
+	_slice = ((typeof(_slice)){ \
+		.len = sizeof(_list)/sizeof(_elem), \
+		.value = _list \
+	}); _slice; })
+
 /// Initialise sizing wrapper with of string literal.
 #define STRING(...) { \
 	.len = sizeof((byte[]){ __VA_ARGS__ }) - 1, \
@@ -330,9 +479,9 @@ extern u64 hash_string(const string);
 	.value = (PTR) + (START) \
 })
 
-#define SYMBOLIC(str) ((symbol){ \
-	.hash = hash_string(str), \
-	.value = str \
+#define SYMBOLIC(STR) ((symbol){ \
+	.hash = hash_string(STR), \
+	.value = STR \
 })
 
 #define SYMBOL_LITERAL(STR_LIT) ((symbol){ \
@@ -353,7 +502,7 @@ extern u64 hash_string(const string);
 	.value = pointer, \
 })
 
-#define SMAP(T, func, list) ({ \
+#define SMAP(T, func, list) __extension__({ \
 	T _mapped; \
 	_mapped = ((T)SMAKE(typeof(*_mapped.value), (list).len)); \
 	for (usize _i = 0; _i < (list).len; ++_i) \
@@ -361,7 +510,7 @@ extern u64 hash_string(const string);
 	_mapped; \
 })
 
-#define AMAP(T, func, list) ({ \
+#define AMAP(T, func, list) __extension__({ \
 	T _mapped; \
 	_mapped = ((T)AMAKE(typeof(*_mapped.value), (list).len)); \
 	for (usize _i = 0; _i < (list).len; ++_i, ++_mapped.len) \
@@ -370,26 +519,71 @@ extern u64 hash_string(const string);
 })
 
 /// For-each loop, iterates across an array or slice.
+/// It creates an `it` variable, that holds:
+///  - it.index (index in array);
+///  - it.item  (current item of array);
+///  - it.ptr   (pointer to current item in array);
+///  - it.first (pointer to frist item in array);
+///  - it.once  (a bool, true if we are on the first iteration).
 /// For example:
 /// ```c
 /// newarray(IntArray, int);
-/// IntArray xs = AMAKE(IntArray, 5);
+/// IntArray xs = AMAKE(IntArray, 2);
 ///
 /// int elem1 = 5;
 /// int elem2 = 3;
+/// sliceof(int) elems = INIT(int, { 6, 9, 1 });
+///
 /// push(&xs, &elem1, sizeof(int));
 /// push(&xs, &elem2, sizeof(int));
+/// extend(&xs, &elems, sizeof(int));
 ///
 /// FOR_EACH(x, xs) {
-///     printf("%d\n", *x);
+///     printf("xs[%zu] = %d\n", it.index, x);
 /// }
 /// ```
-/// Will print `5` then `3`.
+/// Will print:
+///   xs[0] = 5
+///   xs[1] = 3
+///   xs[2] = 6
+///   xs[3] = 9
+///   xs[4] = 1
 #define FOR_EACH(ELEM, ELEMS) \
-	for (typeof((ELEMS).value) ELEM = (ELEMS).value, _frst = ELEM; \
-		(usize)(ELEM - _frst) < (ELEMS).len; \
-		++ELEM)
+	for (struct { typeof(*(ELEMS).value) item; \
+			      typeof((ELEMS).value) ptr, first; \
+				  usize index; \
+				  bool once; \
+				} it = { *(ELEMS).value, \
+				         (ELEMS).value, \
+				         (ELEMS).value, \
+				         0, true \
+				       }; it.once; it.once = false) \
+		for (typeof(*(ELEMS).value) ELEM = *(ELEMS).value; \
+		    it.index < (ELEMS).len; \
+			++it.ptr, it.index = (it.ptr - it.first), \
+			  it.item = *it.ptr, ELEM = it.item)
 
 #define foreach FOR_EACH
+
+/* Only define a `main` if ENTRY_FUNCTION is defined */
+#ifdef ENTRY_FUNCTION
+	newslice(Arguments, string);
+	newslice(CArguments, const char *);
+
+	ierr (ENTRY_FUNCTION)(Arguments);
+
+	ierr main(ifast argc, const char **argv)
+	{
+		Arguments args;
+		ierr res;
+
+		args = SMAP(Arguments,
+			from_cstring, SCOLLECT(CArguments, argc, argv));
+		res = (ENTRY_FUNCTION)(args);
+
+		free(UNWRAP(args));
+		return res;
+	}
+#endif
 
 #endif

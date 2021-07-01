@@ -54,6 +54,91 @@ u0 *emalloc(usize len, usize size)
 	return m;
 }
 
+static u0 memswap(umin *a, umin *b, usize bytes)
+{
+	usize words = bytes / WORD_SIZE;
+	usize trail = words * WORD_SIZE;  //< Where left-over bytes start.
+
+	// Swap word sized blocks first.
+	for (usize i = 0; i < words; i += WORD_SIZE) {
+		uword tmp;
+		memcpy( &tmp, a + i, WORD_SIZE);
+		memcpy(a + i, b + i, WORD_SIZE);
+		memcpy(b + i,  &tmp, WORD_SIZE);
+	}
+	// Swap remaining bytes, byte-by-byte.
+	for (usize i = trail; i < bytes; ++i) {
+		umin tmp = a[i];
+		a[i] = b[i];
+		b[i] = tmp;
+	}
+}
+
+/// # Swapping memory (on pivot point `b`):
+/// ```
+///    a       b     c       d
+///    |---A---:------B------|
+/// == |---A---:--B1-:---B2--|
+/// => |---B2--:--B1-:---A---|
+/// => |--B1-:---B2--:---A---|  (by same procedure, recursive)
+/// == |------B------:---A---|
+/// ```
+/// When swapping block A and B.
+/// Notice the pivot remains the same (b) for each recursive call.
+/// (a, b, and c are pointers, and do not change).
+///
+/// When the pivot point is `c`,
+/// i.e. when block A is the larger block, we have:
+/// ```
+///    a       b     c       d
+///    |------A------:---B---|
+/// == |---A1--:--A2-:---B---|
+/// => |---B---:--A2-:--A1---|
+/// => |---B---:--A1---:--A2-|  (by same procedure, recursive)
+/// == |---B---:------A------|
+/// ```
+static u0 swap_blocks(MemSlice block, usize pivot)
+{  // Tail-recursion should be optimised here.
+	if (pivot == 0 || pivot == block.len)
+		return;  // We are already done.
+
+	MemSlice A = SLICE(MemSlice, block, 0, pivot);
+	MemSlice B = SLICE(MemSlice, block, pivot, -1);
+	MemSlice A1, A2;
+	MemSlice B1, B2;
+
+	if (A.len < B.len) {
+		B1 = SLICE(MemSlice, B, 0, -A.len - 1);
+		B2 = SLICE(MemSlice, B, B1.len, -1);
+		assert(A.len == B2.len);
+
+		memswap(A.value, B2.value, A.len);
+		B = SLICE(MemSlice, block, 0, B.len);
+		swap_blocks(B, pivot);
+	} else if (A.len > B.len) {
+		A1 = SLICE(MemSlice, A, 0, B.len);
+		A2 = SLICE(MemSlice, A, A1.len, -1);
+		assert(B.len == A1.len);
+		assert(pivot == A1.len + A2.len);
+
+		memswap(B.value, A1.value, B.len);
+		A = SLICE(MemSlice, block, B.len, -1);
+		swap_blocks(A, pivot - B.len);
+	} else {
+		// Same length, and thus trivial.
+		memswap(A.value, B.value, A.len);
+	}
+}
+
+u0 swap(u0 *self, usize pivot, usize width)
+{
+	// Deal with everything in terms of bytes.
+	MemSlice blk = *(MemSlice *)self;
+	blk.len *= width;
+	usize pos = pivot * width;
+	swap_blocks(blk, pos);
+}
+
 usize push(u0 *restrict self, const u0 *restrict element, usize width)
 {
 	if (element == nil) return 0;
@@ -95,12 +180,13 @@ usize insert(u0 *restrict self, usize index,
 		arr->cap = new_cap;
 	}
 
-	umin *old_location = arr->value + width * index;
+	umin *gap = arr->value + width * index;
 
-	// Offset elements down by one, from insertion index.
-	memmove(old_location + 1, old_location, width * (arr->len++ - index));
-	// Insert element in empty space.
-	memcpy(old_location, elem, width);
+	// Offset elements down by one, from insertion index,
+	// leaving us with a gap for insertion.
+	memmove(gap + width, gap, width * (arr->len++ - index));
+	// Insert element into the empty space.
+	memcpy(gap, elem, width);
 
 	return new_cap - old_cap;
 }
@@ -130,12 +216,90 @@ usize extend(u0 *restrict self, const u0 *restrict slice, usize width)
 	return new_cap - old_cap;
 }
 
+usize splice(u0 *restrict self, usize index, const u0 *restrict slice, usize width)
+{
+	if (slice == nil) return 0;
+
+	MemArray *arr = (MemArray *restrict)self;
+	MemSlice *sub = (MemSlice *restrict)slice;
+
+	if (sub->len == 0) return 0;
+
+	usize old_cap = arr->cap;
+	usize new_cap = old_cap;
+
+	unless (arr->len + sub->len < arr->cap) {
+		new_cap = (usize)(arr->cap * REALLOC_FACTOR) + sub->len;
+		arr->value = (umin *)realloc(arr->value, new_cap * width);
+		if (arr->value == nil)
+			PANIC("Failed to reallocate %zu bytes.", new_cap * width);
+		arr->cap = new_cap;
+	}
+
+	umin *gap = arr->value + width * index;
+
+	// Offset elements down by the slice length, from insertion index,
+	// leaving us with a `width * sub.len` byte gap for insertion.
+	memmove(gap + width * sub->len, gap, width * (arr->len - index));
+	arr->len += sub->len;
+	// Insert slice into empty space.
+	memcpy(gap, sub->value, sub->len * width);
+
+	return new_cap - old_cap;
+}
+
+GenericSlice cut(u0 *self, usize from, isize upto, usize width)
+{
+	GenericArray *arr_ptr = self;
+	MemArray arr = *(MemArray *)self;
+
+	usize final = upto < 0 ? arr.len + upto : (usize)upto;
+	assert(final < arr.len);
+
+	if (from > final) {
+		usize tmp = from;
+		from = final;
+		final = tmp;
+	}
+	usize pivot = final - from + 1;
+
+	// Deal with bytes instead.
+	arr.len *= width;
+	arr.cap *= width;
+	from *= width;
+	final *= width;
+	pivot *= width;
+
+	MemSlice tail = SLICE(MemSlice, arr, from, arr.len);
+	swap_blocks(tail, pivot);
+	tail = SLICE(MemSlice, tail, tail.len - pivot, -1);
+
+	u0 *tail_ptr = &tail;
+	GenericSlice trailing = *(GenericSlice *)tail_ptr;
+	trailing.len /= width;
+	arr_ptr->len -= pivot / width;  // Capacity the same.
+	return trailing;  // Return removed slice which is left over at end.
+}
+
 u0 *pop(u0 *self, usize width)
 {
 	MemArray *arr = self;
 	assert(arr->len > 0);
-
 	return (u0 *)(arr->value + --arr->len * width);
+}
+
+u0 *shift(u0 *self, usize width)
+{
+	MemSlice *arr = self;
+	assert(arr->len > 0);
+
+	swap(self, 1, width);
+	return (u0 *)(arr->value + --arr->len * width);
+}
+
+string from_cstring(const byte *cstring)
+{
+	return VIEW(string, (byte *)cstring, 0, strlen(cstring));
 }
 
 bool string_eq(string self, const string other)
@@ -145,9 +309,8 @@ bool string_eq(string self, const string other)
 	else if (self.value == other.value)
 		return true;
 
-	usize i = 0;
 	foreach (c, self)
-		if (*c != UNWRAP(other)[i++])
+		if (c != UNWRAP(other)[it.index])
 			return false;
 	return true;
 }
@@ -165,7 +328,7 @@ i16 string_cmp(const string self, const string other)
 	}
 
 	byte c0, c1;
-	usize len = MIN(self.len, other.len);
+	usize len = min(self.len, other.len);
 	for (usize i = 0; i < len; ++i)
 		if ((c0 = ptr0[i]) != (c1 = ptr1[i]))
 			return c0 - c1;
@@ -181,7 +344,7 @@ u64 hash_string(string str)
 {
 	u64 hash = 5381;
 	foreach (c, str)
-		hash += *c + (hash << 5);
+		hash += c + (hash << 5);
 
 	return hash;
 }
@@ -190,7 +353,7 @@ ierr fput(string s, FILE *stream)
 {
 	ierr err = 1;
 	foreach (c, s) {
-		unless (err == NUL) err = fputc(*c, stream);
+		unless (err == NUL) err = fputc(c, stream);
 		else return err;
 	}
 	err = fputc('\n', stream);
@@ -235,7 +398,7 @@ static string LENGTH_SUBSPECIFIERS
 /// width ::= {'0'..'9'} | '*'
 /// precision ::= {'0'..'9'} | '*'
 /// length ::= 'hh' | 'h' | 'll' | 'l' | 'j' | 'z' | 't' | 'L'
-/// specifier ::= %|C|r|S|U|D|V|d|i|u|o|x|X|f|F|e|E|g|G|a|A|c|s|p|n
+/// specifier ::= %|C|r|S|U|b|D|V|d|i|u|o|x|X|f|F|e|E|g|G|a|A|c|s|p|n
 
 struct Formatter {
 	string flags;
@@ -277,7 +440,7 @@ static Formatter parse_formatter(string formatter)
 	loop {  // Parse flags.
 		bool found = false;
 		foreach (ss, FORMATTER_FLAGS) {
-			if (formatter.value[i] == *ss) {
+			if (formatter.value[i] == ss) {
 				found = true;
 				++i;
 			}
@@ -304,7 +467,7 @@ static Formatter parse_formatter(string formatter)
 	loop {  // Parse length subspecifier.
 		bool found = false;
 		foreach (ss, LENGTH_SUBSPECIFIERS) {
-			if (formatter.value[i] == *ss) {
+			if (formatter.value[i] == ss) {
 				found = true;
 				++i;
 			}
@@ -370,6 +533,11 @@ string novel_vsprintf(const byte *format, va_list args)
 			string sliced = VIEW(string, res, 0, 10);
 			sprintf(res + 2, "%08X", value);
 			extend(&bytes, &sliced, sizeof(byte));
+		} break;
+		case 'b': {  // '%b' boolean formatter.
+			int value = va_arg(args, int);  //< _Bool gets promoted to int.
+			string bool_string = value ? STR("true") : STR("false");
+			extend(&bytes, &bool_string, sizeof(byte));
 		} break;
 		case 'D':  // '%D{·}{·}' dynamic array type formatter.
 			// Following the 'D' must be the format specifier for the elements,

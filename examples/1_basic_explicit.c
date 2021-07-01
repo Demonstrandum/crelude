@@ -1,8 +1,8 @@
 /*
  * Compile with:
- *   gcc -lcrelude ./example.c -o example
+ *   gcc -lcrelude ./1_basic_explicit -o basic-explicit
  * Then run:
- *   ./example a b c
+ *   ./basic-explicit a b c
  */
 
 #include <crelude/common.h>
@@ -27,6 +27,7 @@ ierr main(i32 argc, const byte **argv)
 	StringBuilder with_dots = AMAKE(byte, 0);
 	extend(&with_dots, &name, sizeof(byte));
 	extend(&with_dots, &STR("..."), sizeof(byte));
+
 	println("Goodbye, %D%c{ }", with_dots);
 
 	return OK;

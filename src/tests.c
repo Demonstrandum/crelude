@@ -18,21 +18,21 @@ u0 utf8_ucs4_conversions(byte *cstring)
 	// UTF-8 string.
 	string s = to_string(cstring);
 	println("s = \"%s\"", UNWRAP(s));
-	FOR_EACH(c, s) println("byte: 0x%X", *c);
+	FOR_EACH(c, s) println("byte: 0x%X", c);
 	println("s.len = %zu", s.len);
 	// Convert to UCS-4.
 	println("[***] Convert to UCS-4.");
 	runic ucs4 = SMAKE(rune, s.len + 1);
 	ucs4 = utf8_to_ucs4(ucs4, s);
 	println("ucs4 = \"%ls\"", (wchar_t *)UNWRAP(ucs4));
-	FOR_EACH(c, ucs4) println("rune: U+%08X = '%lc'", *c, *c);
+	FOR_EACH(c, ucs4) println("rune: U+%08X = '%lc'", c, c);
 	println("ucs4.len = %zu", ucs4.len);
 	// And back again.
 	println("[***] Convert to UTF-8.");
 	string utf8 = SMAKE(byte, 4 * ucs4.len + 4);
 	utf8 = ucs4_to_utf8(utf8, ucs4);
 	println("utf8 = \"%s\"", UNWRAP(utf8));
-	FOR_EACH(c, utf8) println("byte: 0x%X", *c);
+	FOR_EACH(c, utf8) println("byte: 0x%X", c);
 	println("utf8.len = %zu", utf8.len);
 }
 
@@ -134,6 +134,27 @@ ierr main(i32 argc, const byte **argv)
 		println("string_cmp: %S <~> %S = %hd", s2, s0, string_cmp(s2, s0));
 		p1[s1.len - 1] = '\0';
 		println("strcmp:     %s <~> %s = %d", p1, p0, strcmp(p1, p0));
+	}
+
+	TEST("Array removal and block swapping") {
+		newarray(IntArray, int);
+		IntArray arr = AMAKE(int, 5);
+		PUSH(arr, 0);
+		__auto_type list = LIST(sliceof(int), { 1, 2, 3, 4, 5, 6 });
+		UNSHIFT(arr, -1);
+		println("list[..%zu] = { %V%d{, } };", list.len, list);
+		EXTEND(arr, list);
+		println("arr = %D%d{, };", arr);
+		int *popped = SHIFT(arr);
+		println("arr = %D%d{, };  (popped: %d)", arr, *popped);
+		SWAP(arr, 3);  // Swap the three first elements to the back.
+		println("arr = %D%d{, };", arr);
+		REMOVE(arr, 4);  // Remove 4th element (0).
+		println("arr = %D%d{, };", arr);
+		SWAP(arr, 4);
+		println("arr = %D%d{, };", arr);
+		sliceof(int) *cutout = CUT(arr, 2, 4);
+		println("arr = %D%d{, };  (cut out: %V%d{, })", arr, *cutout);
 	}
 
 	return EXIT_SUCCESS;
