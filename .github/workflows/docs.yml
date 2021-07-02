@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get mdBook
+      uses: peaceiris/actions-mdbook@v1
+      with:
+        mdbook-version: 'latest'
+    - name: Build docs
+      run: |
+        apt-get update -y
+        apt-get install -y doxygen build-essential
+        make docs
+        # Should fetch other dependencies for us.
+    # Great extra actions to compose with:
+    # Create an artifact of the html output.
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DocumentationHTML
+        path: docs/book
+    # Publish built docs to gh-pages branch.
+    # ===============================
+    - name: Commit documentation changes
+      run: |
+        git clone https://github.com/Demonstrandum/crelude.git --branch gh-pages --single-branch gh-pages
+        cp -r docs/book/* gh-pages/
+        touch gh-pages/.nojekyll
+        cd gh-pages
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -m "Update documentation" -a || true
+        # The above command will fail if no changes were present, so we ignore
+        # that.
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    # ===============================
