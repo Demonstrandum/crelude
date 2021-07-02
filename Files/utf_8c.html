@@ -1,0 +1,598 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>utf.c - Crelude Documentation</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../https://github.com/Demonstrandum/crelude.html">GitHub</a></li><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Data Structures/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Data Structures/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Data Structures/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericArray.html"><strong aria-hidden="true">1.1.9.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__Natural.html"><strong aria-hidden="true">1.1.10.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__atomic__t.html"><strong aria-hidden="true">1.1.11.</strong> _atomic_t</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html"><strong aria-hidden="true">1.2.3.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html"><strong aria-hidden="true">1.2.4.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html" class="active"><strong aria-hidden="true">1.2.5.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.6.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html"><strong aria-hidden="true">1.2.7.</strong> tests.c</a></li></ol></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: src/crelude/utf.c</p>
+<hr />
+<h1 id="srccreludeutfc"><a class="header" href="#srccreludeutfc">src/crelude/utf.c</a></h1>
+<h2 id="attributes"><a class="header" href="#attributes">Attributes</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>const <a href="/Files/common_8h.html#typedef-rune">rune</a></td><td><strong><a href="/Files/utf_8c.html#variable-offsetsfromutf8">OffsetsFromUTF8</a></strong></td></tr>
+<tr><td>const <a href="/Files/common_8h.html#typedef-u8">u8</a></td><td><strong><a href="/Files/utf_8c.html#variable-trailingbytesforutf8">TrailingBytesForUTF8</a></strong></td></tr>
+</tbody></table>
+<h2 id="attributes-documentation"><a class="header" href="#attributes-documentation">Attributes Documentation</a></h2>
+<h3 id="variable-offsetsfromutf8"><a class="header" href="#variable-offsetsfromutf8">variable OffsetsFromUTF8</a></h3>
+<pre><code class="language-cpp">static const rune OffsetsFromUTF8 = {
+    0x00000000UL, 0x00003080UL, 0x000E2080UL,
+    0x03C82080UL, 0xFA082080UL, 0x82082080UL
+};
+</code></pre>
+<h3 id="variable-trailingbytesforutf8"><a class="header" href="#variable-trailingbytesforutf8">variable TrailingBytesForUTF8</a></h3>
+<pre><code class="language-cpp">static const u8 TrailingBytesForUTF8 = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, 3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5
+};
+</code></pre>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<pre><code class="language-cpp">#include &quot;utf.h&quot;
+
+static const rune OffsetsFromUTF8[6] = {
+    0x00000000UL, 0x00003080UL, 0x000E2080UL,
+    0x03C82080UL, 0xFA082080UL, 0x82082080UL
+};
+
+static const u8 TrailingBytesForUTF8[256] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, 3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5
+};
+
+#ifndef IMPLEMENTATION
+
+/* Conversions. */
+
+usize utf_seqlen(string s)
+{
+    return TrailingBytesForUTF8[(usize)(*s.value)] + 1;
+}
+
+runic utf8_to_ucs4(runic dest, string src)
+{
+    byte *src_end = src.value + src.len;
+    byte *sptr = src.value;
+
+    usize i;
+    for (i = 0; i &lt; dest.len - 1; ++i) {
+        u8 nb = TrailingBytesForUTF8[(usize)(*sptr)];
+        if (sptr + nb &gt;= src_end)
+            break;
+
+        rune ch = 0;
+        switch (nb) {
+            case 3: ch += *sptr++; ch &lt;&lt;= 6; /* fallthrough */
+            case 2: ch += *sptr++; ch &lt;&lt;= 6; /* fallthrough */
+            case 1: ch += *sptr++; ch &lt;&lt;= 6; /* fallthrough */
+            case 0: ch += *sptr++;
+        }
+        ch -= OffsetsFromUTF8[(usize)nb];
+        dest.value[i] = ch;
+    }
+
+    dest.value[i] = 0; // Always NUL-terminate, despite known length.
+    return SLICE(runic, dest, 0, i);
+}
+
+string ucs4_to_utf8(string dest, runic src)
+{
+    byte *dest_end = dest.value + dest.len;
+    byte *dptr = dest.value;
+
+    for (usize i = 0; i &lt; src.len; ++i) {
+        rune ch = src.value[i];
+
+        if (ch &lt; 0x80) {
+            if (dptr &gt;= dest_end)
+                break;
+            *dptr++ = (byte)ch;
+        } else if (ch &lt; 0x800) {
+            if (dptr &gt;= dest_end - 1)
+                break;
+            *dptr++ = (ch &gt;&gt; 6) | 0xC0;
+            *dptr++ = (ch &amp; 0x3F) | 0x80;
+        } else if (ch &lt; 0x10000) {
+            if (dptr &gt;= dest_end - 2)
+                break;
+            *dptr++ = (ch &gt;&gt; 12) | 0xE0;
+            *dptr++ = ((ch &gt;&gt; 6) &amp; 0x3F) | 0x80;
+            *dptr++ = (ch &amp; 0x3F) | 0x80;
+        } else if (ch &lt; 0x110000) {
+            if (dptr &gt;= dest_end - 3)
+                break;
+            *dptr++ = (ch &gt;&gt; 18) | 0xF0;
+            *dptr++ = ((ch &gt;&gt; 12) &amp; 0x3F) | 0x80;
+            *dptr++ = ((ch &gt;&gt; 6) &amp; 0x3F) | 0x80;
+            *dptr++ = (ch &amp; 0x3F) | 0x80;
+        }
+    }
+
+    if (dptr &lt; dest_end)
+        *dptr = '\0';
+    return SLICE(string, dest, 0, dptr - dest.value);
+}
+
+string rune_to_utf8(string dest, rune ch)
+{
+    byte *const dptr = dest.value;
+    zero(dptr, dest.len * sizeof(byte));
+
+    if (ch &lt; 0x80) {
+        dptr[0] = (byte)ch;
+        return SLICE(string, dest, 0, 1);
+    }
+    if (ch &lt; 0x800) {
+        dptr[0] = (ch &gt;&gt; 6) | 0xC0;
+        dptr[1] = (ch &amp; 0x3F) | 0x80;
+        return SLICE(string, dest, 0, 2);
+    }
+    if (ch &lt; 0x10000) {
+        dptr[0] = (ch &gt;&gt; 12) | 0xE0;
+        dptr[1] = ((ch &gt;&gt; 6) &amp; 0x3F) | 0x80;
+        dptr[2] = (ch &amp; 0x3F) | 0x80;
+        return SLICE(string, dest, 0, 3);
+    }
+    if (ch &lt; 0x110000) {
+        dptr[0] = (ch &gt;&gt; 18) | 0xF0;
+        dptr[1] = ((ch &gt;&gt; 12) &amp; 0x3F) | 0x80;
+        dptr[2] = ((ch &gt;&gt; 6) &amp; 0x3F) | 0x80;
+        dptr[3] = (ch &amp; 0x3F) | 0x80;
+        return SLICE(string, dest, 0, 4);
+    }
+    return SLICE(string, dest, 0, 0);
+}
+
+/* Moving through stirngs. */
+
+usize byte_offset(string s, usize cn)
+{
+    usize offs = 0;
+
+    while (cn-- &gt; 0 &amp;&amp; offs &lt; s.len)
+        UNUSED(is_utf(s.value[++offs]) || is_utf(s.value[++offs])
+            || is_utf(s.value[++offs]) || ++offs);
+
+    return offs;
+}
+
+usize char_num(string s, usize offset)
+{
+    usize cn = 0, offs = 0;
+
+    while (offs &lt; offset &amp;&amp; offs &lt; s.len) {
+        UNUSED(is_utf(s.value[++offs]) || is_utf(s.value[++offs])
+            || is_utf(s.value[++offs]) || ++offs);
+        ++cn;
+    }
+
+    return cn;
+}
+
+rune read_rune(string s, usize *i)
+{
+    if (*i &gt;= s.len) return 0;
+
+    rune ch = 0;
+    usize len = 0;
+
+    do {
+        ch &lt;&lt;= 6;
+        ch += s.value[(*i)++];
+        ++len;
+    } while (*i &lt; s.len &amp;&amp; !is_utf(s.value[*i]));
+    ch -= OffsetsFromUTF8[len - 1];
+
+    return ch;
+}
+
+u0 next_rune(string str, usize *i)
+{
+    byte *s = str.value;
+    UNUSED(is_utf(s[++(*i)]) || is_utf(s[++(*i)])
+        || is_utf(s[++(*i)]) || ++(*i));
+}
+
+u0 prev_rune(string str, usize *i)
+{
+    byte *s = str.value;
+    UNUSED(is_utf(s[--(*i)]) || is_utf(s[--(*i)])
+        || is_utf(s[--(*i)]) || --(*i));
+}
+
+/* Unicode Escapes. */
+
+usize read_escape(string src, rune *dest)
+{
+    rune ch;
+    byte *sptr = src.value;
+    byte digs[8 + 1] = &quot;\0\0\0\0\0\0\0\0&quot;;
+    usize dno = 0, i = 1;
+
+    ch = (rune)sptr[0];  // Take the literal character.
+
+    switch (sptr[0]) {
+    case 'n': { ch = U'\n'; break; }
+    case 't': { ch = U'\t'; break; }
+    case 'r': { ch = U'\r'; break; }
+    case 'b': { ch = U'\b'; break; }
+    case 'f': { ch = U'\f'; break; }
+    case 'v': { ch = U'\v'; break; }
+    case 'a': { ch = U'\a'; break; }
+    case 'x':  // e.g. \x41 = 'A'
+        while (hex_digit(sptr[i]) &amp;&amp; dno &lt; 2)
+            digs[dno++] = sptr[i++];
+        break;
+    case 'u':  // e.g. \u6CB3 = '河'
+        while (hex_digit(sptr[i]) &amp;&amp; dno &lt; 4)
+            digs[dno++] = sptr[i++];
+        break;
+    case 'U':  // e.g. \U0001F920 = '🤠'
+        while (hex_digit(sptr[i]) &amp;&amp; dno &lt; 8)
+            digs[dno++] = sptr[i++];
+        break;
+    default:
+        break;
+    }
+
+    if (dno &gt; 0)
+        ch = strtol(digs, nil, 16);
+
+    *dest = ch;
+    return i;
+}
+
+string escape_rune(string dest, rune ch)
+{
+    byte *buf = dest.value;
+    usize len = dest.len;
+
+    switch (ch) {
+    case U'\n': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\n&quot;));
+    case U'\t': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\t&quot;));
+    case U'\r': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\r&quot;));
+    case U'\b': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\b&quot;));
+    case U'\f': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\f&quot;));
+    case U'\v': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\v&quot;));
+    case U'\a': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\a&quot;));
+    case U'\\': return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\\\&quot;));
+    }
+
+    if (ch &lt; 32 || ch == 0x7F)
+        return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\x%hhX&quot;, (u8)ch));
+    else if (ch &gt; 0xFFFF)
+        return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\U%X&quot;,  (u32)ch));
+    else if (ch &gt;= 0x80 &amp;&amp; ch &lt;= 0xFFFF)
+        return SLICE(string, dest, 0, snprintf(buf, len, &quot;\\u%hX&quot;, (u16)ch));
+
+    return SLICE(string, dest, 0, snprintf(buf, len, &quot;%c&quot;, (byte)ch));
+}
+
+string utf8_unescape(string dest, string src)
+{
+    rune ch;
+    byte buf[4];
+    string temp = { .len = 4, .value = buf };
+    usize c = 0, i = 0, amt;
+
+    while (i &lt; src.len &amp;&amp; c &lt; dest.len) {
+        if (src.value[i] == '\\') {
+            ++i;
+            amt = read_escape(SLICE(string, src, i, -1), &amp;ch);
+        } else {
+            ch = (rune)(src.value[i]);
+            amt = 1;
+        }
+
+        i += amt;
+        temp = rune_to_utf8(temp, ch);
+        amt = temp.len;
+
+        if (amt &gt; dest.len - c)
+            break;
+
+        memcpy(dest.value + c, temp.value, amt);
+        c += amt;
+    }
+
+    if (c &lt; dest.len)  // Try to NUL-terminate.
+        dest.value[c] = '\0';
+
+    return SLICE(string, dest, 0, c);
+}
+
+
+string utf8_escape(string dest, string src, bool escape_quotes)
+{
+    byte *buf = dest.value;
+    usize c = 0, i = 0;
+
+    while (c &lt; dest.len &amp;&amp; i &lt; src.len) {
+        string slice = { .value = buf, .len = dest.len - c };
+
+        if (escape_quotes &amp;&amp; src.value[i++] == '&quot;')
+            slice = SLICE(string, slice, 0, snprintf(buf, slice.len, &quot;\\\&quot;&quot;));
+        else
+            slice = escape_rune(slice, read_rune(src, &amp;i));
+
+        c   += slice.len;
+        buf += slice.len;
+    }
+
+    if (c &lt; dest.len)
+        *buf = '\0';
+
+    return SLICE(string, dest, 0, c);
+}
+
+/* Standard function replacements. */
+
+string utf_strchr(string s, rune ch, usize *i)
+{
+    usize offs = 0, last_offs = 0;
+    rune c;
+
+    *i = 0;
+    until (offs &gt;= s.len) {
+        c = read_rune(s, &amp;offs);
+        if (c == ch)
+            return SLICE(string, s, last_offs, -1);
+
+        last_offs = offs;
+        ++(*i);
+    }
+
+    return SEMPTY(string);
+}
+
+usize utf_strlen(string s)
+{
+    usize i = 0, count = 0;
+
+    until (read_rune(s, &amp;i) == 0)
+        ++count;
+
+    return count;
+}
+
+
+bool is_locale_utf8(byte *locale)
+{
+    const byte* cp = locale;
+
+    for (; *cp != '\0' &amp;&amp; *cp != '@' &amp;&amp; *cp != '+' &amp;&amp; *cp != ','; cp++) {
+        if (*cp == '.') {
+            const byte* encoding = ++cp;
+            for (; *cp != '\0' &amp;&amp; *cp != '@' &amp;&amp; *cp != '+' &amp;&amp; *cp != ','; cp++)
+                ;
+            if ((cp-encoding == 5 &amp;&amp; !strncmp(encoding, &quot;UTF-8&quot;, 5))
+                || (cp-encoding == 4 &amp;&amp; !strncmp(encoding, &quot;utf8&quot;, 4)))
+                return true;  // It's UTF-8.
+            break;
+        }
+    }
+
+    return false;  // :(
+}
+
+/* Utility. */
+
+bool octal_digit(byte c)
+{
+    return (c &gt;= '0' &amp;&amp; c &lt;= '7');
+}
+
+bool hex_digit(byte c)
+{
+    return ((c &gt;= '0' &amp;&amp; c &lt;= '9')
+         || (c &gt;= 'A' &amp;&amp; c &lt;= 'F')
+         || (c &gt;= 'a' &amp;&amp; c &lt;= 'f'));
+}
+
+#endif
+</code></pre>
+<hr />
+<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../Files/common_8h.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../Files/utf_8h.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../Files/common_8h.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../Files/utf_8h.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

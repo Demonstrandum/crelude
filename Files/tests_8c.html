@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>tests.c - Crelude Documentation</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../https://github.com/Demonstrandum/crelude.html">GitHub</a></li><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Data Structures/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Data Structures/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Data Structures/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericArray.html"><strong aria-hidden="true">1.1.9.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__Natural.html"><strong aria-hidden="true">1.1.10.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__atomic__t.html"><strong aria-hidden="true">1.1.11.</strong> _atomic_t</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html"><strong aria-hidden="true">1.2.3.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html"><strong aria-hidden="true">1.2.4.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html"><strong aria-hidden="true">1.2.5.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.6.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html" class="active"><strong aria-hidden="true">1.2.7.</strong> tests.c</a></li></ol></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: src/tests.c</p>
+<hr />
+<h1 id="srctestsc"><a class="header" href="#srctestsc">src/tests.c</a></h1>
+<p><a href="#detailed-description">More...</a></p>
+<h2 id="classes"><a class="header" href="#classes">Classes</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>struct</td><td><strong><a href="/Classes/struct__Natural.html">_Natural</a></strong></td></tr>
+</tbody></table>
+<h2 id="types"><a class="header" href="#types">Types</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>typedef struct <a href="/Classes/struct__Natural.html">_Natural</a></td><td><strong><a href="/Files/tests_8c.html#typedef-natural">Natural</a></strong></td></tr>
+</tbody></table>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/tests_8c.html#function-utf8_ucs4_conversions">utf8_ucs4_conversions</a></strong>(<a href="/Files/common_8h.html#typedef-byte">byte</a> * cstring)</td></tr>
+</tbody></table>
+<h2 id="defines"><a class="header" href="#defines">Defines</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td></td><td><strong><a href="/Files/tests_8c.html#define-test">TEST</a></strong>(DOES)</td></tr>
+</tbody></table>
+<h2 id="detailed-description"><a class="header" href="#detailed-description">Detailed Description</a></h2>
+<p>File for testing the library. Not part of the library. </p>
+<h2 id="types-documentation"><a class="header" href="#types-documentation">Types Documentation</a></h2>
+<h3 id="typedef-natural"><a class="header" href="#typedef-natural">typedef Natural</a></h3>
+<pre><code class="language-cpp">typedef struct _Natural Natural;
+</code></pre>
+<h2 id="functions-documentation"><a class="header" href="#functions-documentation">Functions Documentation</a></h2>
+<h3 id="function-utf8_ucs4_conversions"><a class="header" href="#function-utf8_ucs4_conversions">function utf8_ucs4_conversions</a></h3>
+<pre><code class="language-cpp">u0 utf8_ucs4_conversions(
+    byte * cstring
+)
+</code></pre>
+<h2 id="macros-documentation"><a class="header" href="#macros-documentation">Macros Documentation</a></h2>
+<h3 id="define-test"><a class="header" href="#define-test">define TEST</a></h3>
+<pre><code class="language-cpp">#define TEST(
+    DOES
+)
+	do { \
+	[println](/Files/common_8h.md#define-println)(&quot;\n&quot; ANSI([BOLD](/Files/common_8h.md#define-bold)) &quot;[###]&quot; [ANSI](/Files/common_8h.md#define-ansi)([RESET](/Files/common_8h.md#define-reset)) &quot; &quot;\
+		[ANSI](/Files/common_8h.md#define-ansi)([UNDER](/Files/common_8h.md#define-under)) &quot;Test Case&quot; ANSI([RESET](/Files/common_8h.md#define-reset)) &quot;: %s&quot;, DOES); \
+} while (false); if (true)
+</code></pre>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<pre><code class="language-cpp">
+#include &lt;crelude/common.h&gt;
+#include &lt;crelude/utf.h&gt;
+
+#include &lt;stdio.h&gt;
+#include &lt;locale.h&gt;
+
+#define TEST(DOES) do { \
+    println(&quot;\n&quot; ANSI(BOLD) &quot;[###]&quot; ANSI(RESET) &quot; &quot;\
+        ANSI(UNDER) &quot;Test Case&quot; ANSI(RESET) &quot;: %s&quot;, DOES); \
+} while (false); if (true)
+
+u0 utf8_ucs4_conversions(byte *cstring)
+{
+    // UTF-8 string.
+    string s = to_string(cstring);
+    println(&quot;s = \&quot;%s\&quot;&quot;, UNWRAP(s));
+    FOR_EACH(c, s) println(&quot;byte: 0x%X&quot;, c);
+    println(&quot;s.len = %zu&quot;, s.len);
+    // Convert to UCS-4.
+    println(&quot;[***] Convert to UCS-4.&quot;);
+    runic ucs4 = SMAKE(rune, s.len + 1);
+    ucs4 = utf8_to_ucs4(ucs4, s);
+    println(&quot;ucs4 = \&quot;%ls\&quot;&quot;, (wchar_t *)UNWRAP(ucs4));
+    FOR_EACH(c, ucs4) println(&quot;rune: U+%08X = '%lc'&quot;, c, c);
+    println(&quot;ucs4.len = %zu&quot;, ucs4.len);
+    // And back again.
+    println(&quot;[***] Convert to UTF-8.&quot;);
+    string utf8 = SMAKE(byte, 4 * ucs4.len + 4);
+    utf8 = ucs4_to_utf8(utf8, ucs4);
+    println(&quot;utf8 = \&quot;%s\&quot;&quot;, UNWRAP(utf8));
+    FOR_EACH(c, utf8) println(&quot;byte: 0x%X&quot;, c);
+    println(&quot;utf8.len = %zu&quot;, utf8.len);
+}
+
+newtype(Natural, u64);  // New-type idiom.
+
+#ifndef IMPLEMENTATION
+
+ierr main(i32 argc, const byte **argv)
+{
+    UNUSED(argc); UNUSED(argv);
+    byte *locale; UNUSED(locale);
+    locale = setlocale(LC_ALL, &quot;&quot;);
+    println(&quot;Locale is UTF-8?  %s.&quot;,
+        is_locale_utf8(locale) ? &quot;true&quot; : &quot;false&quot;);
+
+    Natural n = { 7 };  // How to use newtypes.
+    n.value = 4;  UNUSED(n);
+
+    /* UTF-8 &lt;--&gt; UCS-4, conversions. */
+    TEST(&quot;Converts between UTF-8 and UCS-4.&quot;) {
+        println(&quot;=== Chinese Characters ===&quot;);
+        utf8_ucs4_conversions(&quot;你好&quot;);
+        println(&quot;\n=== Latin-1/ASCII Characters ===&quot;);
+        utf8_ucs4_conversions(&quot;AaBb&quot;);
+        println(&quot;\n=== Look-alike Characters ===&quot;);
+        utf8_ucs4_conversions(&quot;maña&quot;);  // U+00F1 = ñ.
+        utf8_ucs4_conversions(&quot;maña&quot;);  // n + U+0303 = ñ.
+        // The second string has one extra 'code-point', but both
+        // have the exact same number of human distinguishable 'graphemes'.
+    }
+
+    /* UTF-8 Escapes */
+    TEST(&quot;Unescaped ASCII/UTF-8 strings to UTF-8&quot;) {
+        println(&quot;=== Unescaping Strings ===&quot;);
+        string unescaped = SMAKE(byte, 128);
+        string escaped = STRING(&quot;Hello, \\U1F30E.&quot;);
+        println(&quot;escaped.len = %zu&quot;, escaped.len);
+        unescaped = utf8_unescape(unescaped, escaped);
+        println(&quot;unescaped.len = %zu&quot;, unescaped.len);
+        println(&quot;\&quot;%s\&quot; --&gt; \&quot;%s\&quot;&quot;, escaped.value, unescaped.value);
+    }
+
+    TEST(&quot;Escaped UTF-8 strings to escaped ASCII&quot;) {
+        println(&quot;=== Escaped Strings ===&quot;);
+        string escaped = SMAKE(byte, 128);
+        string unescaped = STRING(&quot;Hello, 🌎.&quot;);
+        println(&quot;unescaped.len = %zu&quot;, unescaped.len);
+        escaped = utf8_escape(escaped, unescaped, false);
+        println(&quot;escaped.len = %zu&quot;, escaped.len);
+        println(&quot;\&quot;%s\&quot; --&gt; \&quot;%s\&quot;&quot;, unescaped.value, escaped.value);
+    }
+
+    TEST(&quot;The new (internal) printf variant function&quot;) {
+        rune c = U'𰻝';
+        println(&quot;Code point for '%C' = %U.&quot;, c, c);
+
+        runic phrase = INIT(rune, { 0x73AB, 0x7470, 0x6C34 });
+        println(&quot;The runes { %V{U+%04X}{, } }, represent: \&quot;%r\&quot;.&quot;, phrase, phrase);
+        println(&quot;Which are the three graphemes: %V{'%C'}{, }.&quot;, phrase);
+
+        long long int some_ll_int = 36;
+        println(&quot;A normal base-10 long long integer: %05lld.&quot;, some_ll_int);
+
+        StringBuilder builder = AMAKE(byte, 5);
+
+        extend(&amp;builder, &amp;STR(&quot;Hello&quot;), sizeof(byte));
+        push(&amp;builder, &quot;,&quot;, sizeof(byte));
+        string name = STRING(&quot;Bob.&quot;);
+        extend(&amp;builder, &amp;name, sizeof(byte));
+        assert('.' == *(byte *)pop(&amp;builder, sizeof(byte)));
+        push(&amp;builder, &quot;!&quot;, sizeof(byte));
+        insert(&amp;builder, 6, &quot; &quot;, sizeof(byte));
+
+        string slice = SLICE(string, builder, 0, -1);
+        println(&quot;The characters %D{(%c)}-, say: \&quot;%S\&quot;.&quot;, builder, slice);
+        string slice_with_nul = SLICE(string, builder, 0, 12);
+        println(&quot;With ASCII values: [%V{#%02hhX}{, }].&quot;, slice_with_nul);
+
+        string alt = STRING(&quot;Strings may be printed like this too.\n&quot;);
+        print(&quot;%Vc{}&quot;, alt);
+        println(&quot;(that is, %V02hhX-)&quot;, alt);  // No curly-braces needed if unambiguous!
+    }
+
+    TEST(&quot;String comparison: string_cmp vs. strcmp&quot;) {
+        string s0 = STRING(&quot;Latino&quot;);
+        string s1 = STRING(&quot;Latina&quot;);
+        byte *p0 = UNWRAP(s0);
+        byte *p1 = UNWRAP(s1);
+
+        println(&quot;string_cmp: %s &lt;~&gt; %s = %hd&quot;, p0, p1, string_cmp(s0, s1));
+        println(&quot;strcmp:     %s &lt;~&gt; %s = %d&quot;,  p0, p1, strcmp(p0, p1));
+        assert(string_cmp(s0, s1) == strcmp(p0, p1));
+
+        string s2 = SLICE(string, s0, 0, -2);
+        string s3 = SLICE(string, s1, 0, -2);
+        println(&quot;string_cmp: %S &lt;~&gt; %S = %hd&quot;, s2, s3, string_cmp(s2, s3));
+
+        println(&quot;string_cmp: %S &lt;~&gt; %S = %hd&quot;, s3, s0, string_cmp(s3, s0));
+        println(&quot;string_cmp: %S &lt;~&gt; %S = %hd&quot;, s2, s0, string_cmp(s2, s0));
+        p1[s1.len - 1] = '\0';
+        println(&quot;strcmp:     %s &lt;~&gt; %s = %d&quot;, p1, p0, strcmp(p1, p0));
+    }
+
+    TEST(&quot;Array removal and block swapping&quot;) {
+        newarray(IntArray, int);
+        IntArray arr = AMAKE(int, 5);
+        PUSH(arr, 0);
+        __auto_type list = LIST(sliceof(int), { 1, 2, 3, 4, 5, 6 });
+        UNSHIFT(arr, -1);
+        println(&quot;list[..%zu] = { %V%d{, } };&quot;, list.len, list);
+        EXTEND(arr, list);
+        println(&quot;arr = %D%d{, };&quot;, arr);
+        int *popped = SHIFT(arr);
+        println(&quot;arr = %D%d{, };  (popped: %d)&quot;, arr, *popped);
+        SWAP(arr, 3);  // Swap the three first elements to the back.
+        println(&quot;arr = %D%d{, };&quot;, arr);
+        REMOVE(arr, 4);  // Remove 4th element (0).
+        println(&quot;arr = %D%d{, };&quot;, arr);
+        SWAP(arr, 4);
+        println(&quot;arr = %D%d{, };&quot;, arr);
+        sliceof(int) *cutout = CUT(arr, 2, 4);
+        println(&quot;arr = %D%d{, };  (cut out: %V%d{, })&quot;, arr, *cutout);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+#endif
+</code></pre>
+<hr />
+<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../Files/utf_8h.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../Files/utf_8h.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

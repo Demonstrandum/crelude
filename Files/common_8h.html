@@ -1,0 +1,1888 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>common.h - Crelude Documentation</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../https://github.com/Demonstrandum/crelude.html">GitHub</a></li><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Data Structures/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Data Structures/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Data Structures/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericArray.html"><strong aria-hidden="true">1.1.9.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__Natural.html"><strong aria-hidden="true">1.1.10.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__atomic__t.html"><strong aria-hidden="true">1.1.11.</strong> _atomic_t</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html"><strong aria-hidden="true">1.2.3.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html" class="active"><strong aria-hidden="true">1.2.4.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html"><strong aria-hidden="true">1.2.5.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.6.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html"><strong aria-hidden="true">1.2.7.</strong> tests.c</a></li></ol></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: src/crelude/common.h</p>
+<hr />
+<h1 id="srccreludecommonh"><a class="header" href="#srccreludecommonh">src/crelude/common.h</a></h1>
+<p><a href="#detailed-description">More...</a></p>
+<h2 id="classes"><a class="header" href="#classes">Classes</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>struct</td><td><strong><a href="/Classes/struct__atomic__t.html">_atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structGenericArray.html">GenericArray</a></strong> <br>Array with pointer to void.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structMemArray.html">MemArray</a></strong> <br>Array with pointer type to smallest addressable units of memory.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structGenericSlice.html">GenericSlice</a></strong> <br>Slice with pointer to void.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structMemSlice.html">MemSlice</a></strong> <br>Slice with pointer type to smallest addressable units of memory.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structstring.html">string</a></strong> <br>Immutable wrapper for UTF-8 encoded string (bytes are mutable).</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structrunic.html">runic</a></strong> <br>Imutable warpper for UCS-4/UTF-32 encoded runic string (runes are mutable).</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structStringBuilder.html">StringBuilder</a></strong> <br>Mutable string which is built/pushed-to over time.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structRunicBuilder.html">RunicBuilder</a></strong> <br>Mutable runic string which is built/pushed-to over time.</td></tr>
+<tr><td>struct</td><td><strong><a href="/Classes/structsymbol.html">symbol</a></strong> <br>Symbols are interned strings.</td></tr>
+</tbody></table>
+<h2 id="types"><a class="header" href="#types">Types</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>typedef struct <a href="/Classes/struct__atomic__t.html">_atomic_t</a></td><td><strong><a href="/Files/common_8h.html#typedef-atomic_t">atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
+<tr><td>typedef void</td><td><strong><a href="/Files/common_8h.html#typedef-u0">u0</a></strong></td></tr>
+<tr><td>typedef signed int</td><td><strong><a href="/Files/common_8h.html#typedef-ierr">ierr</a></strong></td></tr>
+<tr><td>typedef unsigned int</td><td><strong><a href="/Files/common_8h.html#typedef-uerr">uerr</a></strong></td></tr>
+<tr><td>typedef unsigned long</td><td><strong><a href="/Files/common_8h.html#typedef-uword">uword</a></strong> <br><code>long</code> is always the same size as a machine word.</td></tr>
+<tr><td>typedef signed long</td><td><strong><a href="/Files/common_8h.html#typedef-iword">iword</a></strong></td></tr>
+<tr><td>typedef unsigned int</td><td><strong><a href="/Files/common_8h.html#typedef-ufast">ufast</a></strong></td></tr>
+<tr><td>typedef signed int</td><td><strong><a href="/Files/common_8h.html#typedef-ifast">ifast</a></strong></td></tr>
+<tr><td>typedef ptrdiff_t</td><td><strong><a href="/Files/common_8h.html#typedef-isize">isize</a></strong></td></tr>
+<tr><td>typedef size_t</td><td><strong><a href="/Files/common_8h.html#typedef-usize">usize</a></strong> <br>Use for storing array indices or object sizes.</td></tr>
+<tr><td>typedef intptr_t</td><td><strong><a href="/Files/common_8h.html#typedef-iptr">iptr</a></strong></td></tr>
+<tr><td>typedef uintptr_t</td><td><strong><a href="/Files/common_8h.html#typedef-uptr">uptr</a></strong> <br>Large enough to store a pointer, like (void *).</td></tr>
+<tr><td>typedef intmax_t</td><td><strong><a href="/Files/common_8h.html#typedef-imax">imax</a></strong></td></tr>
+<tr><td>typedef uintmax_t</td><td><strong><a href="/Files/common_8h.html#typedef-umax">umax</a></strong></td></tr>
+<tr><td>typedef unsigned char</td><td><strong><a href="/Files/common_8h.html#typedef-umin">umin</a></strong> <br>Such that <code>sizeof(umin) == 1</code>.</td></tr>
+<tr><td>typedef signed char</td><td><strong><a href="/Files/common_8h.html#typedef-imin">imin</a></strong> <br>Such that <code>sizeof(imin) == 1</code>.</td></tr>
+<tr><td>typedef __int8_t</td><td><strong><a href="/Files/common_8h.html#typedef-i8">i8</a></strong></td></tr>
+<tr><td>typedef __uint8_t</td><td><strong><a href="/Files/common_8h.html#typedef-u8">u8</a></strong></td></tr>
+<tr><td>typedef __uint8_t</td><td><strong><a href="/Files/common_8h.html#typedef-byte">byte</a></strong> <br>Don't use <code>char</code> when you want <code>byte</code>.</td></tr>
+<tr><td>typedef __int16_t</td><td><strong><a href="/Files/common_8h.html#typedef-i16">i16</a></strong></td></tr>
+<tr><td>typedef __uint16_t</td><td><strong><a href="/Files/common_8h.html#typedef-u16">u16</a></strong></td></tr>
+<tr><td>typedef __int32_t</td><td><strong><a href="/Files/common_8h.html#typedef-i32">i32</a></strong></td></tr>
+<tr><td>typedef __uint32_t</td><td><strong><a href="/Files/common_8h.html#typedef-u32">u32</a></strong></td></tr>
+<tr><td>typedef <a href="/Files/common_8h.html#typedef-u32">u32</a></td><td><strong><a href="/Files/common_8h.html#typedef-rune">rune</a></strong></td></tr>
+<tr><td>typedef __int64_t</td><td><strong><a href="/Files/common_8h.html#typedef-i64">i64</a></strong></td></tr>
+<tr><td>typedef __uint64_t</td><td><strong><a href="/Files/common_8h.html#typedef-u64">u64</a></strong></td></tr>
+</tbody></table>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-panic">panic</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zero">is_zero</a></strong>(<a href="/Files/common_8h.html#typedef-imax">imax</a> )</td></tr>
+<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zerof">is_zerof</a></strong>(f64 )</td></tr>
+<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zeroed">is_zeroed</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * , <a href="/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-zero">zero</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * blk, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-emalloc">emalloc</a></strong>(<a href="/Files/common_8h.html#typedef-usize">usize</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> )<br>Malloc with zeros, and panics when out of memory.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-swap">swap</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> pivot, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-push">push</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-pop">pop</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-shift">shift</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)<br>Works like <code>pop</code> but removes from the front.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-insert">insert</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-extend">extend</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-splice">splice</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Classes/structGenericSlice.html">GenericSlice</a></td><td><strong><a href="/Files/common_8h.html#function-cut">cut</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> from, <a href="/Files/common_8h.html#typedef-isize">isize</a> upto, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-fput">fput</a></strong>(<a href="/Classes/structstring.html">string</a> , FILE * )<br><code>fputs(...)</code> with <code>string</code>.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-put">put</a></strong>(<a href="/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stdout)</code>.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-eput">eput</a></strong>(<a href="/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stderr)</code>.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-eputs">eputs</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )<br>puts(...) to STDERR.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-sizeof_specifier">sizeof_specifier</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )</td></tr>
+<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vsprintf">novel_vsprintf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-novel_sprintf">novel_sprintf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vfprintf">novel_vfprintf</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_fprintf">novel_fprintf</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vfprintf_newline">novel_vfprintf_newline</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_fprintf_newline">novel_fprintf_newline</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_printf">novel_printf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-from_cstring">from_cstring</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )<br>NUL-terminated string to library string.</td></tr>
+<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-string_eq">string_eq</a></strong>(const string, const string)<br>Compare two strings for equality.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-i16">i16</a></td><td><strong><a href="/Files/common_8h.html#function-string_cmp">string_cmp</a></strong>(const string, const string)<br>Compare two strings for alphabetic rank.</td></tr>
+<tr><td><a href="/Files/common_8h.html#typedef-u64">u64</a></td><td><strong><a href="/Files/common_8h.html#function-hash_string">hash_string</a></strong>(const string)<br>Hash a string.</td></tr>
+</tbody></table>
+<h2 id="attributes"><a class="header" href="#attributes">Attributes</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td>const <a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#variable-nul">NUL</a></strong></td></tr>
+<tr><td>const <a href="/Files/common_8h.html#typedef-byte">byte</a></td><td><strong><a href="/Files/common_8h.html#variable-nul_byte">NUL_BYTE</a></strong></td></tr>
+<tr><td>const <a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#variable-nul_string">NUL_STRING</a></strong></td></tr>
+</tbody></table>
+<h2 id="defines"><a class="header" href="#defines">Defines</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-_gnu_source">_GNU_SOURCE</a></strong> <br>Use GNU specific source.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tstr_helper">TSTR_HELPER</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tstr">TSTR</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_major">crelude_V_MAJOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_minor">crelude_V_MINOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_patch">crelude_V_PATCH</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_version">crelude_VERSION</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-realloc_factor">REALLOC_FACTOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-loop">loop</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unless">unless</a></strong>(cond)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-never">never</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-always">always</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-until">until</a></strong>(cond)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newtype">newtype</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-arrayof">arrayof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newarray">newarray</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sliceof">sliceof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newslice">newslice</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hashof">hashof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newhashable">newhashable</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unqualify">unqualify</a></strong>(D, T)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-nth">NTH</a></strong>(LIST, N)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-get">GET</a></strong>(LIST, N)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unused">UNUSED</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-no_error">NO_ERROR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-ok">OK</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-noop">NOOP</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-nil">nil</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-panic">PANIC</a></strong>(lit, ...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-print">print</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sprint">sprint</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-println">println</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprintf">eprintf</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprint">eprint</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprintln">eprintln</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-fprint">fprint</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unit">UNIT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-word_size">WORD_SIZE</a></strong> <br>Size of a machine word.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-_ldouble_bit">_LDOUBLE_BIT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-swap">SWAP</a></strong>(SELF, PIVOT)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-push">PUSH</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-pop">POP</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-shift">SHIFT</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-insert">INSERT</a></strong>(SELF, INDEX, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-extend">EXTEND</a></strong>(SELF, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-splice">SPLICE</a></strong>(SELF, INDEX, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-cut">CUT</a></strong>(SELF, FROM, UPTO)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-append">APPEND</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-prepend">PREPEND</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unshift">UNSHIFT</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-prefix">PREFIX</a></strong>(SELF, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-remove">REMOVE</a></strong>(SELF, INDEX)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-head">HEAD</a></strong>(SELF, END)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tail">TAIL</a></strong>(SELF, BEG)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-first">FIRST</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-last">LAST</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-ansi">ANSI</a></strong>(CODE)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-bold">BOLD</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-faint">FAINT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-dim">DIM</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-italic">ITALIC</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-under">UNDER</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-blink">BLINK</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-rapid">RAPID</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-invert">INVERT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hidden">HIDDEN</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-strike">STRIKE</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-bold_off">BOLD_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-faint_off">FAINT_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-italic_off">ITALIC_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-under_off">UNDER_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-blink_off">BLINK_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-rapid_off">RAPID_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-invert_off">INVERT_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hidden_off">HIDDEN_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-strike_off">STRIKE_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-reset">RESET</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-min">min</a></strong>(A, B)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-max">max</a></strong>(A, B)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unwrap">UNWRAP</a></strong>(STRUCTURE) <br>Unwraps pointer/value in sizing wrapper struct.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-init">INIT</a></strong>(TYPE, ...) <br>Initialise sizing wrapper with literal.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-list">LIST</a></strong>(TYPE, ...) <br>Can be used to make slices from literal arrays.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-string">STRING</a></strong>(...) <br>Initialise sizing wrapper with of string literal.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-str">STR</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sempty">SEMPTY</a></strong>(TYPE) <br>Empty slice of certain type.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-aempty">AEMPTY</a></strong>(TYPE) <br>Empty array of certain type.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-is_empty">IS_EMPTY</a></strong>(ARR) <br>Is array empty?</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-amake">AMAKE</a></strong>(TYPE, CAP) <br>Heap allocates a variable sized array.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-smake">SMAKE</a></strong>(TYPE, LEN) <br>Heap allocates a constant sized slice type.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-slice">SLICE</a></strong>(TYPE, OBJ, START, END) <br>Take a slice/substring/view of sized type.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-view">VIEW</a></strong>(TYPE, PTR, START, END) <br>Works like <code>SLICE</code>, but on a pointer instead of an array.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-symbolic">SYMBOLIC</a></strong>(STR)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-symbol_literal">SYMBOL_LITERAL</a></strong>(STR_LIT)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-acollect">ACOLLECT</a></strong>(T, count, pointer) <br>C array to dynamic array wrapper.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-scollect">SCOLLECT</a></strong>(T, count, pointer) <br>C array to slice wrapper.</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-smap">SMAP</a></strong>(T, func, list)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-amap">AMAP</a></strong>(T, func, list)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-for_each">FOR_EACH</a></strong>(ELEM, ELEMS)</td></tr>
+<tr><td></td><td><strong><a href="/Files/common_8h.html#define-foreach">foreach</a></strong></td></tr>
+</tbody></table>
+<h2 id="detailed-description"><a class="header" href="#detailed-description">Detailed Description</a></h2>
+<p><strong>Note</strong>: Read this: <a href="https://www.cprogramming.com/tutorial/unicode.html">unicode</a> by Jeff Bezanson, about modern unicode in C. </p>
+<p>Defines basic macros and datatypes which are in common through-out the whole project. </p>
+<h2 id="types-documentation"><a class="header" href="#types-documentation">Types Documentation</a></h2>
+<h3 id="typedef-atomic_t"><a class="header" href="#typedef-atomic_t">typedef atomic_t</a></h3>
+<pre><code class="language-cpp">typedef struct _atomic_t atomic_t;
+</code></pre>
+<p>Useful for resource counting etc. </p>
+<h3 id="typedef-u0"><a class="header" href="#typedef-u0">typedef u0</a></h3>
+<pre><code class="language-cpp">typedef void u0;
+</code></pre>
+<p>The type that occupies no space. Thanks to Terry for this one. </p>
+<h3 id="typedef-ierr"><a class="header" href="#typedef-ierr">typedef ierr</a></h3>
+<pre><code class="language-cpp">typedef signed int ierr;
+</code></pre>
+<p>Explicitly mark functions that return error-codes as returning <code>ierr</code> instead of just <code>int</code>. </p>
+<h3 id="typedef-uerr"><a class="header" href="#typedef-uerr">typedef uerr</a></h3>
+<pre><code class="language-cpp">typedef unsigned int uerr;
+</code></pre>
+<p>Not something very common. </p>
+<h3 id="typedef-uword"><a class="header" href="#typedef-uword">typedef uword</a></h3>
+<pre><code class="language-cpp">typedef unsigned long uword;
+</code></pre>
+<p><code>long</code> is always the same size as a machine word. </p>
+<h3 id="typedef-iword"><a class="header" href="#typedef-iword">typedef iword</a></h3>
+<pre><code class="language-cpp">typedef signed long iword;
+</code></pre>
+<h3 id="typedef-ufast"><a class="header" href="#typedef-ufast">typedef ufast</a></h3>
+<pre><code class="language-cpp">typedef unsigned int ufast;
+</code></pre>
+<p><code>int</code> in most cases is going to have the natural size suggested by the target architecture, optimal for most things. </p>
+<h3 id="typedef-ifast"><a class="header" href="#typedef-ifast">typedef ifast</a></h3>
+<pre><code class="language-cpp">typedef signed int ifast;
+</code></pre>
+<h3 id="typedef-isize"><a class="header" href="#typedef-isize">typedef isize</a></h3>
+<pre><code class="language-cpp">typedef ptrdiff_t isize;
+</code></pre>
+<h3 id="typedef-usize"><a class="header" href="#typedef-usize">typedef usize</a></h3>
+<pre><code class="language-cpp">typedef size_t usize;
+</code></pre>
+<p>Use for storing array indices or object sizes. </p>
+<h3 id="typedef-iptr"><a class="header" href="#typedef-iptr">typedef iptr</a></h3>
+<pre><code class="language-cpp">typedef intptr_t iptr;
+</code></pre>
+<h3 id="typedef-uptr"><a class="header" href="#typedef-uptr">typedef uptr</a></h3>
+<pre><code class="language-cpp">typedef uintptr_t uptr;
+</code></pre>
+<p>Large enough to store a pointer, like (void *). </p>
+<h3 id="typedef-imax"><a class="header" href="#typedef-imax">typedef imax</a></h3>
+<pre><code class="language-cpp">typedef intmax_t imax;
+</code></pre>
+<h3 id="typedef-umax"><a class="header" href="#typedef-umax">typedef umax</a></h3>
+<pre><code class="language-cpp">typedef uintmax_t umax;
+</code></pre>
+<h3 id="typedef-umin"><a class="header" href="#typedef-umin">typedef umin</a></h3>
+<pre><code class="language-cpp">typedef unsigned char umin;
+</code></pre>
+<p>Such that <code>sizeof(umin) == 1</code>. </p>
+<h3 id="typedef-imin"><a class="header" href="#typedef-imin">typedef imin</a></h3>
+<pre><code class="language-cpp">typedef signed char imin;
+</code></pre>
+<p>Such that <code>sizeof(imin) == 1</code>. </p>
+<h3 id="typedef-i8"><a class="header" href="#typedef-i8">typedef i8</a></h3>
+<pre><code class="language-cpp">typedef __int8_t i8;
+</code></pre>
+<h3 id="typedef-u8"><a class="header" href="#typedef-u8">typedef u8</a></h3>
+<pre><code class="language-cpp">typedef __uint8_t u8;
+</code></pre>
+<h3 id="typedef-byte"><a class="header" href="#typedef-byte">typedef byte</a></h3>
+<pre><code class="language-cpp">typedef __uint8_t byte;
+</code></pre>
+<p>Don't use <code>char</code> when you want <code>byte</code>. </p>
+<h3 id="typedef-i16"><a class="header" href="#typedef-i16">typedef i16</a></h3>
+<pre><code class="language-cpp">typedef __int16_t i16;
+</code></pre>
+<h3 id="typedef-u16"><a class="header" href="#typedef-u16">typedef u16</a></h3>
+<pre><code class="language-cpp">typedef __uint16_t u16;
+</code></pre>
+<h3 id="typedef-i32"><a class="header" href="#typedef-i32">typedef i32</a></h3>
+<pre><code class="language-cpp">typedef __int32_t i32;
+</code></pre>
+<h3 id="typedef-u32"><a class="header" href="#typedef-u32">typedef u32</a></h3>
+<pre><code class="language-cpp">typedef __uint32_t u32;
+</code></pre>
+<h3 id="typedef-rune"><a class="header" href="#typedef-rune">typedef rune</a></h3>
+<pre><code class="language-cpp">typedef u32 rune;
+</code></pre>
+<p>Unicode codepoint (USC-4) (32 bits), don't use <code>char[4]</code>, and definitely do not use <code>wchar_t</code>. </p>
+<h3 id="typedef-i64"><a class="header" href="#typedef-i64">typedef i64</a></h3>
+<pre><code class="language-cpp">typedef __int64_t i64;
+</code></pre>
+<h3 id="typedef-u64"><a class="header" href="#typedef-u64">typedef u64</a></h3>
+<pre><code class="language-cpp">typedef __uint64_t u64;
+</code></pre>
+<h2 id="functions-documentation"><a class="header" href="#functions-documentation">Functions Documentation</a></h2>
+<h3 id="function-panic"><a class="header" href="#function-panic">function panic</a></h3>
+<pre><code class="language-cpp">u0 panic(
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-is_zero"><a class="header" href="#function-is_zero">function is_zero</a></h3>
+<pre><code class="language-cpp">bool is_zero(
+    imax 
+)
+</code></pre>
+<h3 id="function-is_zerof"><a class="header" href="#function-is_zerof">function is_zerof</a></h3>
+<pre><code class="language-cpp">bool is_zerof(
+    f64 
+)
+</code></pre>
+<h3 id="function-is_zeroed"><a class="header" href="#function-is_zeroed">function is_zeroed</a></h3>
+<pre><code class="language-cpp">bool is_zeroed(
+    u0 * ,
+    usize 
+)
+</code></pre>
+<h3 id="function-zero"><a class="header" href="#function-zero">function zero</a></h3>
+<pre><code class="language-cpp">u0 zero(
+    u0 * blk,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>blk</strong> Pointer to start of block. </li>
+<li><strong>width</strong> How many bytes to zero. e.g., for an array <code>width = lenght * sizeof(elem)</code>. </li>
+</ul>
+<p>Zero a block of memory. </p>
+<h3 id="function-emalloc"><a class="header" href="#function-emalloc">function emalloc</a></h3>
+<pre><code class="language-cpp">u0 * emalloc(
+    usize ,
+    usize 
+)
+</code></pre>
+<p>Malloc with zeros, and panics when out of memory. </p>
+<h3 id="function-swap"><a class="header" href="#function-swap">function swap</a></h3>
+<pre><code class="language-cpp">u0 swap(
+    u0 * self,
+    usize pivot,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>self</strong> Pointer to the slice, cast to (<code>u0 *</code>). </li>
+<li><strong>pivot</strong> The index of the slice that divides the blocks to swap. </li>
+<li><strong>width</strong> The <code>sizeof(T)</code> where <code>T</code> is the type of element in the slice. </li>
+</ul>
+<p>Given a slice, swap the two blocks within the slice formed by selecting a pivot point. </p>
+<pre><code class="language-cpp">[----A----|---B---] -&gt; [---B---|----A----]
+          ^ pivot
+</code></pre>
+<h3 id="function-push"><a class="header" href="#function-push">function push</a></h3>
+<pre><code class="language-cpp">usize push(
+    u0 * self,
+    const u0 * element,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>self</strong> Pointer to the dynamic array, cast to (<code>u0 *</code>). </li>
+<li><strong>element</strong> Pointer to element to be pushed, cast to (<code>u0 *</code>). </li>
+<li><strong>width</strong> The <code>sizeof(T)</code> where <code>T</code> is the type of the element that is being pushed. </li>
+</ul>
+<p><strong>Return</strong>: How much capacity increased. </p>
+<p>Push element to array. </p>
+<h3 id="function-pop"><a class="header" href="#function-pop">function pop</a></h3>
+<pre><code class="language-cpp">u0 * pop(
+    u0 * self,
+    usize width
+)
+</code></pre>
+<p><strong>Return</strong>: Pointer to popped element. </p>
+<p>Pops/removes element from top of the stack (dynamic array). </p>
+<h3 id="function-shift"><a class="header" href="#function-shift">function shift</a></h3>
+<pre><code class="language-cpp">u0 * shift(
+    u0 * self,
+    usize width
+)
+</code></pre>
+<p>Works like <code>pop</code> but removes from the front. </p>
+<h3 id="function-insert"><a class="header" href="#function-insert">function insert</a></h3>
+<pre><code class="language-cpp">usize insert(
+    u0 * self,
+    usize index,
+    const u0 * element,
+    usize width
+)
+</code></pre>
+<p><strong>Return</strong>: How much capacity increased. </p>
+<p>Exactly like <code>push</code>, except position of element is arbitrary, with index specified in second argument. </p>
+<h3 id="function-extend"><a class="header" href="#function-extend">function extend</a></h3>
+<pre><code class="language-cpp">usize extend(
+    u0 * self,
+    const u0 * slice,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>self</strong> A pointer to a dynamic array, of any type. </li>
+<li><strong>slice</strong> A pointer to a slice, and a slice only (<em>not</em> an array, dynamic array, etc.). </li>
+<li><strong>width</strong> The <code>sizeof(T)</code> where <code>T</code> is the type of the individual elements that are being appended to the array. </li>
+</ul>
+<p><strong>Return</strong>: How much capacity increased. </p>
+<p>Works like push, but extends the array by multiple elements. </p>
+<h3 id="function-splice"><a class="header" href="#function-splice">function splice</a></h3>
+<pre><code class="language-cpp">usize splice(
+    u0 * self,
+    usize index,
+    const u0 * slice,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>self</strong> A pointer to the dynamic array, of any type. </li>
+<li><strong>index</strong> The location for inserting in the slice. </li>
+<li><strong>slice</strong> The slice you wish to insert at <code>index</code>. </li>
+<li><strong>width</strong> The <code>sizeof(T)</code> where <code>T</code> is the type of the individual elements stored within the array and slice. </li>
+</ul>
+<p><strong>Return</strong>: How much capacity increased. </p>
+<p>Works like extend, but extends or <em>splices</em> the array with a slice at some given, arbitrary position. </p>
+<h3 id="function-cut"><a class="header" href="#function-cut">function cut</a></h3>
+<pre><code class="language-cpp">GenericSlice cut(
+    u0 * self,
+    usize from,
+    isize upto,
+    usize width
+)
+</code></pre>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>self</strong> A pointer to the array. </li>
+<li><strong>from</strong> Index to start removing from. </li>
+<li><strong>upto</strong> Index of final element to remove in the range. If parameter is negative, it indicates an index from the end of the array. </li>
+</ul>
+<p><strong>Return</strong>: A slice holding a void-pointer to the removed elements, </p>
+<p>Deletes a range of elements from an array, starting from some index. </p>
+<h3 id="function-fput"><a class="header" href="#function-fput">function fput</a></h3>
+<pre><code class="language-cpp">ierr fput(
+    string ,
+    FILE * 
+)
+</code></pre>
+<p><code>fputs(...)</code> with <code>string</code>. </p>
+<h3 id="function-put"><a class="header" href="#function-put">function put</a></h3>
+<pre><code class="language-cpp">ierr put(
+    string 
+)
+</code></pre>
+<p>Same as <code>fput(..., stdout)</code>. </p>
+<h3 id="function-eput"><a class="header" href="#function-eput">function eput</a></h3>
+<pre><code class="language-cpp">ierr eput(
+    string 
+)
+</code></pre>
+<p>Same as <code>fput(..., stderr)</code>. </p>
+<h3 id="function-eputs"><a class="header" href="#function-eputs">function eputs</a></h3>
+<pre><code class="language-cpp">ierr eputs(
+    const byte * 
+)
+</code></pre>
+<p>puts(...) to STDERR. </p>
+<h3 id="function-sizeof_specifier"><a class="header" href="#function-sizeof_specifier">function sizeof_specifier</a></h3>
+<pre><code class="language-cpp">usize sizeof_specifier(
+    const byte * 
+)
+</code></pre>
+<p>Size of the type of a <code>printf</code>-style format specifer. e.g. <code>sizeof_specifier(&quot;hx&quot;) == sizeof(unsigned short int);</code>. </p>
+<h3 id="function-novel_vsprintf"><a class="header" href="#function-novel_vsprintf">function novel_vsprintf</a></h3>
+<pre><code class="language-cpp">string novel_vsprintf(
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<p><strong>Note</strong>: Heap allocates memory, should be freed after printing. </p>
+<p>Custom <code>printf</code> for other data-types. </p>
+<h3 id="function-novel_sprintf"><a class="header" href="#function-novel_sprintf">function novel_sprintf</a></h3>
+<pre><code class="language-cpp">string novel_sprintf(
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-novel_vfprintf"><a class="header" href="#function-novel_vfprintf">function novel_vfprintf</a></h3>
+<pre><code class="language-cpp">ierr novel_vfprintf(
+    FILE * ,
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<h3 id="function-novel_fprintf"><a class="header" href="#function-novel_fprintf">function novel_fprintf</a></h3>
+<pre><code class="language-cpp">ierr novel_fprintf(
+    FILE * ,
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-novel_vfprintf_newline"><a class="header" href="#function-novel_vfprintf_newline">function novel_vfprintf_newline</a></h3>
+<pre><code class="language-cpp">ierr novel_vfprintf_newline(
+    FILE * ,
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<h3 id="function-novel_fprintf_newline"><a class="header" href="#function-novel_fprintf_newline">function novel_fprintf_newline</a></h3>
+<pre><code class="language-cpp">ierr novel_fprintf_newline(
+    FILE * ,
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-novel_printf"><a class="header" href="#function-novel_printf">function novel_printf</a></h3>
+<pre><code class="language-cpp">ierr novel_printf(
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-from_cstring"><a class="header" href="#function-from_cstring">function from_cstring</a></h3>
+<pre><code class="language-cpp">string from_cstring(
+    const byte * 
+)
+</code></pre>
+<p>NUL-terminated string to library string. </p>
+<h3 id="function-string_eq"><a class="header" href="#function-string_eq">function string_eq</a></h3>
+<pre><code class="language-cpp">bool string_eq(
+    const string,
+    const string
+)
+</code></pre>
+<p>Compare two strings for equality. </p>
+<h3 id="function-string_cmp"><a class="header" href="#function-string_cmp">function string_cmp</a></h3>
+<pre><code class="language-cpp">i16 string_cmp(
+    const string,
+    const string
+)
+</code></pre>
+<p>Compare two strings for alphabetic rank. </p>
+<h3 id="function-hash_string"><a class="header" href="#function-hash_string">function hash_string</a></h3>
+<pre><code class="language-cpp">u64 hash_string(
+    const string
+)
+</code></pre>
+<p>Hash a string. </p>
+<h2 id="attributes-documentation"><a class="header" href="#attributes-documentation">Attributes Documentation</a></h2>
+<h3 id="variable-nul"><a class="header" href="#variable-nul">variable NUL</a></h3>
+<pre><code class="language-cpp">static const ierr NUL = 0;
+</code></pre>
+<h3 id="variable-nul_byte"><a class="header" href="#variable-nul_byte">variable NUL_BYTE</a></h3>
+<pre><code class="language-cpp">static const byte NUL_BYTE = '\0';
+</code></pre>
+<h3 id="variable-nul_string"><a class="header" href="#variable-nul_string">variable NUL_STRING</a></h3>
+<pre><code class="language-cpp">static const string NUL_STRING = { .len = 0, .value = ([byte](/Files/common_8h.md#typedef-byte) *)&amp;[NUL_BYTE](/Files/common_8h.md#variable-nul_byte) };
+</code></pre>
+<h2 id="macros-documentation"><a class="header" href="#macros-documentation">Macros Documentation</a></h2>
+<h3 id="define-_gnu_source"><a class="header" href="#define-_gnu_source">define _GNU_SOURCE</a></h3>
+<pre><code class="language-cpp">#define _GNU_SOURCE 1
+</code></pre>
+<p>Use GNU specific source. </p>
+<h3 id="define-tstr_helper"><a class="header" href="#define-tstr_helper">define TSTR_HELPER</a></h3>
+<pre><code class="language-cpp">#define TSTR_HELPER(
+    x
+)
+#x
+</code></pre>
+<h3 id="define-tstr"><a class="header" href="#define-tstr">define TSTR</a></h3>
+<pre><code class="language-cpp">#define TSTR(
+    x
+)
+[TSTR_HELPER](/Files/common_8h.md#define-tstr_helper)(x)
+</code></pre>
+<h3 id="define-crelude_v_major"><a class="header" href="#define-crelude_v_major">define crelude_V_MAJOR</a></h3>
+<pre><code class="language-cpp">#define crelude_V_MAJOR 0
+</code></pre>
+<h3 id="define-crelude_v_minor"><a class="header" href="#define-crelude_v_minor">define crelude_V_MINOR</a></h3>
+<pre><code class="language-cpp">#define crelude_V_MINOR 1
+</code></pre>
+<h3 id="define-crelude_v_patch"><a class="header" href="#define-crelude_v_patch">define crelude_V_PATCH</a></h3>
+<pre><code class="language-cpp">#define crelude_V_PATCH 0
+</code></pre>
+<h3 id="define-crelude_version"><a class="header" href="#define-crelude_version">define crelude_VERSION</a></h3>
+<pre><code class="language-cpp">#define crelude_VERSION 	&quot;v&quot; TSTR([crelude_V_MAJOR](/Files/common_8h.md#define-crelude_v_major)) \
+	&quot;.&quot; [TSTR](/Files/common_8h.md#define-tstr)([crelude_V_MINOR](/Files/common_8h.md#define-crelude_v_minor)) \
+	&quot;.&quot; [TSTR](/Files/common_8h.md#define-tstr)([crelude_V_PATCH](/Files/common_8h.md#define-crelude_v_patch))
+</code></pre>
+<h3 id="define-realloc_factor"><a class="header" href="#define-realloc_factor">define REALLOC_FACTOR</a></h3>
+<pre><code class="language-cpp">#define REALLOC_FACTOR 1.5
+</code></pre>
+<h3 id="define-loop"><a class="header" href="#define-loop">define loop</a></h3>
+<pre><code class="language-cpp">#define loop while (1)
+</code></pre>
+<h3 id="define-unless"><a class="header" href="#define-unless">define unless</a></h3>
+<pre><code class="language-cpp">#define unless(
+    cond
+)
+if (!(cond))
+</code></pre>
+<h3 id="define-never"><a class="header" href="#define-never">define never</a></h3>
+<pre><code class="language-cpp">#define never if (0)
+</code></pre>
+<h3 id="define-always"><a class="header" href="#define-always">define always</a></h3>
+<pre><code class="language-cpp">#define always if (1)
+</code></pre>
+<h3 id="define-until"><a class="header" href="#define-until">define until</a></h3>
+<pre><code class="language-cpp">#define until(
+    cond
+)
+while (!(cond))
+</code></pre>
+<h3 id="define-newtype"><a class="header" href="#define-newtype">define newtype</a></h3>
+<pre><code class="language-cpp">#define newtype(
+    NT,
+    T
+)
+typedef struct _##NT { T value; } NT
+</code></pre>
+<h3 id="define-arrayof"><a class="header" href="#define-arrayof">define arrayof</a></h3>
+<pre><code class="language-cpp">#define arrayof(
+    T
+)
+	struct { \
+	T (*value); \
+	[usize](/Files/common_8h.md#typedef-usize) len;  \
+	[usize](/Files/common_8h.md#typedef-usize) cap;  \
+}
+</code></pre>
+<h3 id="define-newarray"><a class="header" href="#define-newarray">define newarray</a></h3>
+<pre><code class="language-cpp">#define newarray(
+    NT,
+    T
+)
+typedef [arrayof](/Files/common_8h.md#define-arrayof)(T) NT
+</code></pre>
+<h3 id="define-sliceof"><a class="header" href="#define-sliceof">define sliceof</a></h3>
+<pre><code class="language-cpp">#define sliceof(
+    T
+)
+	struct { \
+	T (*value); \
+	[usize](/Files/common_8h.md#typedef-usize) len;  \
+}
+</code></pre>
+<h3 id="define-newslice"><a class="header" href="#define-newslice">define newslice</a></h3>
+<pre><code class="language-cpp">#define newslice(
+    NT,
+    T
+)
+typedef [sliceof](/Files/common_8h.md#define-sliceof)(T) NT
+</code></pre>
+<h3 id="define-hashof"><a class="header" href="#define-hashof">define hashof</a></h3>
+<pre><code class="language-cpp">#define hashof(
+    T
+)
+	struct { \
+	T value;  \
+	[u64](/Files/common_8h.md#typedef-u64) hash; \
+}
+</code></pre>
+<h3 id="define-newhashable"><a class="header" href="#define-newhashable">define newhashable</a></h3>
+<pre><code class="language-cpp">#define newhashable(
+    NT,
+    T
+)
+typedef [hashof](/Files/common_8h.md#define-hashof)(T) NT
+</code></pre>
+<h3 id="define-unqualify"><a class="header" href="#define-unqualify">define unqualify</a></h3>
+<pre><code class="language-cpp">#define unqualify(
+    D,
+    T
+)
+typedef D T T
+</code></pre>
+<h3 id="define-nth"><a class="header" href="#define-nth">define NTH</a></h3>
+<pre><code class="language-cpp">#define NTH(
+    LIST,
+    N
+)
+[UNWRAP](/Files/common_8h.md#define-unwrap)(([LIST](/Files/common_8h.md#define-list)))[(N)]
+</code></pre>
+<h3 id="define-get"><a class="header" href="#define-get">define GET</a></h3>
+<pre><code class="language-cpp">#define GET(
+    LIST,
+    N
+)
+	__extension__\
+	({ __auto_type _list = ([LIST](/Files/common_8h.md#define-list)); \
+	   __auto_type _n = (N); \
+	   [usize](/Files/common_8h.md#typedef-usize) _index = _n &lt; 0 ? ([usize](/Files/common_8h.md#typedef-usize))(_list.len + _n) : ([usize](/Files/common_8h.md#typedef-usize))_n; \
+	   [UNWRAP](/Files/common_8h.md#define-unwrap)(_list)[_index]; })
+</code></pre>
+<h3 id="define-unused"><a class="header" href="#define-unused">define UNUSED</a></h3>
+<pre><code class="language-cpp">#define UNUSED(
+    x
+)
+(void)(x)
+</code></pre>
+<h3 id="define-no_error"><a class="header" href="#define-no_error">define NO_ERROR</a></h3>
+<pre><code class="language-cpp">#define NO_ERROR EXIT_SUCCESS
+</code></pre>
+<h3 id="define-ok"><a class="header" href="#define-ok">define OK</a></h3>
+<pre><code class="language-cpp">#define OK EXIT_SUCCESS
+</code></pre>
+<h3 id="define-noop"><a class="header" href="#define-noop">define NOOP</a></h3>
+<pre><code class="language-cpp">#define NOOP ((void)0)
+</code></pre>
+<h3 id="define-nil"><a class="header" href="#define-nil">define nil</a></h3>
+<pre><code class="language-cpp">#define nil NULL
+</code></pre>
+<h3 id="define-panic"><a class="header" href="#define-panic">define PANIC</a></h3>
+<pre><code class="language-cpp">#define PANIC(
+    lit,
+    ...
+)
+[panic](/Files/common_8h.md#function-panic)(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
+	      lit &quot;\n[**] Aborting...\n&quot;, __func__, ## __VA_ARGS__)
+</code></pre>
+<h3 id="define-print"><a class="header" href="#define-print">define print</a></h3>
+<pre><code class="language-cpp">#define print(
+    ...
+)
+[novel_fprintf](/Files/common_8h.md#function-novel_fprintf)(stdout, __VA_ARGS__)
+</code></pre>
+<h3 id="define-sprint"><a class="header" href="#define-sprint">define sprint</a></h3>
+<pre><code class="language-cpp">#define sprint [novel_sprintf](/Files/common_8h.md#function-novel_sprintf)
+</code></pre>
+<h3 id="define-println"><a class="header" href="#define-println">define println</a></h3>
+<pre><code class="language-cpp">#define println(
+    ...
+)
+[novel_fprintf_newline](/Files/common_8h.md#function-novel_fprintf_newline)(stdout, __VA_ARGS__)
+</code></pre>
+<h3 id="define-eprintf"><a class="header" href="#define-eprintf">define eprintf</a></h3>
+<pre><code class="language-cpp">#define eprintf(
+    ...
+)
+[novel_fprintf](/Files/common_8h.md#function-novel_fprintf)(stderr, __VA_ARGS__)
+</code></pre>
+<h3 id="define-eprint"><a class="header" href="#define-eprint">define eprint</a></h3>
+<pre><code class="language-cpp">#define eprint(
+    ...
+)
+[eprintf](/Files/common_8h.md#define-eprintf)(__VA_ARGS__)
+</code></pre>
+<h3 id="define-eprintln"><a class="header" href="#define-eprintln">define eprintln</a></h3>
+<pre><code class="language-cpp">#define eprintln(
+    ...
+)
+[novel_fprintf_newline](/Files/common_8h.md#function-novel_fprintf_newline)(stderr, __VA_ARGS__)
+</code></pre>
+<h3 id="define-fprint"><a class="header" href="#define-fprint">define fprint</a></h3>
+<pre><code class="language-cpp">#define fprint [novel_fprintf](/Files/common_8h.md#function-novel_fprintf)
+</code></pre>
+<h3 id="define-unit"><a class="header" href="#define-unit">define UNIT</a></h3>
+<pre><code class="language-cpp">#define UNIT ;
+</code></pre>
+<h3 id="define-word_size"><a class="header" href="#define-word_size">define WORD_SIZE</a></h3>
+<pre><code class="language-cpp">#define WORD_SIZE sizeof(long)
+</code></pre>
+<p>Size of a machine word. </p>
+<h3 id="define-uchar8"><a class="header" href="#define-uchar8">define <strong>UCHAR8</strong></a></h3>
+<pre><code class="language-cpp">#define __UCHAR8__ char
+</code></pre>
+<h3 id="define-uchar8-1"><a class="header" href="#define-uchar8-1">define <strong>UCHAR8</strong></a></h3>
+<pre><code class="language-cpp">#define __UCHAR8__ char
+</code></pre>
+<h3 id="define-_ldouble_bit"><a class="header" href="#define-_ldouble_bit">define _LDOUBLE_BIT</a></h3>
+<pre><code class="language-cpp">#define _LDOUBLE_BIT (__SIZEOF_LONG_DOUBLE__ * CHAR_BIT)
+</code></pre>
+<h3 id="define-swap"><a class="header" href="#define-swap">define SWAP</a></h3>
+<pre><code class="language-cpp">#define SWAP(
+    SELF,
+    PIVOT
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   [swap](/Files/common_8h.md#function-swap)(_self, (PIVOT), sizeof(*_self-&gt;value)); })
+</code></pre>
+<h3 id="define-push"><a class="header" href="#define-push">define PUSH</a></h3>
+<pre><code class="language-cpp">#define PUSH(
+    SELF,
+    ELEM
+)
+	__extension__\
+	({ __auto_type           _self = &amp;(SELF); \
+	   typeof(*_self-&gt;value) _elem =  (ELEM); \
+	   [push](/Files/common_8h.md#function-push)(_self, &amp;_elem, sizeof(_elem)); })
+</code></pre>
+<h3 id="define-pop"><a class="header" href="#define-pop">define POP</a></h3>
+<pre><code class="language-cpp">#define POP(
+    SELF
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   [pop](/Files/common_8h.md#function-pop)(_self, sizeof(*_self-&gt;value)); })
+</code></pre>
+<h3 id="define-shift"><a class="header" href="#define-shift">define SHIFT</a></h3>
+<pre><code class="language-cpp">#define SHIFT(
+    SELF
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   [shift](/Files/common_8h.md#function-shift)(_self, sizeof(*_self-&gt;value)); })
+</code></pre>
+<h3 id="define-insert"><a class="header" href="#define-insert">define INSERT</a></h3>
+<pre><code class="language-cpp">#define INSERT(
+    SELF,
+    INDEX,
+    ELEM
+)
+	__extension__\
+	({ __auto_type           _self = &amp;(SELF); \
+	   typeof(*_self-&gt;value) _elem =  (ELEM); \
+	   [insert](/Files/common_8h.md#function-insert)(_self, (INDEX), &amp;_elem, sizeof(_elem)); })
+</code></pre>
+<h3 id="define-extend"><a class="header" href="#define-extend">define EXTEND</a></h3>
+<pre><code class="language-cpp">#define EXTEND(
+    SELF,
+    SLIC
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   __auto_type _slic =  (SLIC); \
+	   [extend](/Files/common_8h.md#function-extend)(_self, &amp;_slic, sizeof(*_slic.value)); })
+</code></pre>
+<h3 id="define-splice"><a class="header" href="#define-splice">define SPLICE</a></h3>
+<pre><code class="language-cpp">#define SPLICE(
+    SELF,
+    INDEX,
+    SLIC
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   __auto_type _slic =  (SLIC); \
+	   [splice](/Files/common_8h.md#function-splice)(_self, (INDEX), &amp;_slic, sizeof(*_slic.value)); })
+</code></pre>
+<h3 id="define-cut"><a class="header" href="#define-cut">define CUT</a></h3>
+<pre><code class="language-cpp">#define CUT(
+    SELF,
+    FROM,
+    UPTO
+)
+	__extension__\
+	({ __auto_type _self = &amp;(SELF); \
+	   static [GenericSlice](/Classes/structGenericSlice.md) _cut; \
+	   _cut = [cut](/Files/common_8h.md#function-cut)(_self, (FROM), (UPTO), sizeof(*_self-&gt;value)); \
+	   ([u0](/Files/common_8h.md#typedef-u0) *)&amp;_cut; })
+</code></pre>
+<h3 id="define-append"><a class="header" href="#define-append">define APPEND</a></h3>
+<pre><code class="language-cpp">#define APPEND(
+    SELF,
+    ELEM
+)
+[PUSH](/Files/common_8h.md#define-push)(SELF, ELEM)
+</code></pre>
+<h3 id="define-prepend"><a class="header" href="#define-prepend">define PREPEND</a></h3>
+<pre><code class="language-cpp">#define PREPEND(
+    SELF,
+    ELEM
+)
+[INSERT](/Files/common_8h.md#define-insert)(SELF, 0, ELEM)
+</code></pre>
+<h3 id="define-unshift"><a class="header" href="#define-unshift">define UNSHIFT</a></h3>
+<pre><code class="language-cpp">#define UNSHIFT(
+    SELF,
+    ELEM
+)
+[PREPEND](/Files/common_8h.md#define-prepend)(SELF, ELEM)
+</code></pre>
+<h3 id="define-prefix"><a class="header" href="#define-prefix">define PREFIX</a></h3>
+<pre><code class="language-cpp">#define PREFIX(
+    SELF,
+    SLIC
+)
+[SPLICE](/Files/common_8h.md#define-splice)(SELF, 0, SLIC)
+</code></pre>
+<h3 id="define-remove"><a class="header" href="#define-remove">define REMOVE</a></h3>
+<pre><code class="language-cpp">#define REMOVE(
+    SELF,
+    INDEX
+)
+[CUT](/Files/common_8h.md#define-cut)(SELF, INDEX, INDEX)
+</code></pre>
+<h3 id="define-head"><a class="header" href="#define-head">define HEAD</a></h3>
+<pre><code class="language-cpp">#define HEAD(
+    SELF,
+    END
+)
+[SLICE](/Files/common_8h.md#define-slice)(SELF, 0, END)
+</code></pre>
+<h3 id="define-tail"><a class="header" href="#define-tail">define TAIL</a></h3>
+<pre><code class="language-cpp">#define TAIL(
+    SELF,
+    BEG
+)
+[SLICE](/Files/common_8h.md#define-slice)(SELF, BEG, -1)
+</code></pre>
+<h3 id="define-first"><a class="header" href="#define-first">define FIRST</a></h3>
+<pre><code class="language-cpp">#define FIRST(
+    SELF
+)
+[NTH](/Files/common_8h.md#define-nth)(SELF, 0)
+</code></pre>
+<h3 id="define-last"><a class="header" href="#define-last">define LAST</a></h3>
+<pre><code class="language-cpp">#define LAST(
+    SELF
+)
+[GET](/Files/common_8h.md#define-get)(SELF, -1)
+</code></pre>
+<h3 id="define-ansi"><a class="header" href="#define-ansi">define ANSI</a></h3>
+<pre><code class="language-cpp">#define ANSI(
+    CODE
+)
+&quot;\x1b[&quot; CODE &quot;m&quot;
+</code></pre>
+<h3 id="define-bold"><a class="header" href="#define-bold">define BOLD</a></h3>
+<pre><code class="language-cpp">#define BOLD &quot;1&quot;
+</code></pre>
+<h3 id="define-faint"><a class="header" href="#define-faint">define FAINT</a></h3>
+<pre><code class="language-cpp">#define FAINT &quot;2&quot;
+</code></pre>
+<h3 id="define-dim"><a class="header" href="#define-dim">define DIM</a></h3>
+<pre><code class="language-cpp">#define DIM [FAINT](/Files/common_8h.md#define-faint)
+</code></pre>
+<h3 id="define-italic"><a class="header" href="#define-italic">define ITALIC</a></h3>
+<pre><code class="language-cpp">#define ITALIC &quot;3&quot;
+</code></pre>
+<h3 id="define-under"><a class="header" href="#define-under">define UNDER</a></h3>
+<pre><code class="language-cpp">#define UNDER &quot;4&quot;
+</code></pre>
+<h3 id="define-blink"><a class="header" href="#define-blink">define BLINK</a></h3>
+<pre><code class="language-cpp">#define BLINK &quot;5&quot;
+</code></pre>
+<h3 id="define-rapid"><a class="header" href="#define-rapid">define RAPID</a></h3>
+<pre><code class="language-cpp">#define RAPID &quot;6&quot;
+</code></pre>
+<h3 id="define-invert"><a class="header" href="#define-invert">define INVERT</a></h3>
+<pre><code class="language-cpp">#define INVERT &quot;7&quot;
+</code></pre>
+<h3 id="define-hidden"><a class="header" href="#define-hidden">define HIDDEN</a></h3>
+<pre><code class="language-cpp">#define HIDDEN &quot;8&quot;
+</code></pre>
+<h3 id="define-strike"><a class="header" href="#define-strike">define STRIKE</a></h3>
+<pre><code class="language-cpp">#define STRIKE &quot;9&quot;
+</code></pre>
+<h3 id="define-bold_off"><a class="header" href="#define-bold_off">define BOLD_OFF</a></h3>
+<pre><code class="language-cpp">#define BOLD_OFF &quot;21&quot;
+</code></pre>
+<h3 id="define-faint_off"><a class="header" href="#define-faint_off">define FAINT_OFF</a></h3>
+<pre><code class="language-cpp">#define FAINT_OFF &quot;22&quot;
+</code></pre>
+<h3 id="define-italic_off"><a class="header" href="#define-italic_off">define ITALIC_OFF</a></h3>
+<pre><code class="language-cpp">#define ITALIC_OFF &quot;23&quot;
+</code></pre>
+<h3 id="define-under_off"><a class="header" href="#define-under_off">define UNDER_OFF</a></h3>
+<pre><code class="language-cpp">#define UNDER_OFF &quot;24&quot;
+</code></pre>
+<h3 id="define-blink_off"><a class="header" href="#define-blink_off">define BLINK_OFF</a></h3>
+<pre><code class="language-cpp">#define BLINK_OFF &quot;25&quot;
+</code></pre>
+<h3 id="define-rapid_off"><a class="header" href="#define-rapid_off">define RAPID_OFF</a></h3>
+<pre><code class="language-cpp">#define RAPID_OFF &quot;26&quot;
+</code></pre>
+<h3 id="define-invert_off"><a class="header" href="#define-invert_off">define INVERT_OFF</a></h3>
+<pre><code class="language-cpp">#define INVERT_OFF &quot;27&quot;
+</code></pre>
+<h3 id="define-hidden_off"><a class="header" href="#define-hidden_off">define HIDDEN_OFF</a></h3>
+<pre><code class="language-cpp">#define HIDDEN_OFF &quot;28&quot;
+</code></pre>
+<h3 id="define-strike_off"><a class="header" href="#define-strike_off">define STRIKE_OFF</a></h3>
+<pre><code class="language-cpp">#define STRIKE_OFF &quot;29&quot;
+</code></pre>
+<h3 id="define-reset"><a class="header" href="#define-reset">define RESET</a></h3>
+<pre><code class="language-cpp">#define RESET &quot;0&quot;
+</code></pre>
+<h3 id="define-min"><a class="header" href="#define-min">define min</a></h3>
+<pre><code class="language-cpp">#define min(
+    A,
+    B
+)
+	__extension__({ \
+	typeof(A) _a = (A); \
+	typeof(B) _b = (B); \
+	_a &gt; _b ? _b : _a; })
+</code></pre>
+<h3 id="define-max"><a class="header" href="#define-max">define max</a></h3>
+<pre><code class="language-cpp">#define max(
+    A,
+    B
+)
+	__extension__({ \
+	typeof(A) _a = (A); \
+	typeof(B) _b = (B); \
+	_b &gt; _a ? _b : _a; })
+</code></pre>
+<h3 id="define-unwrap"><a class="header" href="#define-unwrap">define UNWRAP</a></h3>
+<pre><code class="language-cpp">#define UNWRAP(
+    STRUCTURE
+)
+(STRUCTURE).value
+</code></pre>
+<p>Unwraps pointer/value in sizing wrapper struct. </p>
+<h3 id="define-init"><a class="header" href="#define-init">define INIT</a></h3>
+<pre><code class="language-cpp">#define INIT(
+    TYPE,
+    ...
+)
+	{ \
+	.len = sizeof((TYPE[])__VA_ARGS__)/sizeof(TYPE), \
+	.value = (TYPE[])__VA_ARGS__ \
+}
+</code></pre>
+<p>Initialise sizing wrapper with literal. </p>
+<h3 id="define-list"><a class="header" href="#define-list">define LIST</a></h3>
+<pre><code class="language-cpp">#define LIST(
+    TYPE,
+    ...
+)
+	__extension__({ \
+	TYPE _slice; \
+	typeof(*_slice.value) _elem; \
+	static typeof(_elem) _list[] = __VA_ARGS__; \
+	_slice = ((typeof(_slice)){ \
+		.len = sizeof(_list)/sizeof(_elem), \
+		.value = _list \
+	}); _slice; })
+</code></pre>
+<p>Can be used to make slices from literal arrays. </p>
+<h3 id="define-string"><a class="header" href="#define-string">define STRING</a></h3>
+<pre><code class="language-cpp">#define STRING(
+    ...
+)
+	{ \
+	.len = sizeof(([byte](/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ }) - 1, \
+	.value = ([byte](/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ } \
+}
+</code></pre>
+<p>Initialise sizing wrapper with of string literal. </p>
+<h3 id="define-str"><a class="header" href="#define-str">define STR</a></h3>
+<pre><code class="language-cpp">#define STR(
+    ...
+)
+(([string](/Classes/structstring.md))[STRING](/Files/common_8h.md#define-string)(__VA_ARGS__))
+</code></pre>
+<h3 id="define-sempty"><a class="header" href="#define-sempty">define SEMPTY</a></h3>
+<pre><code class="language-cpp">#define SEMPTY(
+    TYPE
+)
+((TYPE){ .len = 0, .value = [nil](/Files/common_8h.md#define-nil) })
+</code></pre>
+<p>Empty slice of certain type. </p>
+<h3 id="define-aempty"><a class="header" href="#define-aempty">define AEMPTY</a></h3>
+<pre><code class="language-cpp">#define AEMPTY(
+    TYPE
+)
+((TYPE){ .len = 0, .cap = 0, .value = [nil](/Files/common_8h.md#define-nil) })
+</code></pre>
+<p>Empty array of certain type. </p>
+<h3 id="define-is_empty"><a class="header" href="#define-is_empty">define IS_EMPTY</a></h3>
+<pre><code class="language-cpp">#define IS_EMPTY(
+    ARR
+)
+((ARR).len == 0)
+</code></pre>
+<p>Is array empty? </p>
+<h3 id="define-amake"><a class="header" href="#define-amake">define AMAKE</a></h3>
+<pre><code class="language-cpp">#define AMAKE(
+    TYPE,
+    CAP
+)
+	{ \
+	.len = 0, \
+	.cap = (CAP), \
+	.value = [emalloc](/Files/common_8h.md#function-emalloc)((CAP), sizeof(TYPE)) \
+}
+</code></pre>
+<p>Heap allocates a variable sized array. </p>
+<h3 id="define-smake"><a class="header" href="#define-smake">define SMAKE</a></h3>
+<pre><code class="language-cpp">#define SMAKE(
+    TYPE,
+    LEN
+)
+	{ \
+	.len = (LEN), \
+	.value = [emalloc](/Files/common_8h.md#function-emalloc)((LEN), sizeof(TYPE)) \
+}
+</code></pre>
+<p>Heap allocates a constant sized slice type. </p>
+<h3 id="define-slice"><a class="header" href="#define-slice">define SLICE</a></h3>
+<pre><code class="language-cpp">#define SLICE(
+    TYPE,
+    OBJ,
+    START,
+    END
+)
+	((TYPE){ \
+	.len = ((([isize](/Files/common_8h.md#typedef-isize))(END) &lt; 0) ? (OBJ).len + 1 : 0) + (END) - (START), \
+	.value = (OBJ).value + (START) \
+})
+</code></pre>
+<p>Take a slice/substring/view of sized type. </p>
+<h3 id="define-view"><a class="header" href="#define-view">define VIEW</a></h3>
+<pre><code class="language-cpp">#define VIEW(
+    TYPE,
+    PTR,
+    START,
+    END
+)
+	((TYPE){ \
+	.len = (END) - (START), \
+	.value = (PTR) + (START) \
+})
+</code></pre>
+<p>Works like <code>SLICE</code>, but on a pointer instead of an array. </p>
+<h3 id="define-symbolic"><a class="header" href="#define-symbolic">define SYMBOLIC</a></h3>
+<pre><code class="language-cpp">#define SYMBOLIC(
+    STR
+)
+	(([symbol](/Classes/structsymbol.md)){ \
+	.hash = [hash_string](/Files/common_8h.md#function-hash_string)([STR](/Files/common_8h.md#define-str)), \
+	.value = [STR](/Files/common_8h.md#define-str) \
+})
+</code></pre>
+<h3 id="define-symbol_literal"><a class="header" href="#define-symbol_literal">define SYMBOL_LITERAL</a></h3>
+<pre><code class="language-cpp">#define SYMBOL_LITERAL(
+    STR_LIT
+)
+	(([symbol](/Classes/structsymbol.md)){ \
+	.hash = [hash_string](/Files/common_8h.md#function-hash_string)([STRING](/Files/common_8h.md#define-string)(STR_LIT)), \
+	.value = [STRING](/Files/common_8h.md#define-string)(STR_LIT) \
+})
+</code></pre>
+<h3 id="define-acollect"><a class="header" href="#define-acollect">define ACOLLECT</a></h3>
+<pre><code class="language-cpp">#define ACOLLECT(
+    T,
+    count,
+    pointer
+)
+	((T){ \
+	.len = count,     \
+	.cap = count,     \
+	.value = pointer, \
+})
+</code></pre>
+<p>C array to dynamic array wrapper. </p>
+<h3 id="define-scollect"><a class="header" href="#define-scollect">define SCOLLECT</a></h3>
+<pre><code class="language-cpp">#define SCOLLECT(
+    T,
+    count,
+    pointer
+)
+	((T){ \
+	.len = count,     \
+	.value = pointer, \
+})
+</code></pre>
+<p>C array to slice wrapper. </p>
+<h3 id="define-smap"><a class="header" href="#define-smap">define SMAP</a></h3>
+<pre><code class="language-cpp">#define SMAP(
+    T,
+    func,
+    list
+)
+	__extension__({ \
+	T _mapped; \
+	_mapped = ((T)[SMAKE](/Files/common_8h.md#define-smake)(typeof(*_mapped.value), (list).len)); \
+	for ([usize](/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i) \
+		_mapped.value[_i] = (func)((list).value[_i]); \
+	_mapped; \
+})
+</code></pre>
+<h3 id="define-amap"><a class="header" href="#define-amap">define AMAP</a></h3>
+<pre><code class="language-cpp">#define AMAP(
+    T,
+    func,
+    list
+)
+	__extension__({ \
+	T _mapped; \
+	_mapped = ((T)[AMAKE](/Files/common_8h.md#define-amake)(typeof(*_mapped.value), (list).len)); \
+	for ([usize](/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i, ++_mapped.len) \
+		_mapped.value[_i] = (func)((list).value[_i]); \
+	_mapped; \
+})
+</code></pre>
+<h3 id="define-for_each"><a class="header" href="#define-for_each">define FOR_EACH</a></h3>
+<pre><code class="language-cpp">#define FOR_EACH(
+    ELEM,
+    ELEMS
+)
+	for (struct { typeof(*(ELEMS).value) item; \
+			      typeof((ELEMS).value) ptr, first; \
+				  [usize](/Files/common_8h.md#typedef-usize) index; \
+				  bool once; \
+				} it = { *(ELEMS).value, \
+				         (ELEMS).value, \
+				         (ELEMS).value, \
+				         0, true \
+				       }; it.once; it.once = false) \
+		for (typeof(*(ELEMS).value) ELEM = *(ELEMS).value; \
+		    it.index &lt; (ELEMS).len; \
+			++it.ptr, it.index = (it.ptr - it.first), \
+			  it.item = *it.ptr, ELEM = it.item)
+</code></pre>
+<p>For-each loop, iterates across an array or slice. It creates an <code>it</code> variable, that holds:</p>
+<ul>
+<li>it.index (index in array);</li>
+<li>it.item (current item of array);</li>
+<li>it.ptr (pointer to current item in array);</li>
+<li>it.first (pointer to frist item in array);</li>
+<li>it.once (a bool, true if we are on the first iteration). For example: </li>
+</ul>
+<pre><code class="language-cpp">newarray(IntArray, int);
+IntArray xs = AMAKE(IntArray, 2);
+
+int elem1 = 5;
+int elem2 = 3;
+sliceof(int) elems = INIT(int, { 6, 9, 1 });
+
+push(&amp;xs, &amp;elem1, sizeof(int));
+push(&amp;xs, &amp;elem2, sizeof(int));
+extend(&amp;xs, &amp;elems, sizeof(int));
+
+FOR_EACH(x, xs) {
+    printf(&quot;xs[%zu] = %d\n&quot;, it.index, x);
+}
+</code></pre>
+<p><em>Filename: .c</em></p>
+<p>Will print: </p>
+<pre><code class="language-cpp">xs[0] = 5
+xs[1] = 3
+xs[2] = 6
+xs[3] = 9
+xs[4] = 1
+</code></pre>
+<h3 id="define-foreach"><a class="header" href="#define-foreach">define foreach</a></h3>
+<pre><code class="language-cpp">#define foreach [FOR_EACH](/Files/common_8h.md#define-for_each)
+</code></pre>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<pre><code class="language-cpp">
+#ifndef COMMON_HEADER
+#define COMMON_HEADER
+
+#undef  _GNU_SOURCE
+#define _GNU_SOURCE 1 
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;stddef.h&gt;
+#include &lt;stdarg.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;string.h&gt;
+#include &lt;assert.h&gt;
+#ifdef __linux__
+    #include &lt;unistd.h&gt;
+#endif
+
+/* Misc macros */
+#define TSTR_HELPER(x) #x
+#define TSTR(x) TSTR_HELPER(x)
+
+#if defined(_MSC_VER) || defined(__INTEL_COMPILER)
+    #define PRAGMA_NO_WARNING __pragma(warning(push, 0))
+    #define PRAGMA_POP_WARNING __pragma(warning(pop))
+#elif defined(__clang__)
+    #define PRAGMA_NO_WARNING \
+        _Pragma(&quot;clang diagnostic push&quot;) \
+        _Pragma(&quot;clang diagnostic ignored \&quot;-Wall\&quot;&quot;) \
+        _Pragma(&quot;clang diagnostic ignored \&quot;-Wextra\&quot;&quot;) \
+        _Pragma(&quot;clang diagnostic ignored \&quot;-Wpedantic\&quot;&quot;)
+    #define PRAGMA_POP_WARNING _Pragma(&quot;clang diagnostic pop&quot;)
+#elif defined(__GNUC__)
+    // Does not behave as nicely as CLANG version does.
+    #define PRAGMA_NO_WARNING \
+        _Pragma(&quot;GCC diagnostic push&quot;) \
+        _Pragma(&quot;GCC diagnostic ignored \&quot;-Wall\&quot;&quot;) \
+        _Pragma(&quot;GCC diagnostic ignored \&quot;-Wextra\&quot;&quot;) \
+        _Pragma(&quot;GCC diagnostic ignored \&quot;-Wpedantic\&quot;&quot;)
+    #define PRAGMA_POP_WARNING _Pragma(&quot;GCC diagnostic pop&quot;)
+#endif
+
+/* Version number */
+#define crelude_V_MAJOR 0
+#define crelude_V_MINOR 1
+#define crelude_V_PATCH 0
+
+#define crelude_VERSION \
+    &quot;v&quot; TSTR(crelude_V_MAJOR) \
+    &quot;.&quot; TSTR(crelude_V_MINOR) \
+    &quot;.&quot; TSTR(crelude_V_PATCH)
+
+#define REALLOC_FACTOR 1.5
+
+/* Syntax helpers */
+#define loop while (1)
+#define unless(cond) if (!(cond))
+#define never if (0)
+#define always if (1)
+#define until(cond) while (!(cond))
+#define newtype(NT, T) typedef struct _##NT { T value; } NT
+#define arrayof(T) struct { \
+    T (*value); \
+    usize len;  \
+    usize cap;  \
+}
+#define newarray(NT, T) typedef arrayof(T) NT
+#define sliceof(T) struct { \
+    T (*value); \
+    usize len;  \
+}
+#define newslice(NT, T) typedef sliceof(T) NT
+#define hashof(T) struct { \
+    T value;  \
+    u64 hash; \
+}
+#define newhashable(NT, T) typedef hashof(T) NT
+#define unqualify(D, T) typedef D T T
+#define NTH(LIST, N) UNWRAP((LIST))[(N)]
+#define GET(LIST, N) __extension__\
+    ({ __auto_type _list = (LIST); \
+       __auto_type _n = (N); \
+       usize _index = _n &lt; 0 ? (usize)(_list.len + _n) : (usize)_n; \
+       UNWRAP(_list)[_index]; })
+
+#define UNUSED(x) (void)(x)
+#define NO_ERROR EXIT_SUCCESS
+#define OK EXIT_SUCCESS
+
+#define NOOP ((void)0)
+#define nil NULL
+
+#define PANIC(lit, ...) \
+    panic(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
+          lit &quot;\n[**] Aborting...\n&quot;, __func__, ## __VA_ARGS__)
+#define print(...) novel_fprintf(stdout, __VA_ARGS__)
+#define sprint novel_sprintf
+#define println(...) novel_fprintf_newline(stdout, __VA_ARGS__)
+#define eprintf(...) novel_fprintf(stderr, __VA_ARGS__)
+#define eprint(...) eprintf(__VA_ARGS__)
+#define eprintln(...) novel_fprintf_newline(stderr, __VA_ARGS__)
+#define fprint novel_fprintf
+
+/* Types */
+newtype(atomic_t, int);
+
+typedef void u0;
+#define UNIT ;
+
+typedef   signed int ierr;
+typedef unsigned int uerr;  
+typedef unsigned long uword;
+typedef   signed long iword;
+#define WORD_SIZE sizeof(long)
+
+typedef unsigned int ufast;
+typedef   signed int ifast;
+
+typedef ptrdiff_t isize;
+typedef    size_t usize; 
+
+typedef  intptr_t iptr;
+typedef uintptr_t uptr; 
+
+typedef  intmax_t imax;
+typedef uintmax_t umax;
+
+typedef unsigned char umin;
+typedef   signed char imin;
+
+#define __UCHAR8__ char
+#if (CHAR_BIT == 8)
+    typedef   signed char i8;
+    typedef unsigned char u8;
+
+    #if (CHAR_MIN &lt; 0)
+        #undef  __UCHAR8__
+        #define __UCHAR8__ unsigned char
+    #endif
+#else
+    typedef  __int8_t i8;
+    typedef __uint8_t u8;
+
+    #undef  __UCHAR8__
+    #define __UCHAR8__ __uint8_t;
+#endif
+
+#ifndef IMPLEMENTATION
+    typedef __UCHAR8__ byte;
+#else
+    typedef __uint8_t byte;  
+#endif
+
+typedef  __int16_t i16;
+typedef __uint16_t u16;
+
+typedef  __int32_t i32;
+typedef __uint32_t u32;
+
+typedef u32 rune;
+
+#if (__LONG_WIDTH__ == 64)
+    typedef   signed long i64;
+    typedef unsigned long u64;
+#elif (__LONG_LONG_WIDTH__ == 64)
+    typedef   signed long long i64;
+    typedef unsigned long long u64;
+#else
+    typedef  __int64_t i64;
+    typedef __uint64_t u64;
+#endif
+
+#ifdef __SIZEOF_INT128__
+    typedef  __int128_t i128;
+    typedef __uint128_t u128;
+#endif
+
+#ifdef __STDC_IEC_559__
+    typedef  float f32;
+    typedef double f64;
+#endif
+
+#define _LDOUBLE_BIT (__SIZEOF_LONG_DOUBLE__ * CHAR_BIT)
+
+#if (_LDOUBLE_BIT == 80)
+    typedef long double f80;
+#elif (_LDOUBLE_BIT == 128)
+    typedef long double f128;
+#endif
+
+newarray(GenericArray, u0);
+newarray(MemArray, umin);
+newslice(GenericSlice, u0);
+newslice(MemSlice, umin);
+
+newslice(string, byte);
+newslice(runic, rune);
+
+newarray(StringBuilder, byte);
+newarray(RunicBuilder, rune);
+
+newhashable(symbol, string);
+
+/* Common Constants */
+static const ierr NUL = 0;
+static const byte NUL_BYTE = '\0';
+static const string NUL_STRING = { .len = 0, .value = (byte *)&amp;NUL_BYTE };
+
+/* Common Functions */
+extern u0 panic(const byte *, ...) __attribute__((noreturn));
+extern bool is_zero(imax);
+extern bool is_zerof(f64);
+extern bool is_zeroed(u0 *, usize);
+extern u0 zero(u0 *blk, usize width);
+extern u0 *emalloc(usize, usize);
+extern u0 swap(u0 *self, usize pivot, usize width);
+extern usize push(u0 *self, const u0 *element, usize width);
+extern u0 *pop(u0 *self, usize width);
+extern u0 *shift(u0 *self, usize width);
+extern usize insert(u0 *self, usize index, const u0 *element, usize width);
+extern usize extend(u0 *self, const u0 *slice, usize width);
+extern usize splice(u0 *self, usize index, const u0 *slice, usize width);
+//           along with the number of removed bytes (`len` of slice).
+extern GenericSlice cut(u0 *self, usize from, isize upto, usize width);
+
+extern ierr fput(string, FILE *);
+extern ierr put(string);
+extern ierr eput(string);
+extern ierr eputs(const byte *);
+extern usize sizeof_specifier(const byte *);
+extern string novel_vsprintf(const byte *, va_list);
+extern string novel_sprintf(const byte *, ...);
+extern ierr novel_vfprintf(FILE *, const byte *, va_list);
+extern ierr novel_fprintf(FILE *, const byte *, ...);
+extern ierr novel_vfprintf_newline(FILE *, const byte *, va_list);
+extern ierr novel_fprintf_newline(FILE *, const byte *, ...);
+extern ierr novel_printf(const byte *, ...);
+extern string from_cstring(const byte *);
+extern bool string_eq(const string, const string);
+extern i16 string_cmp(const string, const string);
+extern u64 hash_string(const string);
+
+/* Common Macros */
+
+// ---
+// Macros for array functions to avoid use of `sizeof(T)` everywhere.
+// These macros do the referencing and void-pointer casting for you, and thus
+// let you use non-LVALUES as input (except SELF, SELF must sill be an LVALUE).
+// ---
+
+#define SWAP(SELF, PIVOT) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       swap(_self, (PIVOT), sizeof(*_self-&gt;value)); })
+
+#define PUSH(SELF, ELEM) __extension__\
+    ({ __auto_type           _self = &amp;(SELF); \
+       typeof(*_self-&gt;value) _elem =  (ELEM); \
+       push(_self, &amp;_elem, sizeof(_elem)); })
+
+#define POP(SELF) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       pop(_self, sizeof(*_self-&gt;value)); })
+
+#define SHIFT(SELF) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       shift(_self, sizeof(*_self-&gt;value)); })
+
+#define INSERT(SELF, INDEX, ELEM) __extension__\
+    ({ __auto_type           _self = &amp;(SELF); \
+       typeof(*_self-&gt;value) _elem =  (ELEM); \
+       insert(_self, (INDEX), &amp;_elem, sizeof(_elem)); })
+
+#define EXTEND(SELF, SLIC) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       __auto_type _slic =  (SLIC); \
+       extend(_self, &amp;_slic, sizeof(*_slic.value)); })
+
+#define SPLICE(SELF, INDEX, SLIC) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       __auto_type _slic =  (SLIC); \
+       splice(_self, (INDEX), &amp;_slic, sizeof(*_slic.value)); })
+
+#define CUT(SELF, FROM, UPTO) __extension__\
+    ({ __auto_type _self = &amp;(SELF); \
+       static GenericSlice _cut; \
+       _cut = cut(_self, (FROM), (UPTO), sizeof(*_self-&gt;value)); \
+       (u0 *)&amp;_cut; })
+
+// Some aliases and shortcuts:
+#define APPEND(SELF, ELEM) PUSH(SELF, ELEM)
+#define PREPEND(SELF, ELEM) INSERT(SELF, 0, ELEM)
+#define UNSHIFT(SELF, ELEM) PREPEND(SELF, ELEM)
+#define PREFIX(SELF, SLIC) SPLICE(SELF, 0, SLIC)
+#define REMOVE(SELF, INDEX) CUT(SELF, INDEX, INDEX)
+#define HEAD(SELF, END) SLICE(SELF, 0, END)
+#define TAIL(SELF, BEG) SLICE(SELF, BEG, -1)
+#define FIRST(SELF) NTH(SELF, 0)
+#define LAST(SELF) GET(SELF, -1)
+
+// --- ANSI colour codes. ---
+
+#define ANSI(CODE) &quot;\x1b[&quot; CODE &quot;m&quot;
+#define BOLD   &quot;1&quot;
+#define FAINT  &quot;2&quot;
+#define DIM FAINT
+#define ITALIC &quot;3&quot;
+#define UNDER  &quot;4&quot;
+#define BLINK  &quot;5&quot;
+#define RAPID  &quot;6&quot;
+#define INVERT &quot;7&quot;
+#define HIDDEN &quot;8&quot;
+#define STRIKE &quot;9&quot;
+#define BOLD_OFF   &quot;21&quot;  // Or sometimes, double-underline...
+#define FAINT_OFF  &quot;22&quot;
+#define ITALIC_OFF &quot;23&quot;
+#define UNDER_OFF  &quot;24&quot;
+#define BLINK_OFF  &quot;25&quot;
+#define RAPID_OFF  &quot;26&quot;
+#define INVERT_OFF &quot;27&quot;
+#define HIDDEN_OFF &quot;28&quot;
+#define STRIKE_OFF &quot;29&quot;
+#define RESET &quot;0&quot;
+
+#define min(A, B) __extension__({ \
+    typeof(A) _a = (A); \
+    typeof(B) _b = (B); \
+    _a &gt; _b ? _b : _a; })
+#define max(A, B) __extension__({ \
+    typeof(A) _a = (A); \
+    typeof(B) _b = (B); \
+    _b &gt; _a ? _b : _a; })
+
+#define UNWRAP(STRUCTURE) (STRUCTURE).value
+#define INIT(TYPE, ...) { \
+    .len = sizeof((TYPE[])__VA_ARGS__)/sizeof(TYPE), \
+    .value = (TYPE[])__VA_ARGS__ \
+}
+#define LIST(TYPE, ...) __extension__({ \
+    TYPE _slice; \
+    typeof(*_slice.value) _elem; \
+    static typeof(_elem) _list[] = __VA_ARGS__; \
+    _slice = ((typeof(_slice)){ \
+        .len = sizeof(_list)/sizeof(_elem), \
+        .value = _list \
+    }); _slice; })
+
+#define STRING(...) { \
+    .len = sizeof((byte[]){ __VA_ARGS__ }) - 1, \
+    .value = (byte[]){ __VA_ARGS__ } \
+}
+
+#define STR(...) ((string)STRING(__VA_ARGS__))
+
+#define SEMPTY(TYPE) ((TYPE){ .len = 0, .value = nil })
+#define AEMPTY(TYPE) ((TYPE){ .len = 0, .cap = 0, .value = nil })
+
+#define IS_EMPTY(ARR) ((ARR).len == 0)
+
+#define AMAKE(TYPE, CAP) { \
+    .len = 0, \
+    .cap = (CAP), \
+    .value = emalloc((CAP), sizeof(TYPE)) \
+}
+
+#define SMAKE(TYPE, LEN) { \
+    .len = (LEN), \
+    .value = emalloc((LEN), sizeof(TYPE)) \
+}
+
+#define SLICE(TYPE, OBJ, START, END) ((TYPE){ \
+    .len = (((isize)(END) &lt; 0) ? (OBJ).len + 1 : 0) + (END) - (START), \
+    .value = (OBJ).value + (START) \
+})
+
+#define VIEW(TYPE, PTR, START, END) ((TYPE){ \
+    .len = (END) - (START), \
+    .value = (PTR) + (START) \
+})
+
+#define SYMBOLIC(STR) ((symbol){ \
+    .hash = hash_string(STR), \
+    .value = STR \
+})
+
+#define SYMBOL_LITERAL(STR_LIT) ((symbol){ \
+    .hash = hash_string(STRING(STR_LIT)), \
+    .value = STRING(STR_LIT) \
+})
+
+#define ACOLLECT(T, count, pointer) ((T){ \
+    .len = count,     \
+    .cap = count,     \
+    .value = pointer, \
+})
+
+#define SCOLLECT(T, count, pointer) ((T){ \
+    .len = count,     \
+    .value = pointer, \
+})
+
+#define SMAP(T, func, list) __extension__({ \
+    T _mapped; \
+    _mapped = ((T)SMAKE(typeof(*_mapped.value), (list).len)); \
+    for (usize _i = 0; _i &lt; (list).len; ++_i) \
+        _mapped.value[_i] = (func)((list).value[_i]); \
+    _mapped; \
+})
+
+#define AMAP(T, func, list) __extension__({ \
+    T _mapped; \
+    _mapped = ((T)AMAKE(typeof(*_mapped.value), (list).len)); \
+    for (usize _i = 0; _i &lt; (list).len; ++_i, ++_mapped.len) \
+        _mapped.value[_i] = (func)((list).value[_i]); \
+    _mapped; \
+})
+
+#define FOR_EACH(ELEM, ELEMS) \
+    for (struct { typeof(*(ELEMS).value) item; \
+                  typeof((ELEMS).value) ptr, first; \
+                  usize index; \
+                  bool once; \
+                } it = { *(ELEMS).value, \
+                         (ELEMS).value, \
+                         (ELEMS).value, \
+                         0, true \
+                       }; it.once; it.once = false) \
+        for (typeof(*(ELEMS).value) ELEM = *(ELEMS).value; \
+            it.index &lt; (ELEMS).len; \
+            ++it.ptr, it.index = (it.ptr - it.first), \
+              it.item = *it.ptr, ELEM = it.item)
+
+#define foreach FOR_EACH
+
+/* Only define a `main` if ENTRY_FUNCTION is defined */
+#ifdef ENTRY_FUNCTION
+    newslice(Arguments, string);
+    newslice(CArguments, const char *);
+
+    ierr (ENTRY_FUNCTION)(Arguments);
+
+    ierr main(ifast argc, const char **argv)
+    {
+        Arguments args;
+        ierr res;
+
+        args = SMAP(Arguments,
+            from_cstring, SCOLLECT(CArguments, argc, argv));
+        res = (ENTRY_FUNCTION)(args);
+
+        free(UNWRAP(args));
+        return res;
+    }
+#endif
+
+#endif
+</code></pre>
+<hr />
+<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../Files/common_8c.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../Files/utf_8c.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../Files/common_8c.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../Files/utf_8c.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

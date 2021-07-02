@@ -1,0 +1,964 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>common.c - Crelude Documentation</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../https://github.com/Demonstrandum/crelude.html">GitHub</a></li><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Data Structures</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Data Structures/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Data Structures/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Data Structures/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Data Structures/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Data Structures/structGenericArray.html"><strong aria-hidden="true">1.1.9.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__Natural.html"><strong aria-hidden="true">1.1.10.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Data Structures/struct__atomic__t.html"><strong aria-hidden="true">1.1.11.</strong> _atomic_t</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html" class="active"><strong aria-hidden="true">1.2.3.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html"><strong aria-hidden="true">1.2.4.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html"><strong aria-hidden="true">1.2.5.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.6.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html"><strong aria-hidden="true">1.2.7.</strong> tests.c</a></li></ol></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: src/crelude/common.c</p>
+<hr />
+<h1 id="srccreludecommonc"><a class="header" href="#srccreludecommonc">src/crelude/common.c</a></h1>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<pre><code class="language-cpp">#include &quot;common.h&quot;
+#include &quot;utf.h&quot;
+
+#include &lt;assert.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;stdarg.h&gt;
+#include &lt;wchar.h&gt;
+
+#ifndef IMPLEMENTATION
+
+u0 panic(const byte *message, ...)
+{
+    va_list args;
+    va_start(args, message);
+    ierr res = novel_vfprintf_newline(stderr, message, args);
+    va_end(args);
+
+    if (res &lt; 0)
+        eputs(&quot;panic: Out of space.&quot;);
+
+    abort();
+}
+
+bool is_zero(imax n)
+{ return n == 0; }
+
+bool is_zerof(f64 n)
+{ return n == 0.0; }
+
+bool is_zeroed(u0 *ptr, usize width)
+{
+    umin *xs = (umin *)ptr;
+    until (width-- == 0) unless (*xs++ == 0) return false;
+    return true;
+}
+
+u0 zero(u0 *blk, usize width)
+{
+    if (blk == nil || width == 0)
+        return UNIT;
+    umin *bytes = blk;
+    until (width-- == 0)
+        *bytes++ = 0;
+    return UNIT;
+}
+
+u0 *emalloc(usize len, usize size)
+{
+    usize bytes = len * size;
+    u0 *m = malloc(bytes);
+    if (m == nil)
+        PANIC(&quot;Could not allocate %zu bytes.&quot;, bytes);
+    zero(m, bytes);
+    return m;
+}
+
+static u0 memswap(umin *a, umin *b, usize bytes)
+{
+    usize words = bytes / WORD_SIZE;
+    usize trail = words * WORD_SIZE;  //&lt; Where left-over bytes start.
+
+    // Swap word sized blocks first.
+    for (usize i = 0; i &lt; words; i += WORD_SIZE) {
+        uword tmp;
+        memcpy( &amp;tmp, a + i, WORD_SIZE);
+        memcpy(a + i, b + i, WORD_SIZE);
+        memcpy(b + i,  &amp;tmp, WORD_SIZE);
+    }
+    // Swap remaining bytes, byte-by-byte.
+    for (usize i = trail; i &lt; bytes; ++i) {
+        umin tmp = a[i];
+        a[i] = b[i];
+        b[i] = tmp;
+    }
+}
+
+static u0 swap_blocks(MemSlice block, usize pivot)
+{  // Tail-recursion should be optimised here.
+    if (pivot == 0 || pivot == block.len)
+        return;  // We are already done.
+
+    MemSlice A = SLICE(MemSlice, block, 0, pivot);
+    MemSlice B = SLICE(MemSlice, block, pivot, -1);
+    MemSlice A1, A2;
+    MemSlice B1, B2;
+
+    if (A.len &lt; B.len) {
+        B1 = SLICE(MemSlice, B, 0, -A.len - 1);
+        B2 = SLICE(MemSlice, B, B1.len, -1);
+        assert(A.len == B2.len);
+
+        memswap(A.value, B2.value, A.len);
+        B = SLICE(MemSlice, block, 0, B.len);
+        swap_blocks(B, pivot);
+    } else if (A.len &gt; B.len) {
+        A1 = SLICE(MemSlice, A, 0, B.len);
+        A2 = SLICE(MemSlice, A, A1.len, -1);
+        assert(B.len == A1.len);
+        assert(pivot == A1.len + A2.len);
+
+        memswap(B.value, A1.value, B.len);
+        A = SLICE(MemSlice, block, B.len, -1);
+        swap_blocks(A, pivot - B.len);
+    } else {
+        // Same length, and thus trivial.
+        memswap(A.value, B.value, A.len);
+    }
+}
+
+u0 swap(u0 *self, usize pivot, usize width)
+{
+    // Deal with everything in terms of bytes.
+    MemSlice blk = *(MemSlice *)self;
+    blk.len *= width;
+    usize pos = pivot * width;
+    swap_blocks(blk, pos);
+}
+
+usize push(u0 *restrict self, const u0 *restrict element, usize width)
+{
+    if (element == nil) return 0;
+
+    MemArray *arr = (MemArray *restrict)self;
+    umin *elem = (umin *restrict)element;
+
+    usize old_cap = arr-&gt;cap;
+    usize new_cap = old_cap;
+
+    unless (arr-&gt;len &lt; arr-&gt;cap) {
+        new_cap = (usize)(arr-&gt;cap * REALLOC_FACTOR) + 1;
+        arr-&gt;value = (umin *)realloc(arr-&gt;value, new_cap * width);
+        if (arr-&gt;value == nil)
+            PANIC(&quot;Failed to reallocate %zu bytes.&quot;, new_cap * width);
+        arr-&gt;cap = new_cap;
+    }
+
+    memcpy(arr-&gt;value + width * arr-&gt;len++, elem, width);
+    return new_cap - old_cap;
+}
+
+usize insert(u0 *restrict self, usize index,
+             const u0 *restrict element, usize width)
+{
+    if (element == nil) return 0;
+
+    MemArray *arr = (MemArray *restrict)self;
+    umin *elem = (umin *restrict)element;
+
+    usize old_cap = arr-&gt;cap;
+    usize new_cap = old_cap;
+
+    unless (arr-&gt;len &lt; arr-&gt;cap) {
+        new_cap = (usize)(arr-&gt;cap * REALLOC_FACTOR) + 1;
+        arr-&gt;value = (umin *)realloc(arr-&gt;value, new_cap * width);
+        if (arr-&gt;value == nil)
+            PANIC(&quot;Failed to reallocate %zu bytes.&quot;, new_cap * width);
+        arr-&gt;cap = new_cap;
+    }
+
+    umin *gap = arr-&gt;value + width * index;
+
+    // Offset elements down by one, from insertion index,
+    // leaving us with a gap for insertion.
+    memmove(gap + width, gap, width * (arr-&gt;len++ - index));
+    // Insert element into the empty space.
+    memcpy(gap, elem, width);
+
+    return new_cap - old_cap;
+}
+
+usize extend(u0 *restrict self, const u0 *restrict slice, usize width)
+{
+    if (slice == nil) return 0;
+
+    MemArray *arr = (MemArray *restrict)self;
+    MemSlice *sub = (MemSlice *restrict)slice;
+
+    if (sub-&gt;len == 0) return 0;
+
+    usize old_cap = arr-&gt;cap;
+    usize new_cap = old_cap;
+
+    unless (arr-&gt;len + sub-&gt;len &lt; arr-&gt;cap) {
+        new_cap = (usize)(arr-&gt;cap * REALLOC_FACTOR) + sub-&gt;len;
+        arr-&gt;value = (umin *)realloc(arr-&gt;value, new_cap * width);
+        if (arr-&gt;value == nil)
+            PANIC(&quot;Failed to reallocate %zu bytes.&quot;, new_cap * width);
+        arr-&gt;cap = new_cap;
+    }
+
+    memcpy(arr-&gt;value + width * arr-&gt;len, sub-&gt;value, width * sub-&gt;len);
+    arr-&gt;len += sub-&gt;len;
+    return new_cap - old_cap;
+}
+
+usize splice(u0 *restrict self, usize index, const u0 *restrict slice, usize width)
+{
+    if (slice == nil) return 0;
+
+    MemArray *arr = (MemArray *restrict)self;
+    MemSlice *sub = (MemSlice *restrict)slice;
+
+    if (sub-&gt;len == 0) return 0;
+
+    usize old_cap = arr-&gt;cap;
+    usize new_cap = old_cap;
+
+    unless (arr-&gt;len + sub-&gt;len &lt; arr-&gt;cap) {
+        new_cap = (usize)(arr-&gt;cap * REALLOC_FACTOR) + sub-&gt;len;
+        arr-&gt;value = (umin *)realloc(arr-&gt;value, new_cap * width);
+        if (arr-&gt;value == nil)
+            PANIC(&quot;Failed to reallocate %zu bytes.&quot;, new_cap * width);
+        arr-&gt;cap = new_cap;
+    }
+
+    umin *gap = arr-&gt;value + width * index;
+
+    // Offset elements down by the slice length, from insertion index,
+    // leaving us with a `width * sub.len` byte gap for insertion.
+    memmove(gap + width * sub-&gt;len, gap, width * (arr-&gt;len - index));
+    arr-&gt;len += sub-&gt;len;
+    // Insert slice into empty space.
+    memcpy(gap, sub-&gt;value, sub-&gt;len * width);
+
+    return new_cap - old_cap;
+}
+
+GenericSlice cut(u0 *self, usize from, isize upto, usize width)
+{
+    GenericArray *arr_ptr = self;
+    MemArray arr = *(MemArray *)self;
+
+    usize final = upto &lt; 0 ? arr.len + upto : (usize)upto;
+    assert(final &lt; arr.len);
+
+    if (from &gt; final) {
+        usize tmp = from;
+        from = final;
+        final = tmp;
+    }
+    usize pivot = final - from + 1;
+
+    // Deal with bytes instead.
+    arr.len *= width;
+    arr.cap *= width;
+    from *= width;
+    final *= width;
+    pivot *= width;
+
+    MemSlice tail = SLICE(MemSlice, arr, from, arr.len);
+    swap_blocks(tail, pivot);
+    tail = SLICE(MemSlice, tail, tail.len - pivot, -1);
+
+    u0 *tail_ptr = &amp;tail;
+    GenericSlice trailing = *(GenericSlice *)tail_ptr;
+    trailing.len /= width;
+    arr_ptr-&gt;len -= pivot / width;  // Capacity the same.
+    return trailing;  // Return removed slice which is left over at end.
+}
+
+u0 *pop(u0 *self, usize width)
+{
+    MemArray *arr = self;
+    assert(arr-&gt;len &gt; 0);
+    return (u0 *)(arr-&gt;value + --arr-&gt;len * width);
+}
+
+u0 *shift(u0 *self, usize width)
+{
+    MemSlice *arr = self;
+    assert(arr-&gt;len &gt; 0);
+
+    swap(self, 1, width);
+    return (u0 *)(arr-&gt;value + --arr-&gt;len * width);
+}
+
+string from_cstring(const byte *cstring)
+{
+    return VIEW(string, (byte *)cstring, 0, strlen(cstring));
+}
+
+bool string_eq(string self, const string other)
+{
+    unless (self.len == other.len)
+        return false;
+    else if (self.value == other.value)
+        return true;
+
+    foreach (c, self)
+        if (c != UNWRAP(other)[it.index])
+            return false;
+    return true;
+}
+
+i16 string_cmp(const string self, const string other)
+{
+    byte *ptr0 = self.value,
+         *ptr1 = other.value;
+
+    if (ptr0 == ptr1) {
+        if (self.len == other.len) return 0;
+        return self.len &gt; other.len
+            ? ptr0[other.len] - 0
+            : 0 - ptr1[self.len];
+    }
+
+    byte c0, c1;
+    usize len = min(self.len, other.len);
+    for (usize i = 0; i &lt; len; ++i)
+        if ((c0 = ptr0[i]) != (c1 = ptr1[i]))
+            return c0 - c1;
+
+    if (self.len == other.len) return 0;
+    if (self.len == len)
+        return 0 - ptr1[len];
+    return ptr0[len] - 0;
+}
+
+u64 hash_string(string str)
+{
+    u64 hash = 5381;
+    foreach (c, str)
+        hash += c + (hash &lt;&lt; 5);
+
+    return hash;
+}
+
+ierr fput(string s, FILE *stream)
+{
+    ierr err = 1;
+    foreach (c, s) {
+        unless (err == NUL) err = fputc(c, stream);
+        else return err;
+    }
+    err = fputc('\n', stream);
+    return err;
+}
+
+ierr put(string s)
+{ return fput(s, stdout); }
+
+ierr eput(string s)
+{ return fput(s, stderr); }
+
+ierr eputs(const byte *s)
+{
+    ierr err;
+    err = fputs(s, stderr);
+    if (err &lt;= 0) return err;
+    err = fputc('\n', stderr);
+    return err;
+}
+
+usize sizeof_specifier(const byte *spec)
+{
+    UNUSED(spec);
+    PANIC(&quot;Not implemented.&quot;);
+    return 0;
+}
+
+static string FORMATTER_FLAGS
+    = INIT(byte, { '+', '-', ' ', '#', '0' });
+static string LENGTH_SUBSPECIFIERS
+    = INIT(byte, { 'h', 'l', 'j', 'z', 't', 'L' });
+
+
+struct Formatter {
+    string flags;
+    string width;
+    string precision; 
+    string length;
+    byte specifier;
+
+    usize offset;
+};
+unqualify(struct, Formatter);
+
+// NOTE: Allocates on heap.
+static string formatter_string(Formatter formatter)
+{
+    StringBuilder repr = AMAKE(byte, formatter.offset + 2);
+
+    push(&amp;repr, &quot;%&quot;, 1);
+    extend(&amp;repr, &amp;formatter.flags, 1);
+    extend(&amp;repr, &amp;formatter.width, 1);
+    unless (IS_EMPTY(formatter.precision)) {
+        push(&amp;repr, &quot;.&quot;, 1);
+        extend(&amp;repr, &amp;formatter.precision, 1);
+    }
+    extend(&amp;repr, &amp;formatter.length, 1);
+    push(&amp;repr, &amp;formatter.specifier, 1);
+
+    // NUL-terminate the string slice.
+    push(&amp;repr, &amp;NUL_BYTE, 1);
+    return SLICE(string, repr, 0, -2);
+}
+
+static Formatter parse_formatter(string formatter)
+{
+    usize i = 0;
+    if (formatter.value[i] == '%') ++i;
+
+    usize flags_start = i;
+    loop {  // Parse flags.
+        bool found = false;
+        foreach (ss, FORMATTER_FLAGS) {
+            if (formatter.value[i] == ss) {
+                found = true;
+                ++i;
+            }
+        }
+        unless (found) break;
+    }
+    string flags = SLICE(string, formatter, flags_start, i);
+
+
+    usize width_start = i;  // Parse width.
+    if (formatter.value[i] == '*') ++i;
+    else while (isdigit(formatter.value[i])) ++i;
+    string width = SLICE(string, formatter, width_start, i);
+
+    usize precision_start = i;
+    if (formatter.value[i] == '.') {  // Parse precision.
+        ++i;  // Skip '.'
+        if (formatter.value[i] == '*') ++i;
+        else while (isdigit(formatter.value[i])) ++i;
+    }
+    string precision = SLICE(string, formatter, precision_start, i);
+
+    usize length_start = i;
+    loop {  // Parse length subspecifier.
+        bool found = false;
+        foreach (ss, LENGTH_SUBSPECIFIERS) {
+            if (formatter.value[i] == ss) {
+                found = true;
+                ++i;
+            }
+        }
+        unless (found) break;
+    }
+    string length = SLICE(string, formatter, length_start, i);
+
+    // Parse specifier as the single byte immediately after.
+    byte specifier = formatter.value[i++];
+
+    return ((Formatter){
+        .flags = flags,
+        .width = width,
+        .precision = precision,
+        .length = length,
+        .specifier = specifier,
+        .offset = i
+    });
+}
+
+string novel_vsprintf(const byte *format, va_list args)
+{
+    newarray(ByteArray, byte);
+    ByteArray bytes = AMAKE(byte, strlen(format) + 64);
+
+    usize i = 0;
+    byte c;
+    until ('\0' == (c = format[i++])) {
+        unless (c == '%') {
+            push(&amp;bytes, &amp;c, sizeof(byte));  // Other characters are preserved.
+            continue;
+        }
+
+        string format_string = VIEW(string, (byte *)format, i, -1);
+        Formatter formatter = parse_formatter(format_string);
+        i += formatter.offset;
+
+        bool is_array_formatter = false;
+
+        // TODO: Padding, text formatting etc. on the novel formatters,
+        //       i.e. %S, %C, %r, %U, %D and %V.
+        switch (formatter.specifier) {
+        case 'S': {  // '%S', string slice formatter.
+            string value = va_arg(args, string);
+            extend(&amp;bytes, &amp;value, sizeof(byte));
+        } break;
+        case 'C': {  // '%C', rune formatter.
+            rune value = va_arg(args, rune);
+            string ucs_bytes = INIT(byte, { 0, 0, 0, 0, 0 });
+            ucs_bytes = rune_to_utf8(ucs_bytes, value);
+            extend(&amp;bytes, &amp;ucs_bytes, sizeof(byte));
+        } break;
+        case 'r': {  // '%r', runic (UCS-4) string formatter.
+            runic value = va_arg(args, runic);
+            string ucs_bytes = SMAKE(byte, 4 * (value.len + 1));
+            ucs_bytes = ucs4_to_utf8(ucs_bytes, value);
+            extend(&amp;bytes, &amp;ucs_bytes, sizeof(byte));
+        } break;
+        case 'U': {  // '%U', runic 8-(hex)digit unicode codepoint formatter.
+            rune value = va_arg(args, rune);
+            byte res[] = &quot;U+00000000&quot;;
+            string sliced = VIEW(string, res, 0, 10);
+            sprintf(res + 2, &quot;%08X&quot;, value);
+            extend(&amp;bytes, &amp;sliced, sizeof(byte));
+        } break;
+        case 'b': {  // '%b' boolean formatter.
+            int value = va_arg(args, int);  //&lt; _Bool gets promoted to int.
+            string bool_string = value ? STR(&quot;true&quot;) : STR(&quot;false&quot;);
+            extend(&amp;bytes, &amp;bool_string, sizeof(byte));
+        } break;
+        case 'D':  // '%D{·}{·}' dynamic array type formatter.
+            // Following the 'D' must be the format specifier for the elements,
+            // and finally the delimiter characters.
+            // e.g. array of `int`s, separated by command and a space (&quot;, &quot;):
+            // `println(&quot;[%Dd{, }]&quot;, my_arr);`.
+            is_array_formatter = true;
+            /* fallthrough */
+        case 'V': {  // '%V{·}{·}' view/slice type formatter.
+            // Following the 'V' must be the format specifier for the elements.
+            // and finally the delimiter characters.
+            // e.g. slice of doubles, separated by tabs:
+            // `println(&quot;{ %V{%0.3lf}\t }&quot;, my_slice);`.
+            string elem_repr = SEMPTY(string);
+            Formatter elem_formatter;
+
+            if (format[i] == '{') {
+                usize begin = ++i;  // TODO: Nesting '{...}'?
+                until (format[i] == '}') ++i;
+                usize len = i - begin;
+                ++i;  // Skip '}'.
+
+                // `elem_repr` must NUL-terminate, hence we make a copy.
+                byte *buf = emalloc(len, sizeof(byte));
+                buf = memcpy(buf, format + begin, len * sizeof(byte));
+                buf[len] = '\0';
+                elem_repr = VIEW(string, buf, 0, len);
+
+                usize j = 0;
+                until (elem_repr.value[j] == '%')  // TODO: Better error message.
+                    if (j &gt;= elem_repr.len)
+                        PANIC(&quot;Broken printf element formatter, missing '%%'.&quot;);
+                    else ++j;
+                // Slice with everything after the
+                // '%' sign in the element formatter.
+                string elem_format_string = SLICE(string, elem_repr, j + 1, -1);
+                elem_formatter = parse_formatter(elem_format_string);
+            } else {  // Otherwise, it should just have a specifier.
+                // Prepend a '%' character, if not given.
+                if (format[i] == '%') ++i;
+
+                string elem_format_string = VIEW(string, (byte *)format, i, -1);
+                elem_formatter = parse_formatter(elem_format_string);
+                usize offs = elem_formatter.offset;
+
+                // `elem_repr` must NUL-terminate, hence we make a copy.
+                byte *buf = emalloc(offs + 2, sizeof(byte));
+                buf[0] = '%';
+                memcpy(buf + 1, format + i, offs * sizeof(byte));
+                buf[offs + 1] = '\0';
+                elem_repr = VIEW(string, buf, 0, offs + 1);
+
+                i += offs;
+            }
+
+            string delim = SEMPTY(string);
+            if (format[i] == '{') {
+                usize begin = i + 1;  // TODO: Nesting '{...}'?
+                until (format[++i] == '}');
+                delim = VIEW(string, (byte *)format, begin, i);
+                ++i;  // Skip last brace.
+            } else {  // Single character for the delimiter.
+                delim = VIEW(string, (byte *)format, i, i + 1);
+                ++i;
+            }
+
+            #define SPRINT_ELEM(TYPE) do { \
+                newslice(TSlice, TYPE); \
+                newarray(TArray, TYPE); \
+                TSlice slice; \
+                if (is_array_formatter) { \
+                    TArray arr = va_arg(args, TArray); \
+                    slice = SLICE(TSlice, arr, 0, -1); \
+                } else { \
+                    slice = va_arg(args, TSlice); \
+                } \
+                for (usize n = 0; n &lt; slice.len; ++n) { \
+                    TYPE *elem = slice.value + n; \
+                    string elem_str = novel_sprintf(elem_repr.value, *elem); \
+                    extend(&amp;bytes, &amp;elem_str, sizeof(byte)); \
+                    free(elem_str.value); \
+                    unless (n == slice.len - 1) \
+                        extend(&amp;bytes, &amp;delim, sizeof(byte)); \
+                } \
+            } while (false)
+
+            string fmt_l = elem_formatter.length;
+
+            switch (elem_formatter.specifier) {
+            // New formatters.
+            case 'C': SPRINT_ELEM(rune); break;
+            case 'U': SPRINT_ELEM(rune); break;
+            case 'r': SPRINT_ELEM(runic); break;
+            case 'S': SPRINT_ELEM(string); break;
+            case 'D': SPRINT_ELEM(GenericArray); break;
+            case 'V': SPRINT_ELEM(GenericSlice); break;
+            // Standard C formatters:
+            case 'i': case 'd':
+                if (string_eq(fmt_l, STR(&quot;hh&quot;)))
+                    SPRINT_ELEM(signed char);
+                else if (string_eq(fmt_l, STR(&quot;ll&quot;)))
+                    SPRINT_ELEM(long long int);
+                else if (string_eq(fmt_l, STR(&quot;h&quot;)))
+                    SPRINT_ELEM(short int);
+                else if (string_eq(fmt_l, STR(&quot;l&quot;)))
+                    SPRINT_ELEM(long int);
+                else if (string_eq(fmt_l, STR(&quot;j&quot;)))
+                    SPRINT_ELEM(imax);
+                else if (string_eq(fmt_l, STR(&quot;z&quot;)))
+                    SPRINT_ELEM(isize);
+                else if (string_eq(fmt_l, STR(&quot;t&quot;)))
+                    SPRINT_ELEM(iptr);
+                else
+                    SPRINT_ELEM(int);
+                break;
+            case 'o': case 'u': case 'x': case 'X':
+                if (string_eq(fmt_l, STR(&quot;hh&quot;)))
+                    SPRINT_ELEM(unsigned char);
+                else if (string_eq(fmt_l, STR(&quot;ll&quot;)))
+                    SPRINT_ELEM(unsigned long long int);
+                else if (string_eq(fmt_l, STR(&quot;h&quot;)))
+                    SPRINT_ELEM(unsigned short int);
+                else if (string_eq(fmt_l, STR(&quot;l&quot;)))
+                    SPRINT_ELEM(unsigned long int);
+                else if (string_eq(fmt_l, STR(&quot;j&quot;)))
+                    SPRINT_ELEM(umax);
+                else if (string_eq(fmt_l, STR(&quot;z&quot;)))
+                    SPRINT_ELEM(usize);
+                else if (string_eq(fmt_l, STR(&quot;t&quot;)))
+                    SPRINT_ELEM(uptr);
+                else
+                    SPRINT_ELEM(unsigned int);
+                break;
+            case 'c':
+                if (string_eq(fmt_l, STR(&quot;l&quot;)))
+                    SPRINT_ELEM(wint_t);
+                else
+                    SPRINT_ELEM(char);
+                break;
+            case 'e': case 'f': case 'g': case 'a':
+            case 'E': case 'F': case 'G': case 'A':
+                if (string_eq(fmt_l, STR(&quot;L&quot;)))
+                    SPRINT_ELEM(long double);
+                else
+                    SPRINT_ELEM(double);
+                break;
+            case 's':
+                if (string_eq(fmt_l, STR(&quot;l&quot;)))
+                    SPRINT_ELEM(wchar_t *);
+                else
+                    SPRINT_ELEM(char *);
+                break;
+            case 'p':
+                SPRINT_ELEM(uptr); break;
+            case 'n':
+                if (string_eq(fmt_l, STR(&quot;hh&quot;)))
+                    SPRINT_ELEM(signed char *);
+                else if (string_eq(fmt_l, STR(&quot;ll&quot;)))
+                    SPRINT_ELEM(long long int *);
+                else if (string_eq(fmt_l, STR(&quot;h&quot;)))
+                    SPRINT_ELEM(short int *);
+                else if (string_eq(fmt_l, STR(&quot;l&quot;)))
+                    SPRINT_ELEM(long int *);
+                else if (string_eq(fmt_l, STR(&quot;j&quot;)))
+                    SPRINT_ELEM(imax *);
+                else if (string_eq(fmt_l, STR(&quot;z&quot;)))
+                    SPRINT_ELEM(usize *);
+                else if (string_eq(fmt_l, STR(&quot;t&quot;)))
+                    SPRINT_ELEM(iptr *);
+                else
+                    SPRINT_ELEM(int *);
+                break;
+            default:
+                PANIC(&quot;Unknown formatter ('%%%c') in array/slice.&quot;,
+                    elem_formatter.specifier);
+                break;
+            }
+
+            free(elem_repr.value);
+        } break;
+        default: {
+            // Send it off to internal `vsprintf`.
+            string c_formatter = formatter_string(formatter);
+
+            byte *buf;
+            isize len = vasprintf(&amp;buf, c_formatter.value, args);
+            string buf_slice = VIEW(string, buf, 0, len);
+            extend(&amp;bytes, &amp;buf_slice, sizeof(byte));
+            free(buf);
+            free(c_formatter.value);
+        } break;
+        }
+    }
+
+    // NUL-terminate the string slice.
+    push(&amp;bytes, &amp;NUL_BYTE, sizeof(byte));
+    --bytes.len;  //&lt; But, don't count the NUL-byte as part of the length.
+    return SLICE(string, bytes, 0, -1);
+}
+
+string novel_sprintf(const byte *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    string res = novel_vsprintf(format, args);
+    va_end(args);
+    return res;
+}
+
+ierr novel_vfprintf(FILE *stream, const byte *format, va_list args)
+{
+    string s = novel_vsprintf(format, args);
+    ierr res = fputs(s.value, stream);
+    free(s.value);
+    return res;
+}
+
+ierr novel_fprintf(FILE *stream, const byte *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    ierr res = novel_vfprintf(stream, format, args);
+    va_end(args);
+    return res;
+}
+
+ierr novel_vfprintf_newline(FILE *stream, const byte *format, va_list args)
+{
+    ierr res = novel_vfprintf(stream, format, args);
+    if (res &lt; 0) return res;
+    if (EOF == fputc('\n', stream))
+        return EOF;
+    return res + 1;
+}
+
+ierr novel_fprintf_newline(FILE *stream, const byte *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    ierr res = novel_vfprintf_newline(stream, format, args);
+    va_end(args);
+    return res;
+}
+
+ierr novel_printf(const byte *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    ierr res = novel_vfprintf(stdout, format, args);
+    va_end(args);
+    return res;
+}
+
+#endif
+</code></pre>
+<hr />
+<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../Files/common_8h.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../Files/common_8h.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>
