@@ -152,188 +152,188 @@
 <p><a href="#detailed-description">More...</a></p>
 <h2 id="classes"><a class="header" href="#classes">Classes</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td>struct</td><td><strong><a href="/Classes/struct__atomic__t.html">_atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structGenericArray.html">GenericArray</a></strong> <br>Array with pointer to void.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structMemArray.html">MemArray</a></strong> <br>Array with pointer type to smallest addressable units of memory.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structGenericSlice.html">GenericSlice</a></strong> <br>Slice with pointer to void.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structMemSlice.html">MemSlice</a></strong> <br>Slice with pointer type to smallest addressable units of memory.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structstring.html">string</a></strong> <br>Immutable wrapper for UTF-8 encoded string (bytes are mutable).</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structrunic.html">runic</a></strong> <br>Imutable warpper for UCS-4/UTF-32 encoded runic string (runes are mutable).</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structStringBuilder.html">StringBuilder</a></strong> <br>Mutable string which is built/pushed-to over time.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structRunicBuilder.html">RunicBuilder</a></strong> <br>Mutable runic string which is built/pushed-to over time.</td></tr>
-<tr><td>struct</td><td><strong><a href="/Classes/structsymbol.html">symbol</a></strong> <br>Symbols are interned strings.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/struct__atomic__t.html">_atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structGenericArray.html">GenericArray</a></strong> <br>Array with pointer to void.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structMemArray.html">MemArray</a></strong> <br>Array with pointer type to smallest addressable units of memory.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structGenericSlice.html">GenericSlice</a></strong> <br>Slice with pointer to void.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structMemSlice.html">MemSlice</a></strong> <br>Slice with pointer type to smallest addressable units of memory.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structstring.html">string</a></strong> <br>Immutable wrapper for UTF-8 encoded string (bytes are mutable).</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structrunic.html">runic</a></strong> <br>Imutable warpper for UCS-4/UTF-32 encoded runic string (runes are mutable).</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structStringBuilder.html">StringBuilder</a></strong> <br>Mutable string which is built/pushed-to over time.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structRunicBuilder.html">RunicBuilder</a></strong> <br>Mutable runic string which is built/pushed-to over time.</td></tr>
+<tr><td>struct</td><td><strong><a href="/crelude/Classes/structsymbol.html">symbol</a></strong> <br>Symbols are interned strings.</td></tr>
 </tbody></table>
 <h2 id="types"><a class="header" href="#types">Types</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td>typedef struct <a href="/Classes/struct__atomic__t.html">_atomic_t</a></td><td><strong><a href="/Files/common_8h.html#typedef-atomic_t">atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
-<tr><td>typedef void</td><td><strong><a href="/Files/common_8h.html#typedef-u0">u0</a></strong></td></tr>
-<tr><td>typedef signed int</td><td><strong><a href="/Files/common_8h.html#typedef-ierr">ierr</a></strong></td></tr>
-<tr><td>typedef unsigned int</td><td><strong><a href="/Files/common_8h.html#typedef-uerr">uerr</a></strong></td></tr>
-<tr><td>typedef unsigned long</td><td><strong><a href="/Files/common_8h.html#typedef-uword">uword</a></strong> <br><code>long</code> is always the same size as a machine word.</td></tr>
-<tr><td>typedef signed long</td><td><strong><a href="/Files/common_8h.html#typedef-iword">iword</a></strong></td></tr>
-<tr><td>typedef unsigned int</td><td><strong><a href="/Files/common_8h.html#typedef-ufast">ufast</a></strong></td></tr>
-<tr><td>typedef signed int</td><td><strong><a href="/Files/common_8h.html#typedef-ifast">ifast</a></strong></td></tr>
-<tr><td>typedef ptrdiff_t</td><td><strong><a href="/Files/common_8h.html#typedef-isize">isize</a></strong></td></tr>
-<tr><td>typedef size_t</td><td><strong><a href="/Files/common_8h.html#typedef-usize">usize</a></strong> <br>Use for storing array indices or object sizes.</td></tr>
-<tr><td>typedef intptr_t</td><td><strong><a href="/Files/common_8h.html#typedef-iptr">iptr</a></strong></td></tr>
-<tr><td>typedef uintptr_t</td><td><strong><a href="/Files/common_8h.html#typedef-uptr">uptr</a></strong> <br>Large enough to store a pointer, like (void *).</td></tr>
-<tr><td>typedef intmax_t</td><td><strong><a href="/Files/common_8h.html#typedef-imax">imax</a></strong></td></tr>
-<tr><td>typedef uintmax_t</td><td><strong><a href="/Files/common_8h.html#typedef-umax">umax</a></strong></td></tr>
-<tr><td>typedef unsigned char</td><td><strong><a href="/Files/common_8h.html#typedef-umin">umin</a></strong> <br>Such that <code>sizeof(umin) == 1</code>.</td></tr>
-<tr><td>typedef signed char</td><td><strong><a href="/Files/common_8h.html#typedef-imin">imin</a></strong> <br>Such that <code>sizeof(imin) == 1</code>.</td></tr>
-<tr><td>typedef __int8_t</td><td><strong><a href="/Files/common_8h.html#typedef-i8">i8</a></strong></td></tr>
-<tr><td>typedef __uint8_t</td><td><strong><a href="/Files/common_8h.html#typedef-u8">u8</a></strong></td></tr>
-<tr><td>typedef __uint8_t</td><td><strong><a href="/Files/common_8h.html#typedef-byte">byte</a></strong> <br>Don't use <code>char</code> when you want <code>byte</code>.</td></tr>
-<tr><td>typedef __int16_t</td><td><strong><a href="/Files/common_8h.html#typedef-i16">i16</a></strong></td></tr>
-<tr><td>typedef __uint16_t</td><td><strong><a href="/Files/common_8h.html#typedef-u16">u16</a></strong></td></tr>
-<tr><td>typedef __int32_t</td><td><strong><a href="/Files/common_8h.html#typedef-i32">i32</a></strong></td></tr>
-<tr><td>typedef __uint32_t</td><td><strong><a href="/Files/common_8h.html#typedef-u32">u32</a></strong></td></tr>
-<tr><td>typedef <a href="/Files/common_8h.html#typedef-u32">u32</a></td><td><strong><a href="/Files/common_8h.html#typedef-rune">rune</a></strong></td></tr>
-<tr><td>typedef __int64_t</td><td><strong><a href="/Files/common_8h.html#typedef-i64">i64</a></strong></td></tr>
-<tr><td>typedef __uint64_t</td><td><strong><a href="/Files/common_8h.html#typedef-u64">u64</a></strong></td></tr>
+<tr><td>typedef struct <a href="/crelude/Classes/struct__atomic__t.html">_atomic_t</a></td><td><strong><a href="/crelude/Files/common_8h.html#typedef-atomic_t">atomic_t</a></strong> <br>Useful for resource counting etc.</td></tr>
+<tr><td>typedef void</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></strong></td></tr>
+<tr><td>typedef signed int</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></strong></td></tr>
+<tr><td>typedef unsigned int</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-uerr">uerr</a></strong></td></tr>
+<tr><td>typedef unsigned long</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-uword">uword</a></strong> <br><code>long</code> is always the same size as a machine word.</td></tr>
+<tr><td>typedef signed long</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-iword">iword</a></strong></td></tr>
+<tr><td>typedef unsigned int</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-ufast">ufast</a></strong></td></tr>
+<tr><td>typedef signed int</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-ifast">ifast</a></strong></td></tr>
+<tr><td>typedef ptrdiff_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-isize">isize</a></strong></td></tr>
+<tr><td>typedef size_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></strong> <br>Use for storing array indices or object sizes.</td></tr>
+<tr><td>typedef intptr_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-iptr">iptr</a></strong></td></tr>
+<tr><td>typedef uintptr_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-uptr">uptr</a></strong> <br>Large enough to store a pointer, like (void *).</td></tr>
+<tr><td>typedef intmax_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-imax">imax</a></strong></td></tr>
+<tr><td>typedef uintmax_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-umax">umax</a></strong></td></tr>
+<tr><td>typedef unsigned char</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-umin">umin</a></strong> <br>Such that <code>sizeof(umin) == 1</code>.</td></tr>
+<tr><td>typedef signed char</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-imin">imin</a></strong> <br>Such that <code>sizeof(imin) == 1</code>.</td></tr>
+<tr><td>typedef __int8_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-i8">i8</a></strong></td></tr>
+<tr><td>typedef __uint8_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-u8">u8</a></strong></td></tr>
+<tr><td>typedef __uint8_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-byte">byte</a></strong> <br>Don't use <code>char</code> when you want <code>byte</code>.</td></tr>
+<tr><td>typedef __int16_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-i16">i16</a></strong></td></tr>
+<tr><td>typedef __uint16_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-u16">u16</a></strong></td></tr>
+<tr><td>typedef __int32_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-i32">i32</a></strong></td></tr>
+<tr><td>typedef __uint32_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-u32">u32</a></strong></td></tr>
+<tr><td>typedef <a href="/crelude/Files/common_8h.html#typedef-u32">u32</a></td><td><strong><a href="/crelude/Files/common_8h.html#typedef-rune">rune</a></strong></td></tr>
+<tr><td>typedef __int64_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-i64">i64</a></strong></td></tr>
+<tr><td>typedef __uint64_t</td><td><strong><a href="/crelude/Files/common_8h.html#typedef-u64">u64</a></strong></td></tr>
 </tbody></table>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-panic">panic</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zero">is_zero</a></strong>(<a href="/Files/common_8h.html#typedef-imax">imax</a> )</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zerof">is_zerof</a></strong>(f64 )</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-is_zeroed">is_zeroed</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * , <a href="/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-zero">zero</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * blk, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-emalloc">emalloc</a></strong>(<a href="/Files/common_8h.html#typedef-usize">usize</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> )<br>Malloc with zeros, and panics when out of memory.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/common_8h.html#function-swap">swap</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> pivot, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-push">push</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-pop">pop</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/Files/common_8h.html#function-shift">shift</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)<br>Works like <code>pop</code> but removes from the front.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-insert">insert</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-extend">extend</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-splice">splice</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Classes/structGenericSlice.html">GenericSlice</a></td><td><strong><a href="/Files/common_8h.html#function-cut">cut</a></strong>(<a href="/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/Files/common_8h.html#typedef-usize">usize</a> from, <a href="/Files/common_8h.html#typedef-isize">isize</a> upto, <a href="/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-fput">fput</a></strong>(<a href="/Classes/structstring.html">string</a> , FILE * )<br><code>fputs(...)</code> with <code>string</code>.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-put">put</a></strong>(<a href="/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stdout)</code>.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-eput">eput</a></strong>(<a href="/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stderr)</code>.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-eputs">eputs</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )<br>puts(...) to STDERR.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/common_8h.html#function-sizeof_specifier">sizeof_specifier</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vsprintf">novel_vsprintf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-novel_sprintf">novel_sprintf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vfprintf">novel_vfprintf</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_fprintf">novel_fprintf</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_vfprintf_newline">novel_vfprintf_newline</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_fprintf_newline">novel_fprintf_newline</a></strong>(FILE * , const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#function-novel_printf">novel_printf</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#function-from_cstring">from_cstring</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * )<br>NUL-terminated string to library string.</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/common_8h.html#function-string_eq">string_eq</a></strong>(const string, const string)<br>Compare two strings for equality.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-i16">i16</a></td><td><strong><a href="/Files/common_8h.html#function-string_cmp">string_cmp</a></strong>(const string, const string)<br>Compare two strings for alphabetic rank.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u64">u64</a></td><td><strong><a href="/Files/common_8h.html#function-hash_string">hash_string</a></strong>(const string)<br>Hash a string.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-panic">panic</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/common_8h.html#function-is_zero">is_zero</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-imax">imax</a> )</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/common_8h.html#function-is_zerof">is_zerof</a></strong>(f64 )</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/common_8h.html#function-is_zeroed">is_zeroed</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-zero">zero</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * blk, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/crelude/Files/common_8h.html#function-emalloc">emalloc</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> )<br>Malloc with zeros, and panics when out of memory.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-swap">swap</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> pivot, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-push">push</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/crelude/Files/common_8h.html#function-pop">pop</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/crelude/Files/common_8h.html#function-shift">shift</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)<br>Works like <code>pop</code> but removes from the front.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-insert">insert</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * element, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-extend">extend</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, const <a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-splice">splice</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> index, const <a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * slice, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Classes/structGenericSlice.html">GenericSlice</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-cut">cut</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> * self, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> from, <a href="/crelude/Files/common_8h.html#typedef-isize">isize</a> upto, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> width)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-fput">fput</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , FILE * )<br><code>fputs(...)</code> with <code>string</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-put">put</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stdout)</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-eput">eput</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stderr)</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-eputs">eputs</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * )<br>puts(...) to STDERR.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-sizeof_specifier">sizeof_specifier</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * )</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_vsprintf">novel_vsprintf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_sprintf">novel_sprintf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_vfprintf">novel_vfprintf</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_fprintf">novel_fprintf</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_vfprintf_newline">novel_vfprintf_newline</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_fprintf_newline">novel_fprintf_newline</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-novel_printf">novel_printf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-from_cstring">from_cstring</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * )<br>NUL-terminated string to library string.</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/common_8h.html#function-string_eq">string_eq</a></strong>(const string, const string)<br>Compare two strings for equality.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-i16">i16</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-string_cmp">string_cmp</a></strong>(const string, const string)<br>Compare two strings for alphabetic rank.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u64">u64</a></td><td><strong><a href="/crelude/Files/common_8h.html#function-hash_string">hash_string</a></strong>(const string)<br>Hash a string.</td></tr>
 </tbody></table>
 <h2 id="attributes"><a class="header" href="#attributes">Attributes</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td>const <a href="/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/Files/common_8h.html#variable-nul">NUL</a></strong></td></tr>
-<tr><td>const <a href="/Files/common_8h.html#typedef-byte">byte</a></td><td><strong><a href="/Files/common_8h.html#variable-nul_byte">NUL_BYTE</a></strong></td></tr>
-<tr><td>const <a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/common_8h.html#variable-nul_string">NUL_STRING</a></strong></td></tr>
+<tr><td>const <a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/common_8h.html#variable-nul">NUL</a></strong></td></tr>
+<tr><td>const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a></td><td><strong><a href="/crelude/Files/common_8h.html#variable-nul_byte">NUL_BYTE</a></strong></td></tr>
+<tr><td>const <a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/common_8h.html#variable-nul_string">NUL_STRING</a></strong></td></tr>
 </tbody></table>
 <h2 id="defines"><a class="header" href="#defines">Defines</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-_gnu_source">_GNU_SOURCE</a></strong> <br>Use GNU specific source.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tstr_helper">TSTR_HELPER</a></strong>(x)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tstr">TSTR</a></strong>(x)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_major">crelude_V_MAJOR</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_minor">crelude_V_MINOR</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_v_patch">crelude_V_PATCH</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-crelude_version">crelude_VERSION</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-realloc_factor">REALLOC_FACTOR</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-loop">loop</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unless">unless</a></strong>(cond)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-never">never</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-always">always</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-until">until</a></strong>(cond)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newtype">newtype</a></strong>(NT, T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-arrayof">arrayof</a></strong>(T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newarray">newarray</a></strong>(NT, T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sliceof">sliceof</a></strong>(T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newslice">newslice</a></strong>(NT, T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hashof">hashof</a></strong>(T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-newhashable">newhashable</a></strong>(NT, T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unqualify">unqualify</a></strong>(D, T)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-nth">NTH</a></strong>(LIST, N)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-get">GET</a></strong>(LIST, N)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unused">UNUSED</a></strong>(x)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-no_error">NO_ERROR</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-ok">OK</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-noop">NOOP</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-nil">nil</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-panic">PANIC</a></strong>(lit, ...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-print">print</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sprint">sprint</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-println">println</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprintf">eprintf</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprint">eprint</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-eprintln">eprintln</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-fprint">fprint</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unit">UNIT</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-word_size">WORD_SIZE</a></strong> <br>Size of a machine word.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-_ldouble_bit">_LDOUBLE_BIT</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-swap">SWAP</a></strong>(SELF, PIVOT)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-push">PUSH</a></strong>(SELF, ELEM)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-pop">POP</a></strong>(SELF)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-shift">SHIFT</a></strong>(SELF)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-insert">INSERT</a></strong>(SELF, INDEX, ELEM)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-extend">EXTEND</a></strong>(SELF, SLIC)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-splice">SPLICE</a></strong>(SELF, INDEX, SLIC)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-cut">CUT</a></strong>(SELF, FROM, UPTO)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-append">APPEND</a></strong>(SELF, ELEM)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-prepend">PREPEND</a></strong>(SELF, ELEM)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unshift">UNSHIFT</a></strong>(SELF, ELEM)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-prefix">PREFIX</a></strong>(SELF, SLIC)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-remove">REMOVE</a></strong>(SELF, INDEX)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-head">HEAD</a></strong>(SELF, END)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-tail">TAIL</a></strong>(SELF, BEG)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-first">FIRST</a></strong>(SELF)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-last">LAST</a></strong>(SELF)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-ansi">ANSI</a></strong>(CODE)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-bold">BOLD</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-faint">FAINT</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-dim">DIM</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-italic">ITALIC</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-under">UNDER</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-blink">BLINK</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-rapid">RAPID</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-invert">INVERT</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hidden">HIDDEN</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-strike">STRIKE</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-bold_off">BOLD_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-faint_off">FAINT_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-italic_off">ITALIC_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-under_off">UNDER_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-blink_off">BLINK_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-rapid_off">RAPID_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-invert_off">INVERT_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-hidden_off">HIDDEN_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-strike_off">STRIKE_OFF</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-reset">RESET</a></strong></td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-min">min</a></strong>(A, B)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-max">max</a></strong>(A, B)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-unwrap">UNWRAP</a></strong>(STRUCTURE) <br>Unwraps pointer/value in sizing wrapper struct.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-init">INIT</a></strong>(TYPE, ...) <br>Initialise sizing wrapper with literal.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-list">LIST</a></strong>(TYPE, ...) <br>Can be used to make slices from literal arrays.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-string">STRING</a></strong>(...) <br>Initialise sizing wrapper with of string literal.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-str">STR</a></strong>(...)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-sempty">SEMPTY</a></strong>(TYPE) <br>Empty slice of certain type.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-aempty">AEMPTY</a></strong>(TYPE) <br>Empty array of certain type.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-is_empty">IS_EMPTY</a></strong>(ARR) <br>Is array empty?</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-amake">AMAKE</a></strong>(TYPE, CAP) <br>Heap allocates a variable sized array.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-smake">SMAKE</a></strong>(TYPE, LEN) <br>Heap allocates a constant sized slice type.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-slice">SLICE</a></strong>(TYPE, OBJ, START, END) <br>Take a slice/substring/view of sized type.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-view">VIEW</a></strong>(TYPE, PTR, START, END) <br>Works like <code>SLICE</code>, but on a pointer instead of an array.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-symbolic">SYMBOLIC</a></strong>(STR)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-symbol_literal">SYMBOL_LITERAL</a></strong>(STR_LIT)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-acollect">ACOLLECT</a></strong>(T, count, pointer) <br>C array to dynamic array wrapper.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-scollect">SCOLLECT</a></strong>(T, count, pointer) <br>C array to slice wrapper.</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-smap">SMAP</a></strong>(T, func, list)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-amap">AMAP</a></strong>(T, func, list)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-for_each">FOR_EACH</a></strong>(ELEM, ELEMS)</td></tr>
-<tr><td></td><td><strong><a href="/Files/common_8h.html#define-foreach">foreach</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-_gnu_source">_GNU_SOURCE</a></strong> <br>Use GNU specific source.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-tstr_helper">TSTR_HELPER</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-tstr">TSTR</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-crelude_v_major">crelude_V_MAJOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-crelude_v_minor">crelude_V_MINOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-crelude_v_patch">crelude_V_PATCH</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-crelude_version">crelude_VERSION</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-realloc_factor">REALLOC_FACTOR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-loop">loop</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unless">unless</a></strong>(cond)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-never">never</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-always">always</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-until">until</a></strong>(cond)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-newtype">newtype</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-arrayof">arrayof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-newarray">newarray</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-sliceof">sliceof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-newslice">newslice</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-hashof">hashof</a></strong>(T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-newhashable">newhashable</a></strong>(NT, T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unqualify">unqualify</a></strong>(D, T)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-nth">NTH</a></strong>(LIST, N)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-get">GET</a></strong>(LIST, N)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unused">UNUSED</a></strong>(x)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-no_error">NO_ERROR</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-ok">OK</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-noop">NOOP</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-nil">nil</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-panic">PANIC</a></strong>(lit, ...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-print">print</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-sprint">sprint</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-println">println</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-eprintf">eprintf</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-eprint">eprint</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-eprintln">eprintln</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-fprint">fprint</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unit">UNIT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-word_size">WORD_SIZE</a></strong> <br>Size of a machine word.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-__uchar8__"><strong>UCHAR8</strong></a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-_ldouble_bit">_LDOUBLE_BIT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-swap">SWAP</a></strong>(SELF, PIVOT)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-push">PUSH</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-pop">POP</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-shift">SHIFT</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-insert">INSERT</a></strong>(SELF, INDEX, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-extend">EXTEND</a></strong>(SELF, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-splice">SPLICE</a></strong>(SELF, INDEX, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-cut">CUT</a></strong>(SELF, FROM, UPTO)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-append">APPEND</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-prepend">PREPEND</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unshift">UNSHIFT</a></strong>(SELF, ELEM)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-prefix">PREFIX</a></strong>(SELF, SLIC)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-remove">REMOVE</a></strong>(SELF, INDEX)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-head">HEAD</a></strong>(SELF, END)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-tail">TAIL</a></strong>(SELF, BEG)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-first">FIRST</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-last">LAST</a></strong>(SELF)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-ansi">ANSI</a></strong>(CODE)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-bold">BOLD</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-faint">FAINT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-dim">DIM</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-italic">ITALIC</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-under">UNDER</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-blink">BLINK</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-rapid">RAPID</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-invert">INVERT</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-hidden">HIDDEN</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-strike">STRIKE</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-bold_off">BOLD_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-faint_off">FAINT_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-italic_off">ITALIC_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-under_off">UNDER_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-blink_off">BLINK_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-rapid_off">RAPID_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-invert_off">INVERT_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-hidden_off">HIDDEN_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-strike_off">STRIKE_OFF</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-reset">RESET</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-min">min</a></strong>(A, B)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-max">max</a></strong>(A, B)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-unwrap">UNWRAP</a></strong>(STRUCTURE) <br>Unwraps pointer/value in sizing wrapper struct.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-init">INIT</a></strong>(TYPE, ...) <br>Initialise sizing wrapper with literal.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-list">LIST</a></strong>(TYPE, ...) <br>Can be used to make slices from literal arrays.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-string">STRING</a></strong>(...) <br>Initialise sizing wrapper with of string literal.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-str">STR</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-sempty">SEMPTY</a></strong>(TYPE) <br>Empty slice of certain type.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-aempty">AEMPTY</a></strong>(TYPE) <br>Empty array of certain type.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-is_empty">IS_EMPTY</a></strong>(ARR) <br>Is array empty?</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-amake">AMAKE</a></strong>(TYPE, CAP) <br>Heap allocates a variable sized array.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-smake">SMAKE</a></strong>(TYPE, LEN) <br>Heap allocates a constant sized slice type.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-slice">SLICE</a></strong>(TYPE, OBJ, START, END) <br>Take a slice/substring/view of sized type.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-view">VIEW</a></strong>(TYPE, PTR, START, END) <br>Works like <code>SLICE</code>, but on a pointer instead of an array.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-symbolic">SYMBOLIC</a></strong>(STR)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-symbol_literal">SYMBOL_LITERAL</a></strong>(STR_LIT)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-acollect">ACOLLECT</a></strong>(T, count, pointer) <br>C array to dynamic array wrapper.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-scollect">SCOLLECT</a></strong>(T, count, pointer) <br>C array to slice wrapper.</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-smap">SMAP</a></strong>(T, func, list)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-amap">AMAP</a></strong>(T, func, list)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-for_each">FOR_EACH</a></strong>(ELEM, ELEMS)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/common_8h.html#define-foreach">foreach</a></strong></td></tr>
 </tbody></table>
 <h2 id="detailed-description"><a class="header" href="#detailed-description">Detailed Description</a></h2>
 <p><strong>Note</strong>: Read this: <a href="https://www.cprogramming.com/tutorial/unicode.html">unicode</a> by Jeff Bezanson, about modern unicode in C. </p>
@@ -689,7 +689,7 @@
 <pre><code class="language-cpp">static const byte NUL_BYTE = '\0';
 </code></pre>
 <h3 id="variable-nul_string"><a class="header" href="#variable-nul_string">variable NUL_STRING</a></h3>
-<pre><code class="language-cpp">static const string NUL_STRING = { .len = 0, .value = ([byte](/Files/common_8h.md#typedef-byte) *)&amp;[NUL_BYTE](/Files/common_8h.md#variable-nul_byte) };
+<pre><code class="language-cpp">static const string NUL_STRING = { .len = 0, .value = ([byte](/crelude/Files/common_8h.md#typedef-byte) *)&amp;[NUL_BYTE](/crelude/Files/common_8h.md#variable-nul_byte) };
 </code></pre>
 <h2 id="macros-documentation"><a class="header" href="#macros-documentation">Macros Documentation</a></h2>
 <h3 id="define-_gnu_source"><a class="header" href="#define-_gnu_source">define _GNU_SOURCE</a></h3>
@@ -706,7 +706,7 @@
 <pre><code class="language-cpp">#define TSTR(
     x
 )
-[TSTR_HELPER](/Files/common_8h.md#define-tstr_helper)(x)
+[TSTR_HELPER](/crelude/Files/common_8h.md#define-tstr_helper)(x)
 </code></pre>
 <h3 id="define-crelude_v_major"><a class="header" href="#define-crelude_v_major">define crelude_V_MAJOR</a></h3>
 <pre><code class="language-cpp">#define crelude_V_MAJOR 0
@@ -718,9 +718,9 @@
 <pre><code class="language-cpp">#define crelude_V_PATCH 0
 </code></pre>
 <h3 id="define-crelude_version"><a class="header" href="#define-crelude_version">define crelude_VERSION</a></h3>
-<pre><code class="language-cpp">#define crelude_VERSION 	&quot;v&quot; TSTR([crelude_V_MAJOR](/Files/common_8h.md#define-crelude_v_major)) \
-	&quot;.&quot; [TSTR](/Files/common_8h.md#define-tstr)([crelude_V_MINOR](/Files/common_8h.md#define-crelude_v_minor)) \
-	&quot;.&quot; [TSTR](/Files/common_8h.md#define-tstr)([crelude_V_PATCH](/Files/common_8h.md#define-crelude_v_patch))
+<pre><code class="language-cpp">#define crelude_VERSION 	&quot;v&quot; TSTR([crelude_V_MAJOR](/crelude/Files/common_8h.md#define-crelude_v_major)) \
+	&quot;.&quot; [TSTR](/crelude/Files/common_8h.md#define-tstr)([crelude_V_MINOR](/crelude/Files/common_8h.md#define-crelude_v_minor)) \
+	&quot;.&quot; [TSTR](/crelude/Files/common_8h.md#define-tstr)([crelude_V_PATCH](/crelude/Files/common_8h.md#define-crelude_v_patch))
 </code></pre>
 <h3 id="define-realloc_factor"><a class="header" href="#define-realloc_factor">define REALLOC_FACTOR</a></h3>
 <pre><code class="language-cpp">#define REALLOC_FACTOR 1.5
@@ -759,8 +759,8 @@ typedef struct _##NT { T value; } NT
 )
 	struct { \
 	T (*value); \
-	[usize](/Files/common_8h.md#typedef-usize) len;  \
-	[usize](/Files/common_8h.md#typedef-usize) cap;  \
+	[usize](/crelude/Files/common_8h.md#typedef-usize) len;  \
+	[usize](/crelude/Files/common_8h.md#typedef-usize) cap;  \
 }
 </code></pre>
 <h3 id="define-newarray"><a class="header" href="#define-newarray">define newarray</a></h3>
@@ -768,7 +768,7 @@ typedef struct _##NT { T value; } NT
     NT,
     T
 )
-typedef [arrayof](/Files/common_8h.md#define-arrayof)(T) NT
+typedef [arrayof](/crelude/Files/common_8h.md#define-arrayof)(T) NT
 </code></pre>
 <h3 id="define-sliceof"><a class="header" href="#define-sliceof">define sliceof</a></h3>
 <pre><code class="language-cpp">#define sliceof(
@@ -776,7 +776,7 @@ typedef [arrayof](/Files/common_8h.md#define-arrayof)(T) NT
 )
 	struct { \
 	T (*value); \
-	[usize](/Files/common_8h.md#typedef-usize) len;  \
+	[usize](/crelude/Files/common_8h.md#typedef-usize) len;  \
 }
 </code></pre>
 <h3 id="define-newslice"><a class="header" href="#define-newslice">define newslice</a></h3>
@@ -784,7 +784,7 @@ typedef [arrayof](/Files/common_8h.md#define-arrayof)(T) NT
     NT,
     T
 )
-typedef [sliceof](/Files/common_8h.md#define-sliceof)(T) NT
+typedef [sliceof](/crelude/Files/common_8h.md#define-sliceof)(T) NT
 </code></pre>
 <h3 id="define-hashof"><a class="header" href="#define-hashof">define hashof</a></h3>
 <pre><code class="language-cpp">#define hashof(
@@ -792,7 +792,7 @@ typedef [sliceof](/Files/common_8h.md#define-sliceof)(T) NT
 )
 	struct { \
 	T value;  \
-	[u64](/Files/common_8h.md#typedef-u64) hash; \
+	[u64](/crelude/Files/common_8h.md#typedef-u64) hash; \
 }
 </code></pre>
 <h3 id="define-newhashable"><a class="header" href="#define-newhashable">define newhashable</a></h3>
@@ -800,7 +800,7 @@ typedef [sliceof](/Files/common_8h.md#define-sliceof)(T) NT
     NT,
     T
 )
-typedef [hashof](/Files/common_8h.md#define-hashof)(T) NT
+typedef [hashof](/crelude/Files/common_8h.md#define-hashof)(T) NT
 </code></pre>
 <h3 id="define-unqualify"><a class="header" href="#define-unqualify">define unqualify</a></h3>
 <pre><code class="language-cpp">#define unqualify(
@@ -814,7 +814,7 @@ typedef D T T
     LIST,
     N
 )
-[UNWRAP](/Files/common_8h.md#define-unwrap)(([LIST](/Files/common_8h.md#define-list)))[(N)]
+[UNWRAP](/crelude/Files/common_8h.md#define-unwrap)(([LIST](/crelude/Files/common_8h.md#define-list)))[(N)]
 </code></pre>
 <h3 id="define-get"><a class="header" href="#define-get">define GET</a></h3>
 <pre><code class="language-cpp">#define GET(
@@ -822,10 +822,10 @@ typedef D T T
     N
 )
 	__extension__\
-	({ __auto_type _list = ([LIST](/Files/common_8h.md#define-list)); \
+	({ __auto_type _list = ([LIST](/crelude/Files/common_8h.md#define-list)); \
 	   __auto_type _n = (N); \
-	   [usize](/Files/common_8h.md#typedef-usize) _index = _n &lt; 0 ? ([usize](/Files/common_8h.md#typedef-usize))(_list.len + _n) : ([usize](/Files/common_8h.md#typedef-usize))_n; \
-	   [UNWRAP](/Files/common_8h.md#define-unwrap)(_list)[_index]; })
+	   [usize](/crelude/Files/common_8h.md#typedef-usize) _index = _n &lt; 0 ? ([usize](/crelude/Files/common_8h.md#typedef-usize))(_list.len + _n) : ([usize](/crelude/Files/common_8h.md#typedef-usize))_n; \
+	   [UNWRAP](/crelude/Files/common_8h.md#define-unwrap)(_list)[_index]; })
 </code></pre>
 <h3 id="define-unused"><a class="header" href="#define-unused">define UNUSED</a></h3>
 <pre><code class="language-cpp">#define UNUSED(
@@ -850,44 +850,44 @@ typedef D T T
     lit,
     ...
 )
-[panic](/Files/common_8h.md#function-panic)(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
+[panic](/crelude/Files/common_8h.md#function-panic)(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
 	      lit &quot;\n[**] Aborting...\n&quot;, __func__, ## __VA_ARGS__)
 </code></pre>
 <h3 id="define-print"><a class="header" href="#define-print">define print</a></h3>
 <pre><code class="language-cpp">#define print(
     ...
 )
-[novel_fprintf](/Files/common_8h.md#function-novel_fprintf)(stdout, __VA_ARGS__)
+[novel_fprintf](/crelude/Files/common_8h.md#function-novel_fprintf)(stdout, __VA_ARGS__)
 </code></pre>
 <h3 id="define-sprint"><a class="header" href="#define-sprint">define sprint</a></h3>
-<pre><code class="language-cpp">#define sprint [novel_sprintf](/Files/common_8h.md#function-novel_sprintf)
+<pre><code class="language-cpp">#define sprint [novel_sprintf](/crelude/Files/common_8h.md#function-novel_sprintf)
 </code></pre>
 <h3 id="define-println"><a class="header" href="#define-println">define println</a></h3>
 <pre><code class="language-cpp">#define println(
     ...
 )
-[novel_fprintf_newline](/Files/common_8h.md#function-novel_fprintf_newline)(stdout, __VA_ARGS__)
+[novel_fprintf_newline](/crelude/Files/common_8h.md#function-novel_fprintf_newline)(stdout, __VA_ARGS__)
 </code></pre>
 <h3 id="define-eprintf"><a class="header" href="#define-eprintf">define eprintf</a></h3>
 <pre><code class="language-cpp">#define eprintf(
     ...
 )
-[novel_fprintf](/Files/common_8h.md#function-novel_fprintf)(stderr, __VA_ARGS__)
+[novel_fprintf](/crelude/Files/common_8h.md#function-novel_fprintf)(stderr, __VA_ARGS__)
 </code></pre>
 <h3 id="define-eprint"><a class="header" href="#define-eprint">define eprint</a></h3>
 <pre><code class="language-cpp">#define eprint(
     ...
 )
-[eprintf](/Files/common_8h.md#define-eprintf)(__VA_ARGS__)
+[eprintf](/crelude/Files/common_8h.md#define-eprintf)(__VA_ARGS__)
 </code></pre>
 <h3 id="define-eprintln"><a class="header" href="#define-eprintln">define eprintln</a></h3>
 <pre><code class="language-cpp">#define eprintln(
     ...
 )
-[novel_fprintf_newline](/Files/common_8h.md#function-novel_fprintf_newline)(stderr, __VA_ARGS__)
+[novel_fprintf_newline](/crelude/Files/common_8h.md#function-novel_fprintf_newline)(stderr, __VA_ARGS__)
 </code></pre>
 <h3 id="define-fprint"><a class="header" href="#define-fprint">define fprint</a></h3>
-<pre><code class="language-cpp">#define fprint [novel_fprintf](/Files/common_8h.md#function-novel_fprintf)
+<pre><code class="language-cpp">#define fprint [novel_fprintf](/crelude/Files/common_8h.md#function-novel_fprintf)
 </code></pre>
 <h3 id="define-unit"><a class="header" href="#define-unit">define UNIT</a></h3>
 <pre><code class="language-cpp">#define UNIT ;
@@ -912,7 +912,7 @@ typedef D T T
 )
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
-	   [swap](/Files/common_8h.md#function-swap)(_self, (PIVOT), sizeof(*_self-&gt;value)); })
+	   [swap](/crelude/Files/common_8h.md#function-swap)(_self, (PIVOT), sizeof(*_self-&gt;value)); })
 </code></pre>
 <h3 id="define-push"><a class="header" href="#define-push">define PUSH</a></h3>
 <pre><code class="language-cpp">#define PUSH(
@@ -922,7 +922,7 @@ typedef D T T
 	__extension__\
 	({ __auto_type           _self = &amp;(SELF); \
 	   typeof(*_self-&gt;value) _elem =  (ELEM); \
-	   [push](/Files/common_8h.md#function-push)(_self, &amp;_elem, sizeof(_elem)); })
+	   [push](/crelude/Files/common_8h.md#function-push)(_self, &amp;_elem, sizeof(_elem)); })
 </code></pre>
 <h3 id="define-pop"><a class="header" href="#define-pop">define POP</a></h3>
 <pre><code class="language-cpp">#define POP(
@@ -930,7 +930,7 @@ typedef D T T
 )
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
-	   [pop](/Files/common_8h.md#function-pop)(_self, sizeof(*_self-&gt;value)); })
+	   [pop](/crelude/Files/common_8h.md#function-pop)(_self, sizeof(*_self-&gt;value)); })
 </code></pre>
 <h3 id="define-shift"><a class="header" href="#define-shift">define SHIFT</a></h3>
 <pre><code class="language-cpp">#define SHIFT(
@@ -938,7 +938,7 @@ typedef D T T
 )
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
-	   [shift](/Files/common_8h.md#function-shift)(_self, sizeof(*_self-&gt;value)); })
+	   [shift](/crelude/Files/common_8h.md#function-shift)(_self, sizeof(*_self-&gt;value)); })
 </code></pre>
 <h3 id="define-insert"><a class="header" href="#define-insert">define INSERT</a></h3>
 <pre><code class="language-cpp">#define INSERT(
@@ -949,7 +949,7 @@ typedef D T T
 	__extension__\
 	({ __auto_type           _self = &amp;(SELF); \
 	   typeof(*_self-&gt;value) _elem =  (ELEM); \
-	   [insert](/Files/common_8h.md#function-insert)(_self, (INDEX), &amp;_elem, sizeof(_elem)); })
+	   [insert](/crelude/Files/common_8h.md#function-insert)(_self, (INDEX), &amp;_elem, sizeof(_elem)); })
 </code></pre>
 <h3 id="define-extend"><a class="header" href="#define-extend">define EXTEND</a></h3>
 <pre><code class="language-cpp">#define EXTEND(
@@ -959,7 +959,7 @@ typedef D T T
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
 	   __auto_type _slic =  (SLIC); \
-	   [extend](/Files/common_8h.md#function-extend)(_self, &amp;_slic, sizeof(*_slic.value)); })
+	   [extend](/crelude/Files/common_8h.md#function-extend)(_self, &amp;_slic, sizeof(*_slic.value)); })
 </code></pre>
 <h3 id="define-splice"><a class="header" href="#define-splice">define SPLICE</a></h3>
 <pre><code class="language-cpp">#define SPLICE(
@@ -970,7 +970,7 @@ typedef D T T
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
 	   __auto_type _slic =  (SLIC); \
-	   [splice](/Files/common_8h.md#function-splice)(_self, (INDEX), &amp;_slic, sizeof(*_slic.value)); })
+	   [splice](/crelude/Files/common_8h.md#function-splice)(_self, (INDEX), &amp;_slic, sizeof(*_slic.value)); })
 </code></pre>
 <h3 id="define-cut"><a class="header" href="#define-cut">define CUT</a></h3>
 <pre><code class="language-cpp">#define CUT(
@@ -980,70 +980,70 @@ typedef D T T
 )
 	__extension__\
 	({ __auto_type _self = &amp;(SELF); \
-	   static [GenericSlice](/Classes/structGenericSlice.md) _cut; \
-	   _cut = [cut](/Files/common_8h.md#function-cut)(_self, (FROM), (UPTO), sizeof(*_self-&gt;value)); \
-	   ([u0](/Files/common_8h.md#typedef-u0) *)&amp;_cut; })
+	   static [GenericSlice](/crelude/Classes/structGenericSlice.md) _cut; \
+	   _cut = [cut](/crelude/Files/common_8h.md#function-cut)(_self, (FROM), (UPTO), sizeof(*_self-&gt;value)); \
+	   ([u0](/crelude/Files/common_8h.md#typedef-u0) *)&amp;_cut; })
 </code></pre>
 <h3 id="define-append"><a class="header" href="#define-append">define APPEND</a></h3>
 <pre><code class="language-cpp">#define APPEND(
     SELF,
     ELEM
 )
-[PUSH](/Files/common_8h.md#define-push)(SELF, ELEM)
+[PUSH](/crelude/Files/common_8h.md#define-push)(SELF, ELEM)
 </code></pre>
 <h3 id="define-prepend"><a class="header" href="#define-prepend">define PREPEND</a></h3>
 <pre><code class="language-cpp">#define PREPEND(
     SELF,
     ELEM
 )
-[INSERT](/Files/common_8h.md#define-insert)(SELF, 0, ELEM)
+[INSERT](/crelude/Files/common_8h.md#define-insert)(SELF, 0, ELEM)
 </code></pre>
 <h3 id="define-unshift"><a class="header" href="#define-unshift">define UNSHIFT</a></h3>
 <pre><code class="language-cpp">#define UNSHIFT(
     SELF,
     ELEM
 )
-[PREPEND](/Files/common_8h.md#define-prepend)(SELF, ELEM)
+[PREPEND](/crelude/Files/common_8h.md#define-prepend)(SELF, ELEM)
 </code></pre>
 <h3 id="define-prefix"><a class="header" href="#define-prefix">define PREFIX</a></h3>
 <pre><code class="language-cpp">#define PREFIX(
     SELF,
     SLIC
 )
-[SPLICE](/Files/common_8h.md#define-splice)(SELF, 0, SLIC)
+[SPLICE](/crelude/Files/common_8h.md#define-splice)(SELF, 0, SLIC)
 </code></pre>
 <h3 id="define-remove"><a class="header" href="#define-remove">define REMOVE</a></h3>
 <pre><code class="language-cpp">#define REMOVE(
     SELF,
     INDEX
 )
-[CUT](/Files/common_8h.md#define-cut)(SELF, INDEX, INDEX)
+[CUT](/crelude/Files/common_8h.md#define-cut)(SELF, INDEX, INDEX)
 </code></pre>
 <h3 id="define-head"><a class="header" href="#define-head">define HEAD</a></h3>
 <pre><code class="language-cpp">#define HEAD(
     SELF,
     END
 )
-[SLICE](/Files/common_8h.md#define-slice)(SELF, 0, END)
+[SLICE](/crelude/Files/common_8h.md#define-slice)(SELF, 0, END)
 </code></pre>
 <h3 id="define-tail"><a class="header" href="#define-tail">define TAIL</a></h3>
 <pre><code class="language-cpp">#define TAIL(
     SELF,
     BEG
 )
-[SLICE](/Files/common_8h.md#define-slice)(SELF, BEG, -1)
+[SLICE](/crelude/Files/common_8h.md#define-slice)(SELF, BEG, -1)
 </code></pre>
 <h3 id="define-first"><a class="header" href="#define-first">define FIRST</a></h3>
 <pre><code class="language-cpp">#define FIRST(
     SELF
 )
-[NTH](/Files/common_8h.md#define-nth)(SELF, 0)
+[NTH](/crelude/Files/common_8h.md#define-nth)(SELF, 0)
 </code></pre>
 <h3 id="define-last"><a class="header" href="#define-last">define LAST</a></h3>
 <pre><code class="language-cpp">#define LAST(
     SELF
 )
-[GET](/Files/common_8h.md#define-get)(SELF, -1)
+[GET](/crelude/Files/common_8h.md#define-get)(SELF, -1)
 </code></pre>
 <h3 id="define-ansi"><a class="header" href="#define-ansi">define ANSI</a></h3>
 <pre><code class="language-cpp">#define ANSI(
@@ -1058,7 +1058,7 @@ typedef D T T
 <pre><code class="language-cpp">#define FAINT &quot;2&quot;
 </code></pre>
 <h3 id="define-dim"><a class="header" href="#define-dim">define DIM</a></h3>
-<pre><code class="language-cpp">#define DIM [FAINT](/Files/common_8h.md#define-faint)
+<pre><code class="language-cpp">#define DIM [FAINT](/crelude/Files/common_8h.md#define-faint)
 </code></pre>
 <h3 id="define-italic"><a class="header" href="#define-italic">define ITALIC</a></h3>
 <pre><code class="language-cpp">#define ITALIC &quot;3&quot;
@@ -1169,8 +1169,8 @@ typedef D T T
     ...
 )
 	{ \
-	.len = sizeof(([byte](/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ }) - 1, \
-	.value = ([byte](/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ } \
+	.len = sizeof(([byte](/crelude/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ }) - 1, \
+	.value = ([byte](/crelude/Files/common_8h.md#typedef-byte)[]){ __VA_ARGS__ } \
 }
 </code></pre>
 <p>Initialise sizing wrapper with of string literal. </p>
@@ -1178,20 +1178,20 @@ typedef D T T
 <pre><code class="language-cpp">#define STR(
     ...
 )
-(([string](/Classes/structstring.md))[STRING](/Files/common_8h.md#define-string)(__VA_ARGS__))
+(([string](/crelude/Classes/structstring.md))[STRING](/crelude/Files/common_8h.md#define-string)(__VA_ARGS__))
 </code></pre>
 <h3 id="define-sempty"><a class="header" href="#define-sempty">define SEMPTY</a></h3>
 <pre><code class="language-cpp">#define SEMPTY(
     TYPE
 )
-((TYPE){ .len = 0, .value = [nil](/Files/common_8h.md#define-nil) })
+((TYPE){ .len = 0, .value = [nil](/crelude/Files/common_8h.md#define-nil) })
 </code></pre>
 <p>Empty slice of certain type. </p>
 <h3 id="define-aempty"><a class="header" href="#define-aempty">define AEMPTY</a></h3>
 <pre><code class="language-cpp">#define AEMPTY(
     TYPE
 )
-((TYPE){ .len = 0, .cap = 0, .value = [nil](/Files/common_8h.md#define-nil) })
+((TYPE){ .len = 0, .cap = 0, .value = [nil](/crelude/Files/common_8h.md#define-nil) })
 </code></pre>
 <p>Empty array of certain type. </p>
 <h3 id="define-is_empty"><a class="header" href="#define-is_empty">define IS_EMPTY</a></h3>
@@ -1209,7 +1209,7 @@ typedef D T T
 	{ \
 	.len = 0, \
 	.cap = (CAP), \
-	.value = [emalloc](/Files/common_8h.md#function-emalloc)((CAP), sizeof(TYPE)) \
+	.value = [emalloc](/crelude/Files/common_8h.md#function-emalloc)((CAP), sizeof(TYPE)) \
 }
 </code></pre>
 <p>Heap allocates a variable sized array. </p>
@@ -1220,7 +1220,7 @@ typedef D T T
 )
 	{ \
 	.len = (LEN), \
-	.value = [emalloc](/Files/common_8h.md#function-emalloc)((LEN), sizeof(TYPE)) \
+	.value = [emalloc](/crelude/Files/common_8h.md#function-emalloc)((LEN), sizeof(TYPE)) \
 }
 </code></pre>
 <p>Heap allocates a constant sized slice type. </p>
@@ -1232,7 +1232,7 @@ typedef D T T
     END
 )
 	((TYPE){ \
-	.len = ((([isize](/Files/common_8h.md#typedef-isize))(END) &lt; 0) ? (OBJ).len + 1 : 0) + (END) - (START), \
+	.len = ((([isize](/crelude/Files/common_8h.md#typedef-isize))(END) &lt; 0) ? (OBJ).len + 1 : 0) + (END) - (START), \
 	.value = (OBJ).value + (START) \
 })
 </code></pre>
@@ -1254,18 +1254,18 @@ typedef D T T
 <pre><code class="language-cpp">#define SYMBOLIC(
     STR
 )
-	(([symbol](/Classes/structsymbol.md)){ \
-	.hash = [hash_string](/Files/common_8h.md#function-hash_string)([STR](/Files/common_8h.md#define-str)), \
-	.value = [STR](/Files/common_8h.md#define-str) \
+	(([symbol](/crelude/Classes/structsymbol.md)){ \
+	.hash = [hash_string](/crelude/Files/common_8h.md#function-hash_string)([STR](/crelude/Files/common_8h.md#define-str)), \
+	.value = [STR](/crelude/Files/common_8h.md#define-str) \
 })
 </code></pre>
 <h3 id="define-symbol_literal"><a class="header" href="#define-symbol_literal">define SYMBOL_LITERAL</a></h3>
 <pre><code class="language-cpp">#define SYMBOL_LITERAL(
     STR_LIT
 )
-	(([symbol](/Classes/structsymbol.md)){ \
-	.hash = [hash_string](/Files/common_8h.md#function-hash_string)([STRING](/Files/common_8h.md#define-string)(STR_LIT)), \
-	.value = [STRING](/Files/common_8h.md#define-string)(STR_LIT) \
+	(([symbol](/crelude/Classes/structsymbol.md)){ \
+	.hash = [hash_string](/crelude/Files/common_8h.md#function-hash_string)([STRING](/crelude/Files/common_8h.md#define-string)(STR_LIT)), \
+	.value = [STRING](/crelude/Files/common_8h.md#define-string)(STR_LIT) \
 })
 </code></pre>
 <h3 id="define-acollect"><a class="header" href="#define-acollect">define ACOLLECT</a></h3>
@@ -1301,8 +1301,8 @@ typedef D T T
 )
 	__extension__({ \
 	T _mapped; \
-	_mapped = ((T)[SMAKE](/Files/common_8h.md#define-smake)(typeof(*_mapped.value), (list).len)); \
-	for ([usize](/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i) \
+	_mapped = ((T)[SMAKE](/crelude/Files/common_8h.md#define-smake)(typeof(*_mapped.value), (list).len)); \
+	for ([usize](/crelude/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i) \
 		_mapped.value[_i] = (func)((list).value[_i]); \
 	_mapped; \
 })
@@ -1315,8 +1315,8 @@ typedef D T T
 )
 	__extension__({ \
 	T _mapped; \
-	_mapped = ((T)[AMAKE](/Files/common_8h.md#define-amake)(typeof(*_mapped.value), (list).len)); \
-	for ([usize](/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i, ++_mapped.len) \
+	_mapped = ((T)[AMAKE](/crelude/Files/common_8h.md#define-amake)(typeof(*_mapped.value), (list).len)); \
+	for ([usize](/crelude/Files/common_8h.md#typedef-usize) _i = 0; _i &lt; (list).len; ++_i, ++_mapped.len) \
 		_mapped.value[_i] = (func)((list).value[_i]); \
 	_mapped; \
 })
@@ -1328,7 +1328,7 @@ typedef D T T
 )
 	for (struct { typeof(*(ELEMS).value) item; \
 			      typeof((ELEMS).value) ptr, first; \
-				  [usize](/Files/common_8h.md#typedef-usize) index; \
+				  [usize](/crelude/Files/common_8h.md#typedef-usize) index; \
 				  bool once; \
 				} it = { *(ELEMS).value, \
 				         (ELEMS).value, \
@@ -1372,7 +1372,7 @@ xs[3] = 9
 xs[4] = 1
 </code></pre>
 <h3 id="define-foreach"><a class="header" href="#define-foreach">define foreach</a></h3>
-<pre><code class="language-cpp">#define foreach [FOR_EACH](/Files/common_8h.md#define-for_each)
+<pre><code class="language-cpp">#define foreach [FOR_EACH](/crelude/Files/common_8h.md#define-for_each)
 </code></pre>
 <h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
 <pre><code class="language-cpp">
@@ -1834,7 +1834,7 @@ extern u64 hash_string(const string);
 #endif
 </code></pre>
 <hr />
-<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+<p>Updated on  2 July 2021 at 20:49:39 UTC</p>
 
                     </main>
 

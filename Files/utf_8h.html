@@ -151,29 +151,29 @@
 <h1 id="srccreludeutfh"><a class="header" href="#srccreludeutfh">src/crelude/utf.h</a></h1>
 <h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-to_string">to_string</a></strong>(const <a href="/Files/common_8h.html#typedef-byte">byte</a> * c)</td></tr>
-<tr><td><a href="/Classes/structrunic.html">runic</a></td><td><strong><a href="/Files/utf_8h.html#function-utf8_to_ucs4">utf8_to_ucs4</a></strong>(<a href="/Classes/structrunic.html">runic</a> dest, <a href="/Classes/structstring.html">string</a> src)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-ucs4_to_utf8">ucs4_to_utf8</a></strong>(<a href="/Classes/structstring.html">string</a> dest, <a href="/Classes/structrunic.html">runic</a> src)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-rune_to_utf8">rune_to_utf8</a></strong>(<a href="/Classes/structstring.html">string</a> dest, <a href="/Files/common_8h.html#typedef-rune">rune</a> ch)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/utf_8h.html#function-byte_offset">byte_offset</a></strong>(<a href="/Classes/structstring.html">string</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/utf_8h.html#function-char_num">char_num</a></strong>(<a href="/Classes/structstring.html">string</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-rune">rune</a></td><td><strong><a href="/Files/utf_8h.html#function-read_rune">read_rune</a></strong>(<a href="/Classes/structstring.html">string</a> s, <a href="/Files/common_8h.html#typedef-usize">usize</a> * i)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/utf_8h.html#function-next_rune">next_rune</a></strong>(<a href="/Classes/structstring.html">string</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> * )<br>Update byte-index to move next rune, skipping it.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/Files/utf_8h.html#function-prev_rune">prev_rune</a></strong>(<a href="/Classes/structstring.html">string</a> , <a href="/Files/common_8h.html#typedef-usize">usize</a> * )<br>Update byte-index to move to previous rune.</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/utf_8h.html#function-read_escape">read_escape</a></strong>(<a href="/Classes/structstring.html">string</a> src, <a href="/Files/common_8h.html#typedef-rune">rune</a> * dest)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-escape_rune">escape_rune</a></strong>(<a href="/Classes/structstring.html">string</a> dest, <a href="/Files/common_8h.html#typedef-rune">rune</a> ch)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-utf8_unescape">utf8_unescape</a></strong>(<a href="/Classes/structstring.html">string</a> dest, <a href="/Classes/structstring.html">string</a> src)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-utf8_escape">utf8_escape</a></strong>(<a href="/Classes/structstring.html">string</a> dest, <a href="/Classes/structstring.html">string</a> src, bool escape_quotes)</td></tr>
-<tr><td><a href="/Classes/structstring.html">string</a></td><td><strong><a href="/Files/utf_8h.html#function-utf_strchr">utf_strchr</a></strong>(<a href="/Classes/structstring.html">string</a> s, <a href="/Files/common_8h.html#typedef-rune">rune</a> ch, <a href="/Files/common_8h.html#typedef-usize">usize</a> * i)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/utf_8h.html#function-utf_strlen">utf_strlen</a></strong>(<a href="/Classes/structstring.html">string</a> s)</td></tr>
-<tr><td><a href="/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/Files/utf_8h.html#function-utf_seqlen">utf_seqlen</a></strong>(<a href="/Classes/structstring.html">string</a> )<br>Returns length of next UTF-8 sequence.</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/utf_8h.html#function-is_locale_utf8">is_locale_utf8</a></strong>(<a href="/Files/common_8h.html#typedef-byte">byte</a> * locale)</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/utf_8h.html#function-octal_digit">octal_digit</a></strong>(<a href="/Files/common_8h.html#typedef-byte">byte</a> c)</td></tr>
-<tr><td>bool</td><td><strong><a href="/Files/utf_8h.html#function-hex_digit">hex_digit</a></strong>(<a href="/Files/common_8h.html#typedef-byte">byte</a> c)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-to_string">to_string</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * c)</td></tr>
+<tr><td><a href="/crelude/Classes/structrunic.html">runic</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf8_to_ucs4">utf8_to_ucs4</a></strong>(<a href="/crelude/Classes/structrunic.html">runic</a> dest, <a href="/crelude/Classes/structstring.html">string</a> src)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-ucs4_to_utf8">ucs4_to_utf8</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> dest, <a href="/crelude/Classes/structrunic.html">runic</a> src)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-rune_to_utf8">rune_to_utf8</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> dest, <a href="/crelude/Files/common_8h.html#typedef-rune">rune</a> ch)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-byte_offset">byte_offset</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-char_num">char_num</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-rune">rune</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-read_rune">read_rune</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> s, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> * i)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-next_rune">next_rune</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> * )<br>Update byte-index to move next rune, skipping it.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-prev_rune">prev_rune</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> * )<br>Update byte-index to move to previous rune.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-read_escape">read_escape</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> src, <a href="/crelude/Files/common_8h.html#typedef-rune">rune</a> * dest)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-escape_rune">escape_rune</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> dest, <a href="/crelude/Files/common_8h.html#typedef-rune">rune</a> ch)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf8_unescape">utf8_unescape</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> dest, <a href="/crelude/Classes/structstring.html">string</a> src)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf8_escape">utf8_escape</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> dest, <a href="/crelude/Classes/structstring.html">string</a> src, bool escape_quotes)</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf_strchr">utf_strchr</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> s, <a href="/crelude/Files/common_8h.html#typedef-rune">rune</a> ch, <a href="/crelude/Files/common_8h.html#typedef-usize">usize</a> * i)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf_strlen">utf_strlen</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> s)</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/utf_8h.html#function-utf_seqlen">utf_seqlen</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> )<br>Returns length of next UTF-8 sequence.</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/utf_8h.html#function-is_locale_utf8">is_locale_utf8</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * locale)</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/utf_8h.html#function-octal_digit">octal_digit</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> c)</td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Files/utf_8h.html#function-hex_digit">hex_digit</a></strong>(<a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> c)</td></tr>
 </tbody></table>
 <h2 id="defines"><a class="header" href="#defines">Defines</a></h2>
 <table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
-<tr><td></td><td><strong><a href="/Files/utf_8h.html#define-is_utf">is_utf</a></strong>(c) <br>Is <code>c</code> the start of a UTF-8 sequence?</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/utf_8h.html#define-is_utf">is_utf</a></strong>(c) <br>Is <code>c</code> the start of a UTF-8 sequence?</td></tr>
 </tbody></table>
 <h2 id="functions-documentation"><a class="header" href="#functions-documentation">Functions Documentation</a></h2>
 <h3 id="function-to_string"><a class="header" href="#function-to_string">function to_string</a></h3>
@@ -429,7 +429,7 @@ bool octal_digit(byte c);
 bool hex_digit(byte c);
 </code></pre>
 <hr />
-<p>Updated on  2 July 2021 at 20:39:23 UTC</p>
+<p>Updated on  2 July 2021 at 20:49:39 UTC</p>
 
                     </main>
 
