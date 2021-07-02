@@ -16,8 +16,8 @@ jobs:
         mdbook-version: 'latest'
     - name: Build docs
       run: |
-        apt-get update -y
-        apt-get install -y doxygen build-essential
+        sudo apt-get update -y
+        sudo apt-get install -y doxygen build-essential
         make docs
         # Should fetch other dependencies for us.
     # Great extra actions to compose with:
