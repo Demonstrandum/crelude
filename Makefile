@@ -61,6 +61,54 @@ clean:
 	$(begin_command)
 	rm -fr ./$(ODIR)/ ./$(DDIR)/
 	$(end_command)
+	$(begin_command)
+	rm -fr .docs/xml ./docs/doxybook2 ./docs/*.zip
+	$(end_command)
+
+DOXYBOOK_VER ?= 1.3.5
+DOXYBOOK_TAR ?= linux-amd64
+DOXYBOOK_ZIP ?= doxybook2-$(DOXYBOOK_TAR)-v$(DOXYBOOK_VER).zip
+DOXYBOOK_BIN ?= ./docs/doxybook2/bin/doxybook2
+
+docs/doxybook2-linux-amd64-v1.3.5.zip:
+	$(begin_command)
+	curl -L https://github.com/matusnovak/doxybook2/releases/download/v$(DOXYBOOK_VER)/$(DOXYBOOK_ZIP) > ./docs/$(DOXYBOOK_ZIP)
+	$(end_command)
+
+docs/doxybook2: docs/$(DOXYBOOK_ZIP)
+	$(begin_command)
+	unzip -q docs/$(DOXYBOOK_ZIP) -d ./docs/doxybook2
+	$(end_command)
+
+$(DOXYBOOK_BIN): docs/doxybook2
+	$(begin_command)
+	strip $(DOXYBOOK_BIN)
+	$(end_command)
+
+./docs/book:
+	$(begin_command)
+	mkdir ./docs/book
+	$(end_command)
+
+docs: $(DOXYBOOK_BIN) ./docs/book
+	@echo "[~] Building documentation."
+	$(begin_command)
+	git submodule update --init --recursive
+	$(end_command)
+	$(begin_command)
+	cd ./docs && doxygen
+	$(end_command)
+	$(begin_command)
+	$(DOXYBOOK_BIN) -q \
+		--input ./docs/xml \
+		--output ./docs/src \
+		--config ./docs/.doxybook/config.json \
+		--summary-input ./docs/src/SUMMARY.md.tmpl \
+		--summary-output ./docs/src/SUMMARY.md
+	$(end_command)
+	$(begin_command)
+	cd ./docs && mdbook build
+	$(end_command)
 
 $(ODIR):
 	@mkdir $@
@@ -114,4 +162,4 @@ $(DEPS):
 
 include $(wildcard $(DEPS))
 
-.PHONY: all pre-build clean install
+.PHONY: all docs pre-build clean install

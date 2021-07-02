@@ -2,14 +2,29 @@
 tests
 
 # Docs
-docs/_build/
+docs/src/*
+# Except keep these files.
+!docs/src/SUMMARY.md.tmpl
+!docs/src/SUMMARY.md
+!docs/src/README.md
+
+docs/book
+docs/*.zip
+docs/doxybook2
 docs/xml
-docs/html
-docs/api
+
+!docs/book.toml
+!docs/.doxybook
+!docs/Doxyfile
+!docs/README.md
+!docs/server.sh
 
 # Prerequisites
 d/
 *.d
+
+# Archives
+*.zip
 
 # Object files
 obj/
@@ -42,8 +57,6 @@ o/
 *.dylib
 
 # Executables
-ljc
-ljc_*
 *.exe
 *.out
 *.app

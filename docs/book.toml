@@ -1,0 +1,9 @@
+[book]
+title = "Crelude Documentation"
+description = "Documentation for Crelude, the C prelude/standard-library."
+authors = ["Samuel F. D. Knutsen"]
+language = "en"
+
+[output.html]
+mathjax-support = true
+

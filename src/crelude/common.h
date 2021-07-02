@@ -2,7 +2,7 @@
 //! Defines basic macros and datatypes which are in
 //! common through-out the whole project.
 //! @note Read this:
-//!    => https://www.cprogramming.com/tutorial/unicode.html
+//!    [unicode](https://www.cprogramming.com/tutorial/unicode.html)
 //!    by Jeff Bezanson, about modern unicode in C.
 
 #ifndef COMMON_HEADER
@@ -167,7 +167,7 @@ typedef   signed char imin;
 #ifndef IMPLEMENTATION
 	typedef __UCHAR8__ byte;
 #else
-	typedef __uint8_t byte;  ///< Don't use `char' when you want `byte'.
+	typedef __uint8_t byte;  ///< Don't use `char` when you want `byte`.
 #endif
 
 typedef  __int16_t i16;
@@ -176,8 +176,8 @@ typedef __uint16_t u16;
 typedef  __int32_t i32;
 typedef __uint32_t u32;
 
-/// Unicode codepoint (32 bits), don't use `char[4]',
-/// and definitely do not use `wchar_t'.
+/// Unicode codepoint (USC-4) (32 bits),
+/// don't use `char[4]`, and definitely do not use `wchar_t`.
 typedef u32 rune;
 
 #if (__LONG_WIDTH__ == 64)
@@ -254,14 +254,14 @@ extern u0 *emalloc(usize, usize);
 /// [----A----|---B---] -> [---B---|----A----]
 ///           ^ pivot
 /// ```
-/// @param[in,out] self Pointer to the slice, cast to (u0 *).
+/// @param[in,out] self Pointer to the slice, cast to (`u0 *`).
 /// @param[in] pivot The index of the slice that divides the blocks to swap.
 /// @param[in] width The `sizeof(T)` where `T` is
 ///                  the type of element in the slice.
 extern u0 swap(u0 *self, usize pivot, usize width);
 /// Push element to array.
-/// @param[in,out] self Pointer to the dynamic array, cast to (u0 *).
-/// @param[in] element Pointer to element to be pushed,  cast to (u0 *).
+/// @param[in,out] self Pointer to the dynamic array, cast to (`u0 *`).
+/// @param[in] element Pointer to element to be pushed,  cast to (`u0 *`).
 /// @param[in] width The `sizeof(T)` where `T` is the type of the element
 ///                  that is being pushed.
 /// @returns How much capacity increased.
@@ -543,11 +543,13 @@ extern u64 hash_string(const string);
 /// }
 /// ```
 /// Will print:
+/// ```
 ///   xs[0] = 5
 ///   xs[1] = 3
 ///   xs[2] = 6
 ///   xs[3] = 9
 ///   xs[4] = 1
+/// ```
 #define FOR_EACH(ELEM, ELEMS) \
 	for (struct { typeof(*(ELEMS).value) item; \
 			      typeof((ELEMS).value) ptr, first; \
