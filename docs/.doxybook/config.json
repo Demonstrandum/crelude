@@ -12,6 +12,5 @@
 	"foldersToGenerate": [
 		"classes", "files"
 	],
-	"linkAndInlineCodeAsHTML": false,
-	"indexClassesTitle": "Data&nbsp;Structures"
+	"linkAndInlineCodeAsHTML": false
 }
