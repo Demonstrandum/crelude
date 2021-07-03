@@ -4,6 +4,7 @@
 
 #include <crelude/common.h>
 #include <crelude/utf.h>
+#include <crelude/base64.h>
 
 #include <stdio.h>
 #include <locale.h>
@@ -155,6 +156,51 @@ ierr main(i32 argc, const byte **argv)
 		println("arr = %D%d{, };", arr);
 		sliceof(int) *cutout = CUT(arr, 2, 4);
 		println("arr = %D%d{, };  (cut out: %V%d{, })", arr, *cutout);
+	}
+
+	TEST("Base64 encoding and decoding.") {
+		sliceof(u16) data = INIT(u16, {
+			__extension__ 0b0000000000000000,  //<      0 (0x00 0x00).
+			__extension__ 0b0011001000110010,  //< 12,850 (0x32 0x32).
+			__extension__ 0b0000011000000110,  //<  1,542 (0x06 0x06).
+			__extension__ 0b0111010101110101   //< 30,069 (0x75 0x75).
+		}); //< 64-bit integer value = 55,190,430,840,181 (big endian).
+
+		MemSlice bytes = TO_BYTES(data);
+		println("{ %V%hu{, } } <=> { %V{0x%02hhX}{, } }", data, bytes);
+
+		MemSlice repr = bytes;
+		if (is_little_endian())  // Convert to big endian byte order.
+			repr = reverse_endianness(repr);
+		println("  (decimal: %lu)", *(u64 *)PTR(repr));
+
+		MemSlice encoded = base64_encode(bytes);
+		println("encodes to: %V%c{}", encoded);
+
+		if (is_little_endian())
+				FREE_INSIDE(repr);
+
+		MemSlice decoded = base64_decode(encoded);
+		repr = decoded;
+		if (is_little_endian())
+			repr = reverse_endianness(repr);
+
+		println("decodes to: %lu", *(u64 *)PTR(repr));
+
+		FREE_INSIDE(encoded);
+		if (is_little_endian())
+			FREE_INSIDE(repr);
+
+		string str = STRING("Hello, World!");
+		println("\"%S\" <=> { %V{0x%hhX}{, } }", str, str);
+		encoded = base64_encode(TO_BYTES(str));
+		println("encodes to: %V%c{}", encoded);
+
+		decoded = base64_decode(encoded);
+		println("decodes to: \"%V%c{}\".", decoded);
+
+		FREE_INSIDE(encoded);
+		FREE_INSIDE(decoded);
 	}
 
 	return EXIT_SUCCESS;

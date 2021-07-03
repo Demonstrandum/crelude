@@ -65,6 +65,8 @@ clean:
 	rm -fr .docs/xml ./docs/doxybook2 ./docs/*.zip
 	$(end_command)
 
+fresh: clean all
+
 DOXYBOOK_VER ?= 1.3.5
 DOXYBOOK_TAR ?= linux-amd64
 DOXYBOOK_ZIP ?= doxybook2-$(DOXYBOOK_TAR)-v$(DOXYBOOK_VER).zip

@@ -47,11 +47,48 @@ u0 zero(u0 *blk, usize width)
 u0 *emalloc(usize len, usize size)
 {
 	usize bytes = len * size;
-	u0 *m = malloc(bytes);
+	u0 *m = MALLOC(bytes);
 	if (m == nil)
 		PANIC("Could not allocate %zu bytes.", bytes);
 	zero(m, bytes);
 	return m;
+}
+
+/* in-place */
+u0 reverse(u0 *self, usize width)
+{
+	umin chunk[width];  //< C99 variable-length array.
+	MemArray *arr = self;
+	umin *ptr = arr->value;
+	usize len = arr->len * width;
+
+	for (usize i = 0, j = len - 1; i < j; ++i, --j) {
+		memcpy(  chunk, ptr + i, width);
+		memcpy(ptr + i, ptr + j, width);
+		memcpy(ptr + j,   chunk, width);
+	}
+
+	return UNIT;
+}
+
+MemSlice reverse_endianness(MemSlice bytes)
+{
+	MemSlice copy;
+	copy = COPY(bytes);
+
+	for (usize i = 0, j = copy.len - 1; i < j; ++i, --j) {
+		umin temp = NTH(copy, i);
+		NTH(copy, i) = NTH(copy, j);
+		NTH(copy, j) = temp;
+	}
+
+	return copy;
+}
+
+bool is_little_endian()
+{
+	uword w = 0x01;
+	return *(umin *)&w == 1;
 }
 
 static u0 memswap(umin *a, umin *b, usize bytes)
@@ -489,6 +526,7 @@ static Formatter parse_formatter(string formatter)
 	});
 }
 
+// TODO(maybe): Add a binary formatter.
 string novel_vsprintf(const byte *format, va_list args)
 {
 	newarray(ByteArray, byte);
@@ -509,7 +547,7 @@ string novel_vsprintf(const byte *format, va_list args)
 		bool is_array_formatter = false;
 
 		// TODO: Padding, text formatting etc. on the novel formatters,
-		//       i.e. %S, %C, %r, %U, %D and %V.
+		//       i.e. %b, %S, %C, %r, %U, %D and %V.
 		switch (formatter.specifier) {
 		case 'S': {  // '%S', string slice formatter.
 			string value = va_arg(args, string);
@@ -618,7 +656,7 @@ string novel_vsprintf(const byte *format, va_list args)
 					TYPE *elem = slice.value + n; \
 					string elem_str = novel_sprintf(elem_repr.value, *elem); \
 					extend(&bytes, &elem_str, sizeof(byte)); \
-					free(elem_str.value); \
+					FREE(elem_str.value); \
 					unless (n == slice.len - 1) \
 						extend(&bytes, &delim, sizeof(byte)); \
 				} \
@@ -716,7 +754,7 @@ string novel_vsprintf(const byte *format, va_list args)
 				break;
 			}
 
-			free(elem_repr.value);
+			FREE_INSIDE(elem_repr);
 		} break;
 		default: {
 			// Send it off to internal `vsprintf`.
@@ -726,8 +764,8 @@ string novel_vsprintf(const byte *format, va_list args)
 			isize len = vasprintf(&buf, c_formatter.value, args);
 			string buf_slice = VIEW(string, buf, 0, len);
 			extend(&bytes, &buf_slice, sizeof(byte));
-			free(buf);
-			free(c_formatter.value);
+			FREE(buf);
+			FREE(c_formatter.value);
 		} break;
 		}
 	}
@@ -751,7 +789,7 @@ ierr novel_vfprintf(FILE *stream, const byte *format, va_list args)
 {
 	string s = novel_vsprintf(format, args);
 	ierr res = fputs(s.value, stream);
-	free(s.value);
+	FREE(s.value);
 	return res;
 }
 

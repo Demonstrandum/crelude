@@ -1,5 +1,6 @@
 # Tests
 tests
+tests_*
 
 # Docs
 docs/src/*

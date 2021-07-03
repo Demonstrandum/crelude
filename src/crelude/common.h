@@ -24,6 +24,17 @@
 	#include <unistd.h>
 #endif
 
+/* Default macros */
+#ifndef FREE
+	#define FREE free
+#endif
+#ifndef MALLOC
+	#define MALLOC malloc
+#endif
+#ifndef REALLOC
+	#define REALLOC realloc
+#endif
+
 /* Misc macros */
 #define TSTR_HELPER(x) #x
 #define TSTR(x) TSTR_HELPER(x)
@@ -90,6 +101,11 @@
 	   __auto_type _n = (N); \
 	   usize _index = _n < 0 ? (usize)(_list.len + _n) : (usize)_n; \
 	   UNWRAP(_list)[_index]; })
+#define SET(LIST, N, V) __extension__\
+	({ __auto_type _list = (LIST); \
+	   __auto_type _n = (N); \
+	   usize _index = _n < 0 ? (usize)(_list.len + _n) : (usize)_n; \
+	   UNWRAP(_list)[_index] = (V); })
 
 #define UNUSED(x) (void)(x)
 #define NO_ERROR EXIT_SUCCESS
@@ -248,6 +264,16 @@ extern bool is_zeroed(u0 *, usize);
 extern u0 zero(u0 *blk, usize width);
 /// Malloc with zeros, and panics when out of memory.
 extern u0 *emalloc(usize, usize);
+/// Reverse an array or slice in-place.
+/// @param[in,out] self A pointer to an array or slice, cast to `u0 *`.
+/// @param[in] width The width/`sizeof` of an element in the array.
+extern u0 reverse(u0 *self, usize width);
+/// Reverse a slice of bytes. Not in-place.
+/// @note Heap allocates, remember to free.
+extern MemSlice reverse_endianness(MemSlice bytes);
+/// Check if system/CPU is using little endian.
+/// @returns true if little endian, false if big endian.
+bool is_little_endian(void);
 /// Given a slice, swap the two blocks within the slice
 /// formed by selecting a pivot point.
 /// ```
@@ -333,11 +359,42 @@ extern u64 hash_string(const string);
 
 /* Common Macros */
 
+/// Copy an array or slice.
+/// @note Allocates on the heap.
+#define COPY(SELF) __extension__\
+	({ __auto_type _self = (SELF); \
+	   __auto_type _copy = _self; \
+	   PTR(_copy) = emalloc(_self.len, sizeof(*PTR(_self))); \
+	   memcpy(PTR(_copy), PTR(_self), sizeof(*PTR(_copy)) * _copy.len); \
+	   _copy; })
+
+/// Convert array/slice to slice of bytes.
+#define TO_BYTES(SELF) __extension__\
+	({ __auto_type _self = (SELF); \
+	   MemSlice _bytes = { \
+		  .len = _self.len * sizeof(*_self.value), \
+		  .value = (umin *)_self.value \
+	   }; _bytes; })
+
+/// Convert from a byte array/slice into an array/slice of another type.
+#define FROM_BYTES(T, SELF) __extension__\
+	({ __auto_type _self = (SELF); \
+	   T _normal = { \
+		  .len = _self.len / sizeof(*_self.value), \
+		  .value = (u0 *)_self.value \
+	   }; _normal; })
+
 // ---
 // Macros for array functions to avoid use of `sizeof(T)` everywhere.
 // These macros do the referencing and void-pointer casting for you, and thus
 // let you use non-LVALUES as input (except SELF, SELF must sill be an LVALUE).
 // ---
+
+/// In-place reverse.
+#define REVERSE(SELF) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   reverse(_self, sizeof(*_self->value)); \
+	   *_self; })
 
 #define SWAP(SELF, PIVOT) __extension__\
 	({ __auto_type _self = &(SELF); \
@@ -423,6 +480,10 @@ extern u64 hash_string(const string);
 
 /// Unwraps pointer/value in sizing wrapper struct.
 #define UNWRAP(STRUCTURE) (STRUCTURE).value
+/// Explicitly only extract pointer from array/slice.
+#define PTR(ARR) (ARR).value
+/// Call to `free` of inside of slice/array/newtype, etc.
+#define FREE_INSIDE(S) FREE((S).value)
 /// Initialise sizing wrapper with literal.
 #define INIT(TYPE, ...) { \
 	.len = sizeof((TYPE[])__VA_ARGS__)/sizeof(TYPE), \
@@ -450,6 +511,8 @@ extern u64 hash_string(const string);
 #define SEMPTY(TYPE) ((TYPE){ .len = 0, .value = nil })
 /// Empty array of certain type.
 #define AEMPTY(TYPE) ((TYPE){ .len = 0, .cap = 0, .value = nil })
+/// Empty / zero struct.
+#define EMPTY(TYPE) ((TYPE){ 0 })
 
 /// Is array empty?
 #define IS_EMPTY(ARR) ((ARR).len == 0)
