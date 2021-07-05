@@ -188,23 +188,23 @@ usize read_escape(string src, rune *dest)
 	ch = (rune)sptr[0];  // Take the literal character.
 
 	switch (sptr[0]) {
-	case 'n': { ch = U'\n'; break; }
-	case 't': { ch = U'\t'; break; }
-	case 'r': { ch = U'\r'; break; }
-	case 'b': { ch = U'\b'; break; }
-	case 'f': { ch = U'\f'; break; }
-	case 'v': { ch = U'\v'; break; }
-	case 'a': { ch = U'\a'; break; }
+	case 'n': { ch = U'\n'; } break;
+	case 't': { ch = U'\t'; } break;
+	case 'r': { ch = U'\r'; } break;
+	case 'b': { ch = U'\b'; } break;
+	case 'f': { ch = U'\f'; } break;
+	case 'v': { ch = U'\v'; } break;
+	case 'a': { ch = U'\a'; } break;
 	case 'x':  // e.g. \x41 = 'A'
-		while (hex_digit(sptr[i]) && dno < 2)
+		while (is_hex_digit(sptr[i]) && dno < 2)
 			digs[dno++] = sptr[i++];
 		break;
 	case 'u':  // e.g. \u6CB3 = '河'
-		while (hex_digit(sptr[i]) && dno < 4)
+		while (is_hex_digit(sptr[i]) && dno < 4)
 			digs[dno++] = sptr[i++];
 		break;
 	case 'U':  // e.g. \U0001F920 = '🤠'
-		while (hex_digit(sptr[i]) && dno < 8)
+		while (is_hex_digit(sptr[i]) && dno < 8)
 			digs[dno++] = sptr[i++];
 		break;
 	default:
@@ -224,14 +224,15 @@ string escape_rune(string dest, rune ch)
 	usize len = dest.len;
 
 	switch (ch) {
-	case U'\n': return SLICE(string, dest, 0, snprintf(buf, len, "\\n"));
-	case U'\t': return SLICE(string, dest, 0, snprintf(buf, len, "\\t"));
-	case U'\r': return SLICE(string, dest, 0, snprintf(buf, len, "\\r"));
-	case U'\b': return SLICE(string, dest, 0, snprintf(buf, len, "\\b"));
-	case U'\f': return SLICE(string, dest, 0, snprintf(buf, len, "\\f"));
-	case U'\v': return SLICE(string, dest, 0, snprintf(buf, len, "\\v"));
-	case U'\a': return SLICE(string, dest, 0, snprintf(buf, len, "\\a"));
-	case U'\\': return SLICE(string, dest, 0, snprintf(buf, len, "\\\\"));
+		case U'\n': return SLICE(string, dest, 0, snprintf(buf, len, "\\n"));
+		case U'\t': return SLICE(string, dest, 0, snprintf(buf, len, "\\t"));
+		case U'\r': return SLICE(string, dest, 0, snprintf(buf, len, "\\r"));
+		case U'\b': return SLICE(string, dest, 0, snprintf(buf, len, "\\b"));
+		case U'\f': return SLICE(string, dest, 0, snprintf(buf, len, "\\f"));
+		case U'\v': return SLICE(string, dest, 0, snprintf(buf, len, "\\v"));
+		case U'\a': return SLICE(string, dest, 0, snprintf(buf, len, "\\a"));
+		case U'\\': return SLICE(string, dest, 0, snprintf(buf, len, "\\\\"));
+		default: break;
 	}
 
 	if (ch < 32 || ch == 0x7F)
@@ -318,7 +319,7 @@ string utf_strchr(string s, rune ch, usize *i)
 		++(*i);
 	}
 
-	return SEMPTY(string);
+	return EMPTY(string);
 }
 
 usize utf_strlen(string s)
@@ -335,35 +336,21 @@ usize utf_strlen(string s)
 /// This code based on the `libutf8` function.
 bool is_locale_utf8(byte *locale)
 {
-	const byte* cp = locale;
+	const byte *cp = locale;
 
 	for (; *cp != '\0' && *cp != '@' && *cp != '+' && *cp != ','; cp++) {
 		if (*cp == '.') {
-			const byte* encoding = ++cp;
+			const byte *encoding = ++cp;
 			for (; *cp != '\0' && *cp != '@' && *cp != '+' && *cp != ','; cp++)
-				;
-			if ((cp-encoding == 5 && !strncmp(encoding, "UTF-8", 5))
-				|| (cp-encoding == 4 && !strncmp(encoding, "utf8", 4)))
+				NOOP;
+			if ((cp - encoding == 5 && !strncmp(encoding, "UTF-8", 5))
+			 || (cp - encoding == 4 && !strncmp(encoding, "utf8", 4)))
 				return true;  // It's UTF-8.
 			break;
 		}
 	}
 
 	return false;  // :(
-}
-
-/* Utility. */
-
-bool octal_digit(byte c)
-{
-	return (c >= '0' && c <= '7');
-}
-
-bool hex_digit(byte c)
-{
-	return ((c >= '0' && c <= '9')
-	     || (c >= 'A' && c <= 'F')
-	     || (c >= 'a' && c <= 'f'));
 }
 
 #endif

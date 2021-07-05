@@ -91,6 +91,24 @@ bool is_little_endian()
 	return *(umin *)&w == 1;
 }
 
+u128 big_endian(umin *start, usize bytes)
+{
+	assert(bytes <= sizeof(u128));
+	// Write to offset in word (big endian), then reverse
+	// depending on endianess. i.e., [0x32][0xF1] becomes:
+	//   [0x00][0x00][0x32][0xF1]  (big endian), or
+	//   [0xF1][0x32][0x00][0x00]  (little endian)
+	umin mem[sizeof(u128)];
+	memset(mem, 0, sizeof(u128));
+	memcpy(mem + sizeof(u128) - bytes, start, bytes);
+
+	MemSlice reversed = VIEW(MemSlice, mem, 0, sizeof(u128));
+	if (is_little_endian())  // reverse `mem` if little endian.
+		reverse(&reversed, 1);
+
+	return *(u128 *)mem;
+}
+
 static u0 memswap(umin *a, umin *b, usize bytes)
 {
 	usize words = bytes / WORD_SIZE;

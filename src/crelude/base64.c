@@ -1,4 +1,5 @@
 #include "base64.h"
+#include "log.h"
 
 #ifndef IMPLEMENTATION
 
@@ -59,9 +60,14 @@ MemSlice base64_decode(MemSlice data)
 	if (data.len == 0 || PTR(data) == nil)
 		return EMPTY(MemSlice);
 
+	if (LAST(data) == NUL)
+		--data.len;
+
 	foreach (digit, data)
-		unless (is_base64_digit(digit))
+		unless (is_base64_digit(digit)) {
+			LOG(ERROR, "invalid base64 digit: %hhX (%c)", digit, digit);
 			return EMPTY(MemSlice);
+		}
 
 	usize len = base64_decoded_size(data);
 	MemSlice out = SMAKE(umin, len + 1);

@@ -73,6 +73,7 @@
 
 /* Syntax helpers */
 #define loop while (1)
+#define whilst while
 #define unless(cond) if (!(cond))
 #define never if (0)
 #define always if (1)
@@ -274,6 +275,8 @@ extern MemSlice reverse_endianness(MemSlice bytes);
 /// Check if system/CPU is using little endian.
 /// @returns true if little endian, false if big endian.
 bool is_little_endian(void);
+/// Read big-endian integer.
+u128 big_endian(umin *start, usize bytes);
 /// Given a slice, swap the two blocks within the slice
 /// formed by selecting a pivot point.
 /// ```

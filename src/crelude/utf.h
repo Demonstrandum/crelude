@@ -127,5 +127,14 @@ usize utf_seqlen(string);
 bool is_locale_utf8(byte *locale);
 
 /* Utility. */
-bool octal_digit(byte c);
-bool hex_digit(byte c);
+static inline bool is_octal_digit(byte c)
+{
+	return (c >= '0' && c <= '7');
+}
+
+static inline bool is_hex_digit(byte c)
+{
+	return ((c >= '0' && c <= '9')
+	     || (c >= 'A' && c <= 'F')
+	     || (c >= 'a' && c <= 'f'));
+}
