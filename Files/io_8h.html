@@ -1,0 +1,391 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>io.h - Crelude Documentation</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+                <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../https://github.com/Demonstrandum/crelude.html">GitHub</a></li><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Classes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Classes/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Classes/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Classes/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Classes/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Classes/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Classes/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericMap.html"><strong aria-hidden="true">1.1.9.</strong> GenericMap</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericArray.html"><strong aria-hidden="true">1.1.10.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Classes/struct__Natural.html"><strong aria-hidden="true">1.1.11.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Classes/struct__atomic__t.html"><strong aria-hidden="true">1.1.12.</strong> _atomic_t</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/base64_8c.html"><strong aria-hidden="true">1.2.3.</strong> base64.c</a></li><li class="chapter-item expanded "><a href="../Files/base64_8h.html"><strong aria-hidden="true">1.2.4.</strong> base64.h</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html"><strong aria-hidden="true">1.2.5.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html"><strong aria-hidden="true">1.2.6.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/io_8c.html"><strong aria-hidden="true">1.2.7.</strong> io.c</a></li><li class="chapter-item expanded "><a href="../Files/io_8h.html" class="active"><strong aria-hidden="true">1.2.8.</strong> io.h</a></li><li class="chapter-item expanded "><a href="../Files/log_8h.html"><strong aria-hidden="true">1.2.9.</strong> log.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html"><strong aria-hidden="true">1.2.10.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.11.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html"><strong aria-hidden="true">1.2.12.</strong> tests.c</a></li></ol></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: src/crelude/io.h</p>
+<hr />
+<h1 id="srccreludeioh"><a class="header" href="#srccreludeioh">src/crelude/io.h</a></h1>
+<p><a href="#detailed-description">More...</a></p>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-fput">fput</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> , FILE * )<br><code>fputs(...)</code> with <code>string</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-put">put</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stdout)</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-eput">eput</a></strong>(<a href="/crelude/Classes/structstring.html">string</a> )<br>Same as <code>fput(..., stderr)</code>.</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-eputs">eputs</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * )<br>puts(...) to STDERR.</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_vsprintf">novel_vsprintf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_sprintf">novel_sprintf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_vfprintf">novel_vfprintf</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_fprintf">novel_fprintf</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_vfprintf_newline">novel_vfprintf_newline</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , va_list )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_fprintf_newline">novel_fprintf_newline</a></strong>(FILE * , const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-ierr">ierr</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-novel_printf">novel_printf</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * , ... )</td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Files/io_8h.html#function-sizeof_specifier">sizeof_specifier</a></strong>(const <a href="/crelude/Files/common_8h.html#typedef-byte">byte</a> * )</td></tr>
+</tbody></table>
+<h2 id="defines"><a class="header" href="#defines">Defines</a></h2>
+<table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-panic">PANIC</a></strong>(lit, ...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-print">print</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-sprint">sprint</a></strong></td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-println">println</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-eprintf">eprintf</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-eprint">eprint</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-eprintln">eprintln</a></strong>(...)</td></tr>
+<tr><td></td><td><strong><a href="/crelude/Files/io_8h.html#define-fprint">fprint</a></strong></td></tr>
+</tbody></table>
+<h2 id="detailed-description"><a class="header" href="#detailed-description">Detailed Description</a></h2>
+<p>New printf style functions and aliases. </p>
+<h2 id="functions-documentation"><a class="header" href="#functions-documentation">Functions Documentation</a></h2>
+<h3 id="function-fput"><a class="header" href="#function-fput">function fput</a></h3>
+<pre><code class="language-cpp">ierr fput(
+    string ,
+    FILE * 
+)
+</code></pre>
+<p><code>fputs(...)</code> with <code>string</code>. </p>
+<h3 id="function-put"><a class="header" href="#function-put">function put</a></h3>
+<pre><code class="language-cpp">ierr put(
+    string 
+)
+</code></pre>
+<p>Same as <code>fput(..., stdout)</code>. </p>
+<h3 id="function-eput"><a class="header" href="#function-eput">function eput</a></h3>
+<pre><code class="language-cpp">ierr eput(
+    string 
+)
+</code></pre>
+<p>Same as <code>fput(..., stderr)</code>. </p>
+<h3 id="function-eputs"><a class="header" href="#function-eputs">function eputs</a></h3>
+<pre><code class="language-cpp">ierr eputs(
+    const byte * 
+)
+</code></pre>
+<p>puts(...) to STDERR. </p>
+<h3 id="function-novel_vsprintf"><a class="header" href="#function-novel_vsprintf">function novel_vsprintf</a></h3>
+<pre><code class="language-cpp">string novel_vsprintf(
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<p><strong>Note</strong>: Heap allocates memory, should be freed after printing. </p>
+<p>Custom <code>printf</code> for other data-types. </p>
+<h3 id="function-novel_sprintf"><a class="header" href="#function-novel_sprintf">function novel_sprintf</a></h3>
+<pre><code class="language-cpp">string novel_sprintf(
+    const byte * ,
+    ... 
+)
+</code></pre>
+<p><strong>Note</strong>: Returns heap-allocated memory, should be freed. </p>
+<h3 id="function-novel_vfprintf"><a class="header" href="#function-novel_vfprintf">function novel_vfprintf</a></h3>
+<pre><code class="language-cpp">ierr novel_vfprintf(
+    FILE * ,
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<h3 id="function-novel_fprintf"><a class="header" href="#function-novel_fprintf">function novel_fprintf</a></h3>
+<pre><code class="language-cpp">ierr novel_fprintf(
+    FILE * ,
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-novel_vfprintf_newline"><a class="header" href="#function-novel_vfprintf_newline">function novel_vfprintf_newline</a></h3>
+<pre><code class="language-cpp">ierr novel_vfprintf_newline(
+    FILE * ,
+    const byte * ,
+    va_list 
+)
+</code></pre>
+<h3 id="function-novel_fprintf_newline"><a class="header" href="#function-novel_fprintf_newline">function novel_fprintf_newline</a></h3>
+<pre><code class="language-cpp">ierr novel_fprintf_newline(
+    FILE * ,
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-novel_printf"><a class="header" href="#function-novel_printf">function novel_printf</a></h3>
+<pre><code class="language-cpp">ierr novel_printf(
+    const byte * ,
+    ... 
+)
+</code></pre>
+<h3 id="function-sizeof_specifier"><a class="header" href="#function-sizeof_specifier">function sizeof_specifier</a></h3>
+<pre><code class="language-cpp">usize sizeof_specifier(
+    const byte * 
+)
+</code></pre>
+<p>Size of the type of a <code>printf</code>-style format specifer. e.g. <code>sizeof_specifier(&quot;hx&quot;) == sizeof(unsigned short int);</code>. </p>
+<h2 id="macros-documentation"><a class="header" href="#macros-documentation">Macros Documentation</a></h2>
+<h3 id="define-panic"><a class="header" href="#define-panic">define PANIC</a></h3>
+<pre><code class="language-cpp">#define PANIC(
+    lit,
+    ...
+)
+[panic](/crelude/Files/common_8h.md#function-panic)(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
+	      lit &quot;\n[**] Aborting...\n&quot;, __func__, ## __VA_ARGS__)
+</code></pre>
+<h3 id="define-print"><a class="header" href="#define-print">define print</a></h3>
+<pre><code class="language-cpp">#define print(
+    ...
+)
+[novel_fprintf](/crelude/Files/io_8h.md#function-novel_fprintf)(stdout, __VA_ARGS__)
+</code></pre>
+<h3 id="define-sprint"><a class="header" href="#define-sprint">define sprint</a></h3>
+<pre><code class="language-cpp">#define sprint [novel_sprintf](/crelude/Files/io_8h.md#function-novel_sprintf)
+</code></pre>
+<h3 id="define-println"><a class="header" href="#define-println">define println</a></h3>
+<pre><code class="language-cpp">#define println(
+    ...
+)
+[novel_fprintf_newline](/crelude/Files/io_8h.md#function-novel_fprintf_newline)(stdout, __VA_ARGS__)
+</code></pre>
+<h3 id="define-eprintf"><a class="header" href="#define-eprintf">define eprintf</a></h3>
+<pre><code class="language-cpp">#define eprintf(
+    ...
+)
+[novel_fprintf](/crelude/Files/io_8h.md#function-novel_fprintf)(stderr, __VA_ARGS__)
+</code></pre>
+<h3 id="define-eprint"><a class="header" href="#define-eprint">define eprint</a></h3>
+<pre><code class="language-cpp">#define eprint(
+    ...
+)
+[eprintf](/crelude/Files/io_8h.md#define-eprintf)(__VA_ARGS__)
+</code></pre>
+<h3 id="define-eprintln"><a class="header" href="#define-eprintln">define eprintln</a></h3>
+<pre><code class="language-cpp">#define eprintln(
+    ...
+)
+[novel_fprintf_newline](/crelude/Files/io_8h.md#function-novel_fprintf_newline)(stderr, __VA_ARGS__)
+</code></pre>
+<h3 id="define-fprint"><a class="header" href="#define-fprint">define fprint</a></h3>
+<pre><code class="language-cpp">#define fprint [novel_fprintf](/crelude/Files/io_8h.md#function-novel_fprintf)
+</code></pre>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<pre><code class="language-cpp">
+#pragma once
+#include &quot;common.h&quot;
+
+#define PANIC(lit, ...) \
+    panic(&quot;\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): &quot; \
+          lit &quot;\n[**] Aborting...\n&quot;, __func__, ## __VA_ARGS__)
+
+#define print(...) novel_fprintf(stdout, __VA_ARGS__)
+#define sprint novel_sprintf
+#define println(...) novel_fprintf_newline(stdout, __VA_ARGS__)
+#define eprintf(...) novel_fprintf(stderr, __VA_ARGS__)
+#define eprint(...) eprintf(__VA_ARGS__)
+#define eprintln(...) novel_fprintf_newline(stderr, __VA_ARGS__)
+#define fprint novel_fprintf
+
+extern ierr fput(string, FILE *);
+extern ierr put(string);
+extern ierr eput(string);
+extern ierr eputs(const byte *);
+
+extern string novel_vsprintf(const byte *, va_list);
+extern string novel_sprintf(const byte *, ...);
+extern ierr novel_vfprintf(FILE *, const byte *, va_list);
+extern ierr novel_fprintf(FILE *, const byte *, ...);
+extern ierr novel_vfprintf_newline(FILE *, const byte *, va_list);
+extern ierr novel_fprintf_newline(FILE *, const byte *, ...);
+extern ierr novel_printf(const byte *, ...);
+
+extern usize sizeof_specifier(const byte *);
+</code></pre>
+<hr />
+<p>Updated on 12 July 2021 at 22:06:43 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../Files/io_8c.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../Files/log_8h.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../Files/io_8c.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../Files/log_8h.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>
