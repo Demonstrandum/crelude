@@ -3,6 +3,7 @@
 //! Not part of the library.
 
 #include <crelude/common.h>
+#include <crelude/io.h>
 #include <crelude/utf.h>
 #include <crelude/base64.h>
 
@@ -12,7 +13,7 @@
 #define TEST(DOES) do { \
 	println("\n" ANSI(BOLD) "[###]" ANSI(RESET) " "\
 		ANSI(UNDER) "Test Case" ANSI(RESET) ": %s", DOES); \
-} while (false); if (true)
+} while (false); always
 
 u0 utf8_ucs4_conversions(byte *cstring)
 {
@@ -142,18 +143,21 @@ ierr main(i32 argc, const byte **argv)
 		IntArray arr = AMAKE(int, 5);
 		PUSH(arr, 0);
 		__auto_type list = LIST(sliceof(int), { 1, 2, 3, 4, 5, 6 });
+		__auto_type more = LIST(sliceof(int), { 7, 8, 9 });
 		UNSHIFT(arr, -1);
 		println("list[..%zu] = { %V%d{, } };", list.len, list);
+		println("more[..%zu] = { %V%d{, } };", more.len, more);
 		EXTEND(arr, list);
+		EXTEND(arr, more);
 		println("arr = %D%d{, };", arr);
 		int *popped = SHIFT(arr);
 		println("arr = %D%d{, };  (popped: %d)", arr, *popped);
 		SWAP(arr, 3);  // Swap the three first elements to the back.
-		println("arr = %D%d{, };", arr);
-		REMOVE(arr, 4);  // Remove 4th element (0).
-		println("arr = %D%d{, };", arr);
-		SWAP(arr, 4);
-		println("arr = %D%d{, };", arr);
+		println("arr = %D%d{, };  (swapped 3 first elements around)", arr);
+		int *rmvd = REMOVE(arr, 7);  // Remove 8th element (0).
+		println("arr = %D%d{, };  (removed at index %zu, element: %d)", arr, 7, *rmvd);
+		SWAP(arr, 7);
+		println("arr = %D%d{, };  (swapped at index 7)", arr);
 		sliceof(int) *cutout = CUT(arr, 2, 4);
 		println("arr = %D%d{, };  (cut out: %V%d{, })", arr, *cutout);
 	}
@@ -201,6 +205,116 @@ ierr main(i32 argc, const byte **argv)
 
 		FREE_INSIDE(encoded);
 		FREE_INSIDE(decoded);
+	}
+
+	TEST("Maps / Hash Tables.") {
+		//  key type, value type,             bucket capacity.
+		//      v       v                           v
+		mapof(byte *, i32) map = MMAKE(byte *, i32, 9);
+		// ^ Initial bucket size (9) is an inflated guess of how
+		//   many entries we might expect the hash-map to have.
+		// Hash-function can be changed.
+		// Important, since different types are hashed differently.
+		// i.e. pointers should be hashed for what's behind them,
+		//      instead of their raw address value, (usually).
+		assert(map.hasher == cstring_hash);
+		map.hasher = cstring_hash;  //< this is set by default using _Generic.
+
+		mapof(string, i16) _m = MMAKE(string, i16, 5);
+		hashnode(string, i16) node;
+		string some_key = STRING("key");
+		i16 val = 69;
+		init_hashnode(&node, &_m, 93967, &some_key, &val);
+		println("node.key.hash = %lu;", node.key.hash);
+		println("node.key.value = \"%S\";", node.key.value);
+		println("node.value = %hd;", node.value);
+		println("node.next = %p;", node.next);
+
+		puts("");
+
+		i32 *value;
+		println("number of entries: %zu.", map.len);
+		ASSOCIATE(map, "hello", 38);
+		value = LOOKUP(map, "hello");
+		/* `value` points to the item mapped to by key "hello". */
+		println("value (%p): %d", value, *value);
+		println("number of entries: %zu.", map.len);
+		/* drop value at key "hello" from table. */
+		DROP(map, "hello");
+		value = LOOKUP(map, "hello");
+		/* `value` should now point to NULL. */
+		println("value (%p): -", value);
+		println("number of entries: %zu.", map.len);
+		puts("");
+
+		free_map(&map);
+
+		/* maps work with any key and value types. */
+		mapof(string, u16) dict = MMAKE(string, u16, 2);
+		assert(dict.hasher == string_hash);
+		println("hash(\"ad\") = %llX; hash(\"da\") = %llX;",
+		        hash_string(STR("ad")), hash_string(STR("da")));
+		assert(DROP(dict, STR("ab")) == false);
+		string ab = STRING("ab");
+		string bc = STRING("bc");
+		string ac = STRING("ac");
+		string ca = STRING("ca");
+		string ad = STRING("ad");
+		string da = STRING("da");
+		ASSOCIATE(dict, ab, 0x6162);
+		ASSOCIATE(dict, bc, 0x6263);
+		ASSOCIATE(dict, ac, 0x6163);
+		ASSOCIATE(dict, ca, 0x0000);
+		ASSOCIATE(dict, ca, 0x6361);  //< overwrite.
+		ASSOCIATE(dict, ad, 0x6164);
+		ASSOCIATE(dict, da, 0x6461);
+		println("dict: %S -> 0x%04hX", STR("ab"), deref(u16, LOOKUP(dict, STR("ab")), 0));
+		println("dict: %S -> 0x%04hX", STR("bc"), deref(u16, LOOKUP(dict, STR("bc")), 0));
+		println("dict: %S -> 0x%04hX", STR("ac"), deref(u16, LOOKUP(dict, STR("ac")), 0));
+		println("dict: %S -> 0x%04hX", STR("ca"), deref(u16, LOOKUP(dict, STR("ca")), 0));
+		println("dict: %S -> 0x%04hX", STR("ad"), deref(u16, LOOKUP(dict, STR("ad")), 0));
+		println("dict: %S -> 0x%04hX", STR("da"), deref(u16, LOOKUP(dict, STR("da")), 0));
+
+		println("\nDump hashmap layout:");
+		dump_hashmap(&dict, "\"%S\"", "0x%02hX");
+		assert(DROP(dict, STR("bc")) == true);
+		dump_hashmap(&dict, "\"%S\"", "0x%02hX");
+		println("  ^^ after dropping \"bc\".");
+		assert(DROP(dict, STR("da")) == true);
+		dump_hashmap(&dict, "\"%S\"", "0x%02hX");
+		println("  ^^ after dropping \"da\".");
+
+		assert(!is_empty_map(&dict));
+		assert(HAS_KEY(dict, STR("ac")) == true);
+		empty_map(&dict);
+		assert(HAS_KEY(dict, STR("ac")) == false);
+		assert(is_empty_map(&dict));
+		free_map(&dict);
+		assert(is_empty_map(&dict));
+
+		mapof(i32, string) table = MMAKE(i32, string, 3);
+		assert(table.hasher == default_hash);
+
+		string hello = STRING("Hello, ");
+		string world = STRING("World!");
+		ASSOCIATE(table, -3, hello);
+		ASSOCIATE(table, +7, world);
+		// Iterate through all keys present in table.
+		sliceof(i32) *keys = KEYS(table);
+		println("All keys in table: %V%d{, }.", *keys);
+		foreach (key, *keys)
+			println("table[%d] = \"%S\";", key, *LOOKUP(table, key));
+
+		assert(!HAS_KEY(table, 3));
+		assert(HAS_KEY(table, -3));
+
+		FREE_INSIDE(*keys);
+
+		assert(!is_empty_map(&table));
+
+		free_map(&table);
+
+		assert(is_empty_map(&table));
 	}
 
 	return EXIT_SUCCESS;

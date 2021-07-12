@@ -3,6 +3,9 @@
 //! You must define a `VERBOSE_VAR` before including this header.
 //! Otherwise, the default value is `1`, i.e. only errors & warnings.
 
+#pragma once
+#include "io.h"
+
 #ifndef VERBOSE_VAR
 	#define VERBOSE_VAR _verbosity
 	static const ifast _verbosity = 1;
@@ -18,7 +21,7 @@
 #define S_DEBUG "  debug"
 #define S_INFO  "   info"
 
-#define LOG(LEVEL, FORMATTER, ...) do { \
-	if (VERBOSE_VAR >= LEVEL) \
-		eprintln("[ " S_##LEVEL " ] log<%s()>: " FORMATTER, __func__, ##__VA_ARGS__); \
-} while (0);
+#define LOG(LEVEL, FORMATTER, ...) __extension__\
+	({ if (VERBOSE_VAR >= LEVEL) \
+		   eprintln("[ " S_##LEVEL " ] log<%s()>: " FORMATTER, __func__, ##__VA_ARGS__); \
+	   LEVEL; })

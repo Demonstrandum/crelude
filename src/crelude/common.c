@@ -1,24 +1,16 @@
 #include "common.h"
+#include "io.h"
 #include "utf.h"
 
 #include <assert.h>
-#include <ctype.h>
-#include <stdarg.h>
-#include <wchar.h>
 
 #ifndef IMPLEMENTATION
 
-u0 panic(const byte *message, ...)
+inline u0 *or(const u0 *nullable, const u0 *nonnull)
 {
-	va_list args;
-	va_start(args, message);
-	ierr res = novel_vfprintf_newline(stderr, message, args);
-	va_end(args);
-
-	if (res < 0)
-		eputs("panic: Out of space.");
-
-	abort();
+	if (nullable == nil)
+		return (u0 *)nonnull;
+	return (u0 *)nullable;
 }
 
 bool is_zero(imax n)
@@ -194,6 +186,57 @@ u0 swap(u0 *self, usize pivot, usize width)
 	swap_blocks(blk, pos);
 }
 
+usize resize(u0 *self, usize cap, usize width)
+{
+	MemArray *arr = self;
+	if (arr->cap == cap)
+		return arr->cap - arr->len;
+	// Lowering the capacity; best done by REALLOC.
+	if (cap < arr->cap) {
+		arr->value = REALLOC(arr->value, cap * width);
+	} else {  // Growing the capacity; must zero bytes.
+		umin *new = emalloc(cap, width);
+		memcpy(new, arr->value, arr->cap * width);
+		FREE(arr->value);
+		arr->value = new;
+	}
+
+	arr->cap = cap;
+	return arr->cap - arr->len;
+}
+
+usize grow(u0 *self, usize count, usize width)
+{
+	MemArray *arr = self;
+	usize old_cap = arr->cap;
+	usize new_cap = arr->cap;
+
+	if (arr->len + count > arr->cap) {  // reallocate array.
+		new_cap = (usize)(arr->cap * ARRAY_REALLOC_FACTOR) + count;
+		resize(arr, new_cap, width);
+	}
+
+	arr->len += count;
+	return new_cap - old_cap;
+}
+
+u0 *get(u0 *self, usize index, usize width)
+{
+	MemArray *arr = self;
+	if (index > arr->len) return nil;
+
+	return arr->value + index * width;
+}
+
+u0 *set(u0 *self, usize index, const u0 *elem, usize width)
+{
+	MemArray *arr = self;
+	if (index > arr->len || elem == nil) return nil;
+
+	memcpy(arr->value + index * width, elem, width);
+	return arr->value + index * width;
+}
+
 usize push(u0 *restrict self, const u0 *restrict element, usize width)
 {
 	if (element == nil) return 0;
@@ -201,19 +244,9 @@ usize push(u0 *restrict self, const u0 *restrict element, usize width)
 	MemArray *arr = (MemArray *restrict)self;
 	umin *elem = (umin *restrict)element;
 
-	usize old_cap = arr->cap;
-	usize new_cap = old_cap;
-
-	unless (arr->len < arr->cap) {
-		new_cap = (usize)(arr->cap * REALLOC_FACTOR) + 1;
-		arr->value = (umin *)realloc(arr->value, new_cap * width);
-		if (arr->value == nil)
-			PANIC("Failed to reallocate %zu bytes.", new_cap * width);
-		arr->cap = new_cap;
-	}
-
-	memcpy(arr->value + width * arr->len++, elem, width);
-	return new_cap - old_cap;
+	usize growth = grow(arr, 1, width);
+	memcpy(arr->value + width * (arr->len - 1), elem, width);
+	return growth;
 }
 
 usize insert(u0 *restrict self, usize index,
@@ -223,27 +256,16 @@ usize insert(u0 *restrict self, usize index,
 
 	MemArray *arr = (MemArray *restrict)self;
 	umin *elem = (umin *restrict)element;
-
-	usize old_cap = arr->cap;
-	usize new_cap = old_cap;
-
-	unless (arr->len < arr->cap) {
-		new_cap = (usize)(arr->cap * REALLOC_FACTOR) + 1;
-		arr->value = (umin *)realloc(arr->value, new_cap * width);
-		if (arr->value == nil)
-			PANIC("Failed to reallocate %zu bytes.", new_cap * width);
-		arr->cap = new_cap;
-	}
+	usize growth = grow(arr, 1, width);
 
 	umin *gap = arr->value + width * index;
-
 	// Offset elements down by one, from insertion index,
 	// leaving us with a gap for insertion.
-	memmove(gap + width, gap, width * (arr->len++ - index));
+	memmove(gap + width, gap, width * (arr->len - 1 - index));
 	// Insert element into the empty space.
 	memcpy(gap, elem, width);
 
-	return new_cap - old_cap;
+	return growth;
 }
 
 usize extend(u0 *restrict self, const u0 *restrict slice, usize width)
@@ -255,20 +277,11 @@ usize extend(u0 *restrict self, const u0 *restrict slice, usize width)
 
 	if (sub->len == 0) return 0;
 
-	usize old_cap = arr->cap;
-	usize new_cap = old_cap;
+	usize end = arr->len;  //< old array length.
+	usize growth = grow(arr, sub->len, width);
 
-	unless (arr->len + sub->len < arr->cap) {
-		new_cap = (usize)(arr->cap * REALLOC_FACTOR) + sub->len;
-		arr->value = (umin *)realloc(arr->value, new_cap * width);
-		if (arr->value == nil)
-			PANIC("Failed to reallocate %zu bytes.", new_cap * width);
-		arr->cap = new_cap;
-	}
-
-	memcpy(arr->value + width * arr->len, sub->value, width * sub->len);
-	arr->len += sub->len;
-	return new_cap - old_cap;
+	memcpy(arr->value + width * end, sub->value, width * sub->len);
+	return growth;
 }
 
 usize splice(u0 *restrict self, usize index, const u0 *restrict slice, usize width)
@@ -280,27 +293,16 @@ usize splice(u0 *restrict self, usize index, const u0 *restrict slice, usize wid
 
 	if (sub->len == 0) return 0;
 
-	usize old_cap = arr->cap;
-	usize new_cap = old_cap;
-
-	unless (arr->len + sub->len < arr->cap) {
-		new_cap = (usize)(arr->cap * REALLOC_FACTOR) + sub->len;
-		arr->value = (umin *)realloc(arr->value, new_cap * width);
-		if (arr->value == nil)
-			PANIC("Failed to reallocate %zu bytes.", new_cap * width);
-		arr->cap = new_cap;
-	}
-
+	usize end = arr->len;
+	usize growth = grow(arr, sub->len, width);
 	umin *gap = arr->value + width * index;
-
 	// Offset elements down by the slice length, from insertion index,
 	// leaving us with a `width * sub.len` byte gap for insertion.
-	memmove(gap + width * sub->len, gap, width * (arr->len - index));
-	arr->len += sub->len;
+	memmove(gap + width * sub->len, gap, width * (end - index));
 	// Insert slice into empty space.
 	memcpy(gap, sub->value, sub->len * width);
 
-	return new_cap - old_cap;
+	return growth;
 }
 
 GenericSlice cut(u0 *self, usize from, isize upto, usize width)
@@ -352,6 +354,14 @@ u0 *shift(u0 *self, usize width)
 	return (u0 *)(arr->value + --arr->len * width);
 }
 
+usize null(u0 *self, usize width)
+{
+	GenericArray arr = *(GenericArray *)self;
+	usize bytes = arr.cap * width;
+	zero(PTR(arr), bytes);
+	return bytes;
+}
+
 string from_cstring(const byte *cstring)
 {
 	return VIEW(string, (byte *)cstring, 0, strlen(cstring));
@@ -365,7 +375,7 @@ bool string_eq(string self, const string other)
 		return true;
 
 	foreach (c, self)
-		if (c != UNWRAP(other)[it.index])
+		if (c != NTH(other, it.index))
 			return false;
 	return true;
 }
@@ -395,456 +405,361 @@ i16 string_cmp(const string self, const string other)
 }
 
 /// `djb2` hash-algo.
-u64 hash_string(string str)
+u64 hash_bytes(MemSlice mem)
 {
 	u64 hash = 5381;
-	foreach (c, str)
+	foreach (c, mem)
 		hash += c + (hash << 5);
 
 	return hash;
 }
 
-ierr fput(string s, FILE *stream)
+u64 hash_string(string str)
+{ return hash_bytes(TO_BYTES(str)); }
+
+/// @note LAYOUT DEPENDENT.
+static u64 node_hash(const u0 *self, const u0 *node)
 {
-	ierr err = 1;
-	foreach (c, s) {
-		unless (err == NUL) err = fputc(c, stream);
-		else return err;
+	const GenericMap *map = self;
+	return *(u64 *)((umin *)node + map->hash_offset);
+}
+/// @note LAYOUT DEPENDENT.
+static u0 *node_key(const u0 *self, const u0 *node)
+{
+	const GenericMap *map = self;
+	return (umin *)node + map->key_offset;
+}
+/// @note LAYOUT DEPENDENT.
+static u0 *node_value(const u0 *self, const u0 *node)
+{
+	const GenericMap *map = self;
+	return (umin *)node + map->value_offset;
+}
+/// @note LAYOUT DEPENDENT.
+static u0 *node_next(const u0 *self, const u0 *node)
+{
+	const GenericMap *map = self;
+	return (umin *)node + map->next_offset;
+}
+
+/// Get bucket index given key.
+static usize bucket_index(const u0 *self, u64 hash)
+{
+	const GenericMap *map = self;
+	return (usize)hash % map->buckets.cap;
+}
+
+// TODO: right now we check proper equality, maybe just use the hash,
+//       and don't worry about hash-collisions?  `u64` is quite large after all.
+static bool key_eq(const u0 *self, const u0 *key0, const u0 *key1)
+{
+	if (key0 == key1) return true;
+	const GenericMap *map = self;
+
+	switch (map->key_type) {
+	case HKT_STRING:
+	case HKT_MEM_SLICE:;
+		const string *s0 = key0, *s1 = key1;
+		return string_eq(*s0, *s1);
+	case HKT_RUNIC:;
+		const runic *r0 = key0, *r1 = key1;
+		MemSlice _m0 = TO_BYTES(*r0), _m1 = TO_BYTES(*r1);
+		MemSlice *m0 = &_m0, *m1 = &_m1;
+		return string_eq(*(string *)m0, *(string *)m1);
+	case HKT_CSTRING:
+		return 0 == strcmp(*(byte **)key0, *(byte **)key1);
+	case HKT_RAW_BYTES:
+		return 0 == memcmp(key0, key1, map->key_size);
 	}
-	err = fputc('\n', stream);
-	return err;
+
+	return PANIC("Improper hash-map key_type."), false;
 }
 
-ierr put(string s)
-{ return fput(s, stdout); }
-
-ierr eput(string s)
-{ return fput(s, stderr); }
-
-ierr eputs(const byte *s)
+/// @note LAYOUT DEPENDENT.
+usize init_hashnode(u0 *node, const u0 *_map, u64 hash, const u0 *key, const u0 *value)
 {
-	ierr err;
-	err = fputs(s, stderr);
-	if (err <= 0) return err;
-	err = fputc('\n', stderr);
-	return err;
+	GenericMap *map = (u0 *)_map;
+	umin *ptr = node;
+
+	memcpy(ptr + map-> hash_offset, &hash, sizeof(u64));
+	memcpy(ptr + map->  key_offset,   key, map->key_size);
+	memcpy(ptr + map->value_offset, value, map->value_size);
+	memset(ptr + map-> next_offset,     0, sizeof(u0 *));  //< NULL-pointing.
+
+	return map->node_size;
 }
 
-usize sizeof_specifier(const byte *spec)
+u0 associate(u0 *self, const u0 *key, const u0 *value)
 {
-	UNUSED(spec);
-	PANIC("Not implemented.");
-	return 0;
-}
+	GenericMap *map = self;
+	const usize NODE_SIZE = map->node_size;
 
-static string FORMATTER_FLAGS
-	= INIT(byte, { '+', '-', ' ', '#', '0' });
-static string LENGTH_SUBSPECIFIERS
-	= INIT(byte, { 'h', 'l', 'j', 'z', 't', 'L' });
+	u64 hash = map->hasher(key, map->key_size);
+	usize index = bucket_index(map, hash);
 
-/// A `printf` style formatter is in the form
-///
-/// formatter ::= '%' [flags] [width] ['.' precision] [length] specifier
-///
-/// Here, those correspond to:
-///
-/// flag ::= '+' | '-' | ' ' | '#' | '0'
-/// flags ::= {flag}
-/// width ::= {'0'..'9'} | '*'
-/// precision ::= {'0'..'9'} | '*'
-/// length ::= 'hh' | 'h' | 'll' | 'l' | 'j' | 'z' | 't' | 'L'
-/// specifier ::= %|C|r|S|U|b|D|V|d|i|u|o|x|X|f|F|e|E|g|G|a|A|c|s|p|n
-
-struct Formatter {
-	string flags;
-	string width;
-	string precision; ///< Without '.' character.
-	string length;
-	byte specifier;
-
-	usize offset;
-};
-unqualify(struct, Formatter);
-
-// NOTE: Allocates on heap.
-static string formatter_string(Formatter formatter)
-{
-	StringBuilder repr = AMAKE(byte, formatter.offset + 2);
-
-	push(&repr, "%", 1);
-	extend(&repr, &formatter.flags, 1);
-	extend(&repr, &formatter.width, 1);
-	unless (IS_EMPTY(formatter.precision)) {
-		push(&repr, ".", 1);
-		extend(&repr, &formatter.precision, 1);
-	}
-	extend(&repr, &formatter.length, 1);
-	push(&repr, &formatter.specifier, 1);
-
-	// NUL-terminate the string slice.
-	push(&repr, &NUL_BYTE, 1);
-	return SLICE(string, repr, 0, -2);
-}
-
-static Formatter parse_formatter(string formatter)
-{
-	usize i = 0;
-	if (formatter.value[i] == '%') ++i;
-
-	usize flags_start = i;
-	loop {  // Parse flags.
-		bool found = false;
-		foreach (ss, FORMATTER_FLAGS) {
-			if (formatter.value[i] == ss) {
-				found = true;
-				++i;
-			}
+	u0 *head = (umin *)PTR(map->buckets) + index * NODE_SIZE;
+	u0 *node = head;  /*< type of `hashnode(K, V)`. */
+	u0 *last = nil;
+	// Walk up node-chain trying to find if key is already present.
+	until (node == nil || node_hash(map, node) == 0) {  // zero-hash = unpopulated.
+		if (key_eq(map, node_key(map, node), key)) {
+			// Found node with equal key, so rewrite value.
+			memcpy(node_value(map, node), value, map->value_size);
+			return UNIT;
 		}
-		unless (found) break;
+		last = node;
+		node = *(u0 **)node_next(map, node);
 	}
-	string flags = SLICE(string, formatter, flags_start, i);
+	// Otherwise, insert the new key-value pair into the chain.
+	assert(node == nil || node_hash(map, node) == 0);
+	++map->len;
 
+	u0 *new = emalloc(1, NODE_SIZE);
+	init_hashnode(new, map, hash, key, value);
 
-	usize width_start = i;  // Parse width.
-	if (formatter.value[i] == '*') ++i;
-	else while (isdigit(formatter.value[i])) ++i;
-	string width = SLICE(string, formatter, width_start, i);
-
-	usize precision_start = i;
-	if (formatter.value[i] == '.') {  // Parse precision.
-		++i;  // Skip '.'
-		if (formatter.value[i] == '*') ++i;
-		else while (isdigit(formatter.value[i])) ++i;
+	if (last == nil) {  // i.e. chain hasn't started.
+		assert(node == head);
+		memcpy(head, new, NODE_SIZE);
+		grow(&map->buckets, 1, NODE_SIZE);
+		FREE(new);
+	} else {  // otherwise, make the node part of the linked list.
+		u0 **last_next = node_next(map, last);
+		assert(*last_next == nil);
+		*last_next = new;
 	}
-	string precision = SLICE(string, formatter, precision_start, i);
 
-	usize length_start = i;
-	loop {  // Parse length subspecifier.
-		bool found = false;
-		foreach (ss, LENGTH_SUBSPECIFIERS) {
-			if (formatter.value[i] == ss) {
-				found = true;
-				++i;
-			}
+	const f64 LOAD_FACTOR = (f64)map->len / map->buckets.cap;
+	if (LOAD_FACTOR < HASHMAP_LOAD_THRESHOLD)
+		return UNIT;
+	// ^ if load factor (entries per potential bucket) gets over ~85%,
+	// we should ~double it in capacity, preventing the linked lists
+	// from getting to long, and lookup time too slow.
+
+	/// re-index whole array.  Growing the array means hash-values
+	/// are modulo'd to different values, and so we need to re-arrange.
+	GenericArray snodes = AMAKE(umin[NODE_SIZE], map->len);
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *snode = (umin *)PTR(map->buckets) + i * NODE_SIZE;
+		if (node_hash(map, snode) == 0) continue;
+		bool first = true;
+		until (snode == nil) {
+			u0 **next_field = node_next(map, snode);
+			u0 *next = *next_field;
+			*next_field = nil;
+			push(&snodes, snode, NODE_SIZE);
+			snode = next;
+			if (first) { first = false; continue; }
+			FREE(snode);  // we have a copy.
 		}
-		unless (found) break;
 	}
-	string length = SLICE(string, formatter, length_start, i);
+	// copied `snodes` (base/bucket nodes), now blank out the buckets array,
+	// and rewrite it with new and correct indices.
+	resize(&map->buckets,
+	       CEIL(usize, HASHMAP_GROWTH_FACTOR
+	         * (LOAD_FACTOR / HASHMAP_LOAD_THRESHOLD)
+	         * map->buckets.cap),
+		   NODE_SIZE);
+	null(&map->buckets, NODE_SIZE);
+	// repopulate.
+	umin *bucket = (u0 *)PTR(map->buckets);
+	for (usize i = 0; i < snodes.len; ++i) {
+		u0 *snode = get(&snodes, i, NODE_SIZE);
+		u64 shash = node_hash(map, snode);
+		usize sindex = bucket_index(map, shash);
+		u0 *bnode = bucket + sindex * NODE_SIZE;
+		// copy directly into bucket array.
+		if (node_hash(map, bnode) == 0) {
+			memcpy(bnode, snode, NODE_SIZE);
+			continue;
+		}
+		// otherwise, append to chain.
+		until (*(u0 **)node_next(map, bnode) == nil)
+			bnode = *(u0 **)node_next(map, bnode);
+		assert(bnode != nil);
+		// put `snode` on heap, and link up pointer to it.
+		u0 *new_snode = emalloc(1, NODE_SIZE);
+		memcpy(new_snode, snode, NODE_SIZE);
+		u0 **next_field = node_next(map, bnode);
+		*next_field = new_snode;
+	}
+	FREE_INSIDE(snodes);
 
-	// Parse specifier as the single byte immediately after.
-	byte specifier = formatter.value[i++];
-
-	return ((Formatter){
-		.flags = flags,
-		.width = width,
-		.precision = precision,
-		.length = length,
-		.specifier = specifier,
-		.offset = i
-	});
+	return UNIT;
 }
 
-// TODO(maybe): Add a binary formatter.
-string novel_vsprintf(const byte *format, va_list args)
+u0 *lookup(u0 *self, const u0 *key)
 {
-	newarray(ByteArray, byte);
-	ByteArray bytes = AMAKE(byte, strlen(format) + 64);
+	GenericMap *map = self;
+	u64 hash = map->hasher(key, map->key_size);
+	usize index = bucket_index(map, hash);
 
-	usize i = 0;
-	byte c;
-	until ('\0' == (c = format[i++])) {
-		unless (c == '%') {
-			push(&bytes, &c, sizeof(byte));  // Other characters are preserved.
+	u0 *head = (umin *)PTR(map->buckets) + index * map->node_size;
+	// search hashnode-chain.
+	until (head == nil || node_hash(map, head) == 0) {
+		if (key_eq(map, node_key(map, head), key))
+			return node_value(map, head);
+		head = *(u0 **)node_next(map, head);
+	}
+
+	return nil;
+}
+
+bool drop(u0 *self, const u0 *key)
+{
+	GenericMap *map = self;
+	u64 hash = map->hasher(key, map->key_size);
+	usize index = bucket_index(map, hash);
+
+	u0 *head = (umin *)PTR(map->buckets) + index * map->node_size;
+	u0 *node = head;
+	u0 *last = nil;
+	// search hasnode-chain.
+	until (node == nil || node_hash(map, node) == 0) {
+		if (key_eq(map, node_key(map, node), key))
+			break;
+		last = node;
+		node = *(u0 **)node_next(map, node);
+	}
+
+	if (node == nil || node_hash(map, node) == 0)
+		// i.e. loop did not break, and
+		// so the key does not exist.
+		return false;
+
+	if (node == head) {  // delete from bucket array directly.
+		assert(last == nil);
+		u0 *next = *(u0 **)node_next(map, node);
+		if (next == nil) {
+			zero(node, map->node_size);
+			--map->buckets.len;
+		} else {
+			// otherwise, we need to copy the node into the bucket array,
+			// overwriting the node that we are deleting.
+			memcpy(node, next, map->node_size);
+			FREE(next);  //< it is now in the base of the bucket array.
+		}
+	} else {
+		// otherwise, re-order the pointers and free the node.
+		assert(last != nil);
+		u0 **last_next_field = node_next(map, last);
+		u0 **node_next_field = node_next(map, node);
+		*last_next_field = *node_next_field;
+		FREE(node);
+	}
+
+	--map->len;
+	return true;
+}
+
+GenericSlice get_keys(u0 *self)
+{
+	GenericMap *map = self;
+	GenericSlice ks = {
+		.len = map->len,
+		.value = emalloc(map->len, map->key_size)
+	};
+
+	usize j = 0;
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *node = (umin *)PTR(map->buckets) + i * map->node_size;
+		if (node_hash(map, node) == 0) continue;
+
+		until (node == nil) {
+			set(&ks, j++, node_key(map, node), map->key_size);
+			node = *(u0 **)node_next(map, node);
+		}
+	}
+	assert(j == map->len);
+	return ks;
+}
+
+bool has_key(u0 *self, u0 *key)
+{
+	GenericMap *map = self;
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *node = (umin *)PTR(map->buckets) + i * map->node_size;
+		if (node_hash(map, node) == 0) continue;
+
+		until (node == nil) {
+			if (key_eq(map, node_key(map, node), key))
+				return true;
+			node = *(u0 **)node_next(map, node);
+		}
+	}
+	return false;
+}
+
+u0 empty_map(u0 *self)
+{
+	GenericMap *map = self;
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *node = (umin *)PTR(map->buckets) + i * map->node_size;
+		if (node_hash(map, node) == 0) continue;
+
+		node = *(u0 **)node_next(map, node);
+		until (node == nil) {
+			u0 *next = *(u0 **)node_next(map, node);
+			FREE(node);
+			node = next;
+		}
+	}
+	zero(PTR(map->buckets), map->node_size * map->buckets.cap);
+	return UNIT;
+}
+
+bool is_empty_map(u0 *self)
+{
+	GenericMap *map = self;
+	if (PTR(map->buckets) == nil) return true;
+
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *node = (umin *)PTR(map->buckets) + i * map->node_size;
+		if (node_hash(map, node) != 0) return false;
+	}
+
+	return true;
+}
+
+u0 free_map(u0 *self)
+{
+	GenericMap *map = self;
+	empty_map(map);
+	FREE_INSIDE(map->buckets);
+	map->buckets.value = nil;
+	return UNIT;
+}
+
+u0 dump_hashmap(u0 *self, byte *key_fmt, byte *value_fmt)
+{
+	GenericMap *map = self;
+	const usize NODE_SIZE = map->node_size;
+	umin *buckets = (u0 *)PTR(map->buckets);
+	eprintln("entries:     %zu", map->len);
+	eprintln("buckets.cap: %zu", map->buckets.cap);
+	eprintln("buckets.len: %zu", map->buckets.len);
+
+	for (usize i = 0; i < map->buckets.cap; ++i) {
+		u0 *node = buckets + i * NODE_SIZE;
+		u64 bhash = node_hash(map, node);
+
+		eprint("| %02zu |", i);
+		if (bhash == 0) {
+			eprintln(" -x-");
 			continue;
 		}
 
-		string format_string = VIEW(string, (byte *)format, i, -1);
-		Formatter formatter = parse_formatter(format_string);
-		i += formatter.offset;
-
-		bool is_array_formatter = false;
-
-		// TODO: Padding, text formatting etc. on the novel formatters,
-		//       i.e. %b, %S, %C, %r, %U, %D and %V.
-		switch (formatter.specifier) {
-		case 'S': {  // '%S', string slice formatter.
-			string value = va_arg(args, string);
-			extend(&bytes, &value, sizeof(byte));
-		} break;
-		case 'C': {  // '%C', rune formatter.
-			rune value = va_arg(args, rune);
-			string ucs_bytes = INIT(byte, { 0, 0, 0, 0, 0 });
-			ucs_bytes = rune_to_utf8(ucs_bytes, value);
-			extend(&bytes, &ucs_bytes, sizeof(byte));
-		} break;
-		case 'r': {  // '%r', runic (UCS-4) string formatter.
-			runic value = va_arg(args, runic);
-			string ucs_bytes = SMAKE(byte, 4 * (value.len + 1));
-			ucs_bytes = ucs4_to_utf8(ucs_bytes, value);
-			extend(&bytes, &ucs_bytes, sizeof(byte));
-		} break;
-		case 'U': {  // '%U', runic 8-(hex)digit unicode codepoint formatter.
-			rune value = va_arg(args, rune);
-			byte res[] = "U+00000000";
-			string sliced = VIEW(string, res, 0, 10);
-			sprintf(res + 2, "%08X", value);
-			extend(&bytes, &sliced, sizeof(byte));
-		} break;
-		case 'b': {  // '%b' boolean formatter.
-			int value = va_arg(args, int);  //< _Bool gets promoted to int.
-			string bool_string = value ? STR("true") : STR("false");
-			extend(&bytes, &bool_string, sizeof(byte));
-		} break;
-		case 'D':  // '%D{·}{·}' dynamic array type formatter.
-			// Following the 'D' must be the format specifier for the elements,
-			// and finally the delimiter characters.
-			// e.g. array of `int`s, separated by command and a space (", "):
-			// `println("[%Dd{, }]", my_arr);`.
-			is_array_formatter = true;
-			/* fallthrough */
-		case 'V': {  // '%V{·}{·}' view/slice type formatter.
-			// Following the 'V' must be the format specifier for the elements.
-			// and finally the delimiter characters.
-			// e.g. slice of doubles, separated by tabs:
-			// `println("{ %V{%0.3lf}\t }", my_slice);`.
-			string elem_repr = SEMPTY(string);
-			Formatter elem_formatter;
-
-			if (format[i] == '{') {
-				usize begin = ++i;  // TODO: Nesting '{...}'?
-				until (format[i] == '}') ++i;
-				usize len = i - begin;
-				++i;  // Skip '}'.
-
-				// `elem_repr` must NUL-terminate, hence we make a copy.
-				byte *buf = emalloc(len, sizeof(byte));
-				buf = memcpy(buf, format + begin, len * sizeof(byte));
-				buf[len] = '\0';
-				elem_repr = VIEW(string, buf, 0, len);
-
-				usize j = 0;
-				until (elem_repr.value[j] == '%')  // TODO: Better error message.
-					if (j >= elem_repr.len)
-						PANIC("Broken printf element formatter, missing '%%'.");
-					else ++j;
-				// Slice with everything after the
-				// '%' sign in the element formatter.
-				string elem_format_string = SLICE(string, elem_repr, j + 1, -1);
-				elem_formatter = parse_formatter(elem_format_string);
-			} else {  // Otherwise, it should just have a specifier.
-				// Prepend a '%' character, if not given.
-				if (format[i] == '%') ++i;
-
-				string elem_format_string = VIEW(string, (byte *)format, i, -1);
-				elem_formatter = parse_formatter(elem_format_string);
-				usize offs = elem_formatter.offset;
-
-				// `elem_repr` must NUL-terminate, hence we make a copy.
-				byte *buf = emalloc(offs + 2, sizeof(byte));
-				buf[0] = '%';
-				memcpy(buf + 1, format + i, offs * sizeof(byte));
-				buf[offs + 1] = '\0';
-				elem_repr = VIEW(string, buf, 0, offs + 1);
-
-				i += offs;
-			}
-
-			string delim = SEMPTY(string);
-			if (format[i] == '{') {
-				usize begin = i + 1;  // TODO: Nesting '{...}'?
-				until (format[++i] == '}');
-				delim = VIEW(string, (byte *)format, begin, i);
-				++i;  // Skip last brace.
-			} else {  // Single character for the delimiter.
-				delim = VIEW(string, (byte *)format, i, i + 1);
-				++i;
-			}
-
-			#define SPRINT_ELEM(TYPE) do { \
-				newslice(TSlice, TYPE); \
-				newarray(TArray, TYPE); \
-				TSlice slice; \
-				if (is_array_formatter) { \
-					TArray arr = va_arg(args, TArray); \
-					slice = SLICE(TSlice, arr, 0, -1); \
-				} else { \
-					slice = va_arg(args, TSlice); \
-				} \
-				for (usize n = 0; n < slice.len; ++n) { \
-					TYPE *elem = slice.value + n; \
-					string elem_str = novel_sprintf(elem_repr.value, *elem); \
-					extend(&bytes, &elem_str, sizeof(byte)); \
-					FREE(elem_str.value); \
-					unless (n == slice.len - 1) \
-						extend(&bytes, &delim, sizeof(byte)); \
-				} \
-			} while (false)
-
-			string fmt_l = elem_formatter.length;
-
-			switch (elem_formatter.specifier) {
-			// New formatters.
-			case 'C': SPRINT_ELEM(rune); break;
-			case 'U': SPRINT_ELEM(rune); break;
-			case 'r': SPRINT_ELEM(runic); break;
-			case 'S': SPRINT_ELEM(string); break;
-			case 'D': SPRINT_ELEM(GenericArray); break;
-			case 'V': SPRINT_ELEM(GenericSlice); break;
-			// Standard C formatters:
-			case 'i': case 'd':
-				if (string_eq(fmt_l, STR("hh")))
-					SPRINT_ELEM(signed char);
-				else if (string_eq(fmt_l, STR("ll")))
-					SPRINT_ELEM(long long int);
-				else if (string_eq(fmt_l, STR("h")))
-					SPRINT_ELEM(short int);
-				else if (string_eq(fmt_l, STR("l")))
-					SPRINT_ELEM(long int);
-				else if (string_eq(fmt_l, STR("j")))
-					SPRINT_ELEM(imax);
-				else if (string_eq(fmt_l, STR("z")))
-					SPRINT_ELEM(isize);
-				else if (string_eq(fmt_l, STR("t")))
-					SPRINT_ELEM(iptr);
-				else
-					SPRINT_ELEM(int);
-				break;
-			case 'o': case 'u': case 'x': case 'X':
-				if (string_eq(fmt_l, STR("hh")))
-					SPRINT_ELEM(unsigned char);
-				else if (string_eq(fmt_l, STR("ll")))
-					SPRINT_ELEM(unsigned long long int);
-				else if (string_eq(fmt_l, STR("h")))
-					SPRINT_ELEM(unsigned short int);
-				else if (string_eq(fmt_l, STR("l")))
-					SPRINT_ELEM(unsigned long int);
-				else if (string_eq(fmt_l, STR("j")))
-					SPRINT_ELEM(umax);
-				else if (string_eq(fmt_l, STR("z")))
-					SPRINT_ELEM(usize);
-				else if (string_eq(fmt_l, STR("t")))
-					SPRINT_ELEM(uptr);
-				else
-					SPRINT_ELEM(unsigned int);
-				break;
-			case 'c':
-				if (string_eq(fmt_l, STR("l")))
-					SPRINT_ELEM(wint_t);
-				else
-					SPRINT_ELEM(char);
-				break;
-			case 'e': case 'f': case 'g': case 'a':
-			case 'E': case 'F': case 'G': case 'A':
-				if (string_eq(fmt_l, STR("L")))
-					SPRINT_ELEM(long double);
-				else
-					SPRINT_ELEM(double);
-				break;
-			case 's':
-				if (string_eq(fmt_l, STR("l")))
-					SPRINT_ELEM(wchar_t *);
-				else
-					SPRINT_ELEM(char *);
-				break;
-			case 'p':
-				SPRINT_ELEM(uptr); break;
-			case 'n':
-				if (string_eq(fmt_l, STR("hh")))
-					SPRINT_ELEM(signed char *);
-				else if (string_eq(fmt_l, STR("ll")))
-					SPRINT_ELEM(long long int *);
-				else if (string_eq(fmt_l, STR("h")))
-					SPRINT_ELEM(short int *);
-				else if (string_eq(fmt_l, STR("l")))
-					SPRINT_ELEM(long int *);
-				else if (string_eq(fmt_l, STR("j")))
-					SPRINT_ELEM(imax *);
-				else if (string_eq(fmt_l, STR("z")))
-					SPRINT_ELEM(usize *);
-				else if (string_eq(fmt_l, STR("t")))
-					SPRINT_ELEM(iptr *);
-				else
-					SPRINT_ELEM(int *);
-				break;
-			default:
-				PANIC("Unknown formatter ('%%%c') in array/slice.",
-					elem_formatter.specifier);
-				break;
-			}
-
-			FREE_INSIDE(elem_repr);
-		} break;
-		default: {
-			// Send it off to internal `vsprintf`.
-			string c_formatter = formatter_string(formatter);
-
-			byte *buf;
-			isize len = vasprintf(&buf, c_formatter.value, args);
-			string buf_slice = VIEW(string, buf, 0, len);
-			extend(&bytes, &buf_slice, sizeof(byte));
-			FREE(buf);
-			FREE(c_formatter.value);
-		} break;
+		until (node == nil) {
+			struct { umin _[16]; } key = { 0 }, value = { 0 };
+			memcpy(&key, node_key(map, node), map->key_size);
+			memcpy(&value, node_value(map, node), map->value_size);
+			u64 hash = node_hash(map, node);
+			string formatter = sprint(" -> [%s (%06llX): %s]",
+									  key_fmt, hash, value_fmt);
+			eprint(PTR(formatter), key, value);
+			node = *(u0 **)node_next(map, node);
 		}
+		eprint("\n");
 	}
-
-	// NUL-terminate the string slice.
-	push(&bytes, &NUL_BYTE, sizeof(byte));
-	--bytes.len;  //< But, don't count the NUL-byte as part of the length.
-	return SLICE(string, bytes, 0, -1);
-}
-
-string novel_sprintf(const byte *format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	string res = novel_vsprintf(format, args);
-	va_end(args);
-	return res;
-}
-
-ierr novel_vfprintf(FILE *stream, const byte *format, va_list args)
-{
-	string s = novel_vsprintf(format, args);
-	ierr res = fputs(s.value, stream);
-	FREE(s.value);
-	return res;
-}
-
-ierr novel_fprintf(FILE *stream, const byte *format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	ierr res = novel_vfprintf(stream, format, args);
-	va_end(args);
-	return res;
-}
-
-ierr novel_vfprintf_newline(FILE *stream, const byte *format, va_list args)
-{
-	ierr res = novel_vfprintf(stream, format, args);
-	if (res < 0) return res;
-	if (EOF == fputc('\n', stream))
-		return EOF;
-	return res + 1;
-}
-
-ierr novel_fprintf_newline(FILE *stream, const byte *format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	ierr res = novel_vfprintf_newline(stream, format, args);
-	va_end(args);
-	return res;
-}
-
-ierr novel_printf(const byte *format, ...)
-{
-	va_list args;
-	va_start(args, format);
-	ierr res = novel_vfprintf(stdout, format, args);
-	va_end(args);
-	return res;
 }
 
 #endif

@@ -2,6 +2,9 @@
 tests
 tests_*
 
+# Personal
+.todo
+
 # Docs
 docs/src/*
 # Except keep these files.
@@ -13,12 +16,6 @@ docs/book
 docs/*.zip
 docs/doxybook2
 docs/xml
-
-!docs/book.toml
-!docs/.doxybook
-!docs/Doxyfile
-!docs/README.md
-!docs/server.sh
 
 # Prerequisites
 d/

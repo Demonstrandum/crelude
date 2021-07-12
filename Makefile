@@ -20,7 +20,7 @@ CFLAGS += $(DEPFLAGS) $(WARN) $(OPTIONS) $(OPT) $(INCLUDES)
 LDFLAGS += $(DEPFLAGS) -shared
 
 ifeq ($(CC),clang)
-	WARN += -Wno-gnu-zero-variadic-macro-arguments -Wno-language-extension-token
+	WARN += -Wno-gnu-zero-variadic-macro-arguments -Wno-language-extension-token -Wno-gnu-auto-type
 	OPTIONS += -fms-extensions
 endif
 ifeq ($(CC),gcc)
@@ -157,7 +157,7 @@ $(MAIN): src/tests.c $(OBJS)
 	$(end_command)
 
 $(ODIR)/%.o: $(CDIR)/%.c $(DDIR)/%.d
-	@printf "$(bold)Building object file.$(r) %25s  ->  %13s\n" "$<" "$@"
+	@printf "$(bold)Building object file.$(r) %25s  ->  %9s\n" "$<" "$@"
 	@$(CC) $(CFLAGS) -c $< -o $@ $(LINKS)
 
 $(DEPS):

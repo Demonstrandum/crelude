@@ -5,8 +5,8 @@
 //!    [unicode](https://www.cprogramming.com/tutorial/unicode.html)
 //!    by Jeff Bezanson, about modern unicode in C.
 
-#ifndef COMMON_HEADER
-#define COMMON_HEADER
+#ifndef COMMON_HEADER_
+#define COMMON_HEADER_
 
 #undef  _GNU_SOURCE
 #define _GNU_SOURCE 1 ///< Use GNU specific source.
@@ -36,20 +36,28 @@
 #endif
 
 /* Misc macros */
-#define TSTR_HELPER(x) #x
-#define TSTR(x) TSTR_HELPER(x)
+#define VA_NUM_ARGS_IMPL(_1,_2,_3,_4,_5, N,...) N
+#define VA_NUM_ARGS(...) VA_NUM_ARGS_IMPL(__VA_ARGS__, 5, 4, 3, 2, 1)
+
+#define _TSTR(x) #x
+#define TSTR(x) _TSTR(x)
 
 #if defined(_MSC_VER) || defined(__INTEL_COMPILER)
+	#define DO_PRAGMA(x) __pragma(x)
 	#define PRAGMA_NO_WARNING __pragma(warning(push, 0))
 	#define PRAGMA_POP_WARNING __pragma(warning(pop))
+	#define WARNING(...) __pragma(message(Warning: __VA_ARGS__))
 #elif defined(__clang__)
+	#define DO_PRAGMA(x) _Pragma(#x)
 	#define PRAGMA_NO_WARNING \
 		_Pragma("clang diagnostic push") \
 		_Pragma("clang diagnostic ignored \"-Wall\"") \
 		_Pragma("clang diagnostic ignored \"-Wextra\"") \
 		_Pragma("clang diagnostic ignored \"-Wpedantic\"")
 	#define PRAGMA_POP_WARNING _Pragma("clang diagnostic pop")
+	#define WARNING(S) DO_PRAGMA(clang warning S)
 #elif defined(__GNUC__)
+	#define DO_PRAGMA(x) _Pragma(#x)
 	// Does not behave as nicely as CLANG version does.
 	#define PRAGMA_NO_WARNING \
 		_Pragma("GCC diagnostic push") \
@@ -57,7 +65,11 @@
 		_Pragma("GCC diagnostic ignored \"-Wextra\"") \
 		_Pragma("GCC diagnostic ignored \"-Wpedantic\"")
 	#define PRAGMA_POP_WARNING _Pragma("GCC diagnostic pop")
+	#define WARNING(S) DO_PRAGMA(GCC warning S)
 #endif
+
+#define TODO(...) DO_PRAGMA(message("TODO: " #__VA_ARGS__ \
+                            " (" __FILE__ ":" TSTR(__LINE__)")"))
 
 /* Version number */
 #define crelude_V_MAJOR 0
@@ -69,7 +81,7 @@
 	"." TSTR(crelude_V_MINOR) \
 	"." TSTR(crelude_V_PATCH)
 
-#define REALLOC_FACTOR 1.5
+#define ARRAY_REALLOC_FACTOR 1.5
 
 /* Syntax helpers */
 #define loop while (1)
@@ -78,6 +90,11 @@
 #define never if (0)
 #define always if (1)
 #define until(cond) while (!(cond))
+// Newtypes and arrays, slices, maps, etc.
+#define unqualify(D, T)  typedef D T T
+#define record(NAME)     typedef struct _##NAME NAME; struct _##NAME
+#define enumerable(NAME) typedef   enum _##NAME NAME;   enum _##NAME
+#define overlap(NAME)    typedef  union _##NAME NAME;  union _##NAME
 #define newtype(NT, T) typedef struct _##NT { T value; } NT
 #define arrayof(T) struct { \
 	T (*value); \
@@ -91,11 +108,62 @@
 }
 #define newslice(NT, T) typedef sliceof(T) NT
 #define hashof(T) struct { \
-	T value;  \
 	u64 hash; \
+	T value;  \
 }
 #define newhashable(NT, T) typedef hashof(T) NT
-#define unqualify(D, T) typedef D T T
+enum HashKeyType {  // Use this to pick a default hash method/function.
+	HKT_STRING  = 1 << 0,
+	HKT_RUNIC   = 1 << 1,
+	HKT_CSTRING = 1 << 2,
+	HKT_MEM_SLICE = 1 << 3, //< can be used for any slice, convert with TO_BYTES(...).
+	HKT_RAW_BYTES = 1 << 4  //< just hash the raw bytes.
+}; unqualify(enum, HashKeyType);
+#define HASHMAP_LOAD_THRESHOLD 0.85
+#define HASHMAP_GROWTH_FACTOR  2
+#define newmap(NT, K, V) typedef mapof(K, V) NT
+#define mapof(K, V) struct { \
+	usize len; \
+	arrayof(hashnode(K, V)) buckets; /* a hash value of zero indicates absence. */\
+	usize value_size; \
+	usize   key_size; \
+	usize  node_size; \
+	/* offsets of `hashnode` struct. */ \
+	usize  hash_offset; \
+	usize   key_offset; \
+	usize value_offset; \
+	usize  next_offset; \
+	HashKeyType key_type; /* < how should the hash-function hash the key. */ \
+	u64 (*hasher)(const u0 *, usize); \
+}
+#define hashnode(K, V) struct { \
+	hashof(K) key; \
+	V value;  /* < value stored.   */ \
+	u0 *next; /* < next hash-node. */ \
+}
+#define MMAKE(K, V, CAP) { \
+	.buckets = AMAKE(hashnode(K, V), CAP), \
+	.key_size = sizeof(K), \
+	.value_size = sizeof(V), \
+	.node_size = sizeof(hashnode(K, V)), \
+	.hash_offset  = offsetof(hashnode(K, V), key) + offsetof(hashof(K), hash), \
+	.key_offset   = offsetof(hashnode(K, V), key) + offsetof(hashof(K), value), \
+	.value_offset = offsetof(hashnode(K, V), value), \
+	.next_offset  = offsetof(hashnode(K, V), next), \
+	.key_type = _Generic(*(K *)NULL, \
+		string: HKT_STRING, \
+		runic: HKT_RUNIC, \
+		byte *: HKT_CSTRING, \
+		MemSlice: HKT_MEM_SLICE, \
+		default: HKT_RAW_BYTES), \
+	.hasher = _Generic(*(K *)NULL, \
+		string: string_hash, \
+		runic: runic_hash, \
+		byte *: cstring_hash, \
+		MemSlice: mem_hash, \
+		default: default_hash) \
+}
+
 #define NTH(LIST, N) UNWRAP((LIST))[(N)]
 #define GET(LIST, N) __extension__\
 	({ __auto_type _list = (LIST); \
@@ -108,23 +176,27 @@
 	   usize _index = _n < 0 ? (usize)(_list.len + _n) : (usize)_n; \
 	   UNWRAP(_list)[_index] = (V); })
 
-#define UNUSED(x) (void)(x)
+#define UNUSED1(z) (void)(z)
+#define UNUSED2(y,z) UNUSED1(y),UNUSED1(z)
+#define UNUSED3(x,y,z) UNUSED1(x),UNUSED2(y,z)
+#define UNUSED4(b,x,y,z) UNUSED2(b,x),UNUSED2(y,z)
+#define UNUSED5(a,b,x,y,z) UNUSED2(a,b),UNUSED3(x,y,z)
+#define UNUSED_IMPL_(nargs) UNUSED ## nargs
+#define UNUSED_IMPL(nargs) UNUSED_IMPL_(nargs)
+#define UNUSED(...) UNUSED_IMPL(VA_NUM_ARGS(__VA_ARGS__))(__VA_ARGS__)
+
 #define NO_ERROR EXIT_SUCCESS
 #define OK EXIT_SUCCESS
 
 #define NOOP ((void)0)
 #define nil NULL
 
-#define PANIC(lit, ...) \
-	panic("\n[**] Panicking!\n[**] CAUSE:\n -- \t%s(): " \
-	      lit "\n[**] Aborting...\n", __func__, ## __VA_ARGS__)
-#define print(...) novel_fprintf(stdout, __VA_ARGS__)
-#define sprint novel_sprintf
-#define println(...) novel_fprintf_newline(stdout, __VA_ARGS__)
-#define eprintf(...) novel_fprintf(stderr, __VA_ARGS__)
-#define eprint(...) eprintf(__VA_ARGS__)
-#define eprintln(...) novel_fprintf_newline(stderr, __VA_ARGS__)
-#define fprint novel_fprintf
+#define FLOOR(T, N) __extension__\
+	({ typeof(N) _n = (N); \
+	   (T)_n - (_n < 0 ? 1 : 0); })
+#define CEIL(T, N) __extension__\
+	({ typeof(N) _n = (N); \
+	   (T)_n + (_n < 0 ? 0 : 1); })
 
 /* Types */
 /// Useful for resource counting etc.
@@ -140,9 +212,9 @@ typedef void u0;
 typedef   signed int ierr;
 typedef unsigned int uerr;  ///< Not something very common.
 /// `long` is always the same size as a machine word.
-typedef unsigned long uword;
-typedef   signed long iword;
-/// Size of a machine word.
+typedef unsigned long uword;  ///< Unsigned machine word integer.
+typedef   signed long iword;  ///<   Signed machine word integer.
+/// Size of a machine word in bytes.
 #define WORD_SIZE sizeof(long)
 
 /// `int` in most cases is going to have the natural size
@@ -164,12 +236,16 @@ typedef unsigned char umin;
 /// Such that `sizeof(imin) == 1`.
 typedef   signed char imin;
 
+_Static_assert(sizeof(umin) == 1 && sizeof(imin) == 1,
+               "`umin` and `imin` must have size one (1).");
+
 #define __UCHAR8__ char
 #if (CHAR_BIT == 8)
 	typedef   signed char i8;
 	typedef unsigned char u8;
 
 	#if (CHAR_MIN < 0)
+		WARNING("Crelude works best with -funsigned-char.")
 		#undef  __UCHAR8__
 		#define __UCHAR8__ unsigned char
 	#endif
@@ -234,6 +310,8 @@ newarray(MemArray, umin);
 newslice(GenericSlice, u0);
 /// Slice with pointer type to smallest addressable units of memory.
 newslice(MemSlice, umin);
+/// Hash-table that maps `void *` to `void *`.
+newmap(GenericMap, u0 *, u0 *);
 
 /// Immutable wrapper for UTF-8 encoded string (bytes are mutable).
 newslice(string, byte);
@@ -252,9 +330,11 @@ newhashable(symbol, string);
 static const ierr NUL = 0;
 static const byte NUL_BYTE = '\0';
 static const string NUL_STRING = { .len = 0, .value = (byte *)&NUL_BYTE };
+static const iword ZERO = 0;
 
 /* Common Functions */
 extern u0 panic(const byte *, ...) __attribute__((noreturn));
+extern u0 *or(const u0 *nullable, const u0 *nonnull);
 extern bool is_zero(imax);
 extern bool is_zerof(f64);
 extern bool is_zeroed(u0 *, usize);
@@ -288,6 +368,29 @@ u128 big_endian(umin *start, usize bytes);
 /// @param[in] width The `sizeof(T)` where `T` is
 ///                  the type of element in the slice.
 extern u0 swap(u0 *self, usize pivot, usize width);
+/// Resizes the array, i.e. changes the capacity to a given value.
+/// Akin to `realloc`.
+/// @returns How much of the array is empty (i.e. `cap - len`).
+extern usize resize(u0 *self, usize cap, usize width);
+/// Grows the array length by `count`, reallocates if necessary.
+/// Does nothing else.
+/// @param[in,out] self Void-pointer to array structure.
+/// @param[in] count Number of spaces to grow by.
+/// @param[in] width Size of the individual elements in the array, in bytes.
+/// @returns How much capacity increased.
+extern usize grow(u0 *self, usize count, usize width);
+/// Get pointer to element at index in slice/array.
+/// @param[in] self Pointer to slice or array.
+/// @param[in] index Index of element you wish to retrieve.
+/// @param[in] width Size of single array element in bytes.
+/// @returns Pointer to element, or NULL if not present / out of bounds.
+extern u0 *get(u0 *self, usize index, usize width);
+/// Set element at index in slice/array.
+/// @param[in] self Pointer to slice or array.
+/// @param[in] index Index of element you wish to set.
+/// @param[in] width Size of single array element in bytes.
+/// @returns Pointer to element just set, or NULL if out of bounds.
+extern u0 *set(u0 *self, usize index, const u0 *elem, usize width);
 /// Push element to array.
 /// @param[in,out] self Pointer to the dynamic array, cast to (`u0 *`).
 /// @param[in] element Pointer to element to be pushed,  cast to (`u0 *`).
@@ -330,27 +433,9 @@ extern usize splice(u0 *self, usize index, const u0 *slice, usize width);
 /// @returns A slice holding a void-pointer to the removed elements,
 //           along with the number of removed bytes (`len` of slice).
 extern GenericSlice cut(u0 *self, usize from, isize upto, usize width);
-
-/// `fputs(...)` with `string`.
-extern ierr fput(string, FILE *);
-/// Same as `fput(..., stdout)`.
-extern ierr put(string);
-/// Same as `fput(..., stderr)`.
-extern ierr eput(string);
-/// puts(...) to STDERR.
-extern ierr eputs(const byte *);
-/// Size of the type of a `printf`-style format specifer.
-/// e.g. `sizeof_specifier("hx") == sizeof(unsigned short int);`.
-extern usize sizeof_specifier(const byte *);
-/// Custom `printf` for other data-types.
-/// @note Heap allocates memory, should be freed after printing.
-extern string novel_vsprintf(const byte *, va_list);
-extern string novel_sprintf(const byte *, ...);
-extern ierr novel_vfprintf(FILE *, const byte *, va_list);
-extern ierr novel_fprintf(FILE *, const byte *, ...);
-extern ierr novel_vfprintf_newline(FILE *, const byte *, va_list);
-extern ierr novel_fprintf_newline(FILE *, const byte *, ...);
-extern ierr novel_printf(const byte *, ...);
+/// Zero out an array.
+/// @returns Number of bytes nulled.
+extern usize null(u0 *self, usize width);
 /// NUL-terminated string to library string.
 extern string from_cstring(const byte *);
 /// Compare two strings for equality.
@@ -359,6 +444,34 @@ extern bool string_eq(const string, const string);
 extern i16 string_cmp(const string, const string);
 /// Hash a string.
 extern u64 hash_string(const string);
+/// Hash a byte slice.
+extern u64 hash_bytes(const MemSlice);
+/// Map / associate a key with a value, i.e. insert into the hash-map/table.
+extern u0 associate(u0 *self, const u0 *key, const u0 *value);
+/// Look-up / get value from hash-map/table given the key.
+extern u0 *lookup(u0 *self, const u0 *key);
+/// Drop / delete / remove key-value pair from the hash-table.
+/// This frees/deallocates the node, and the key and value are deleted.
+/// Does nothing if key did not exist in the table.
+/// @returns `true` if key was present, and node was deleted, `false` if not.
+extern bool drop(u0 *self, const u0 *key);
+/// Get slice of key pointers of all keys in map/hash-table.
+/// @note Returns a heap allocated slice, remember to free.
+extern GenericSlice get_keys(u0 *self);
+/// Checks if entry / key-value pair is present in hash-table/map given a key.
+extern bool has_key(u0 *self, u0 *key);
+/// Empties out / deallocates all key-value pairs from the map.
+/// Map may still be repopulated again after this.
+extern u0 empty_map(u0 *self);
+/// Checks if the hash-table / map is empty or freed.
+extern bool is_empty_map(u0 *self);
+/// Frees the map.  Not only empties it, but deallocates bucket array
+/// such that the map may not be used again.
+extern u0 free_map(u0 *self);
+/// Internal use 99% of the time.
+extern usize init_hashnode(u0 *, const u0 *, u64, const u0 *, const u0 *);
+/// Hashmap debugging function.
+extern u0 dump_hashmap(u0 *self, byte *key_formatter, byte *value_formatter);
 
 /* Common Macros */
 
@@ -410,11 +523,11 @@ extern u64 hash_string(const string);
 
 #define POP(SELF) __extension__\
 	({ __auto_type _self = &(SELF); \
-	   pop(_self, sizeof(*_self->value)); })
+	   (typeof(_self->value))pop(_self, sizeof(*_self->value)); })
 
 #define SHIFT(SELF) __extension__\
 	({ __auto_type _self = &(SELF); \
-	   shift(_self, sizeof(*_self->value)); })
+	   (typeof(_self->value))shift(_self, sizeof(*_self->value)); })
 
 #define INSERT(SELF, INDEX, ELEM) __extension__\
 	({ __auto_type           _self = &(SELF); \
@@ -437,16 +550,84 @@ extern u64 hash_string(const string);
 	   _cut = cut(_self, (FROM), (UPTO), sizeof(*_self->value)); \
 	   (u0 *)&_cut; })
 
+#define REMOVE(SELF, INDEX) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   usize _indx = (INDEX); \
+	   GenericSlice _cut \
+	       = cut(_self, _indx, _indx, sizeof(*_self->value)); \
+	   (typeof(_self->value))PTR(_cut); })
+
+/* macros for hash-tables (maps) */
+#define ASSOCIATE(SELF, KEY, VAL) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   __auto_type _key = (KEY); \
+	   __auto_type _val = (VAL); \
+	   associate(_self, &_key, &_val); })
+
+#define LOOKUP(SELF, KEY) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   __auto_type _key = (KEY); \
+	   (typeof(_self->buckets.value[0].value) *)lookup(_self, &_key); })
+
+#define DROP(SELF, KEY) __extension__\
+	({ __auto_type _self = &(SELF); \
+	   __auto_type _key = (KEY); \
+	   drop(_self, &_key); })
+
+#define KEYS(MAP) __extension__\
+	({ __auto_type _map = &(MAP); \
+	   static GenericSlice _keys; \
+	   _keys = get_keys(_map); \
+	   (u0 *)&_keys; })
+
+#define HAS_KEY(MAP, KEY) __extension__\
+	({ __auto_type _map = &(MAP); \
+	   __auto_type _key = (KEY); \
+	   has_key(_map, &_key); })
+
 // Some aliases and shortcuts:
 #define APPEND(SELF, ELEM) PUSH(SELF, ELEM)
 #define PREPEND(SELF, ELEM) INSERT(SELF, 0, ELEM)
 #define UNSHIFT(SELF, ELEM) PREPEND(SELF, ELEM)
 #define PREFIX(SELF, SLIC) SPLICE(SELF, 0, SLIC)
-#define REMOVE(SELF, INDEX) CUT(SELF, INDEX, INDEX)
 #define HEAD(SELF, END) SLICE(SELF, 0, END)
 #define TAIL(SELF, BEG) SLICE(SELF, BEG, -1)
 #define FIRST(SELF) NTH(SELF, 0)
 #define LAST(SELF) GET(SELF, -1)
+
+/// Minimal helper/wrapper around in-place `qsort` for arrays/slices.
+#define QSORT(SELF, CMPR) __extension__\
+	({ __auto_type _self = (SELF); \
+	   qsort(PTR(_self), _self.len, sizeof(*_self.value), CMPR); \
+	   _self; })
+
+/// Wrapper around in-place `qsort` for arrays and slices.
+/// Creates a nested function within a statement-expression
+/// that is defined by the function body passed in as __VA_ARGS__
+/// to the macro, which defines the comparison function for the sort.
+/// This makes use of two GNU extensions:
+///   'nested functions', and 'statement expressions'.
+/// e.g.
+///     SORT(arr, self, other, {
+///         if ((Struct *)self->x == (Struct *)other->x) return  0;
+///         if ((Struct *)self->x  < (Struct *)other->x) return -1;
+///         if ((Struct *)self->x  > (Struct *)other->x) return +1;
+///     });
+///     SORT(arr, self, other, { return my_compare(self, other); });
+///     SORT(arr, self, other, CMP((Struct *)self->x, (Struct *)other->x));
+#define SORT(SELF, SUBJ, OTHR, ...) __extension__\
+	({ int compar_fn_(const u0 *SUBJ, const u0 *OTHR) __VA_ARGS__ \
+	   __auto_type _self = (SELF); \
+	   qsort(PTR(_self), _self.len, sizeof(*_self.value), compar_fn_); \
+	   _self; })
+
+/// Function body for comparison of
+/// items which have '>', '=' and '<' defined, e.g.
+///     int comparef(float a, float b) CMP(a, b)
+#define CMP(A, B) \
+	{ if ((A) <  (B)) return -1; \
+	  if ((A) == (B)) return  0; \
+	  if ((A) >  (B)) return +1; }
 
 // --- ANSI colour codes. ---
 
@@ -480,6 +661,10 @@ extern u64 hash_string(const string);
 	typeof(A) _a = (A); \
 	typeof(B) _b = (B); \
 	_b > _a ? _b : _a; })
+
+#define deref(T, PTR, ALT) __extension__\
+	({ T _alt = (ALT); \
+	   *(T *)or(PTR, &_alt); })
 
 /// Unwraps pointer/value in sizing wrapper struct.
 #define UNWRAP(STRUCTURE) (STRUCTURE).value
@@ -632,6 +817,44 @@ extern u64 hash_string(const string);
 			  it.item = *it.ptr, ELEM = it.item)
 
 #define foreach FOR_EACH
+
+/* static functions */
+/* |- default hash functions */
+
+ __attribute__((unused))
+static u64 string_hash(const u0 *key, usize _)
+{
+	UNUSED(_);
+	return hash_string(*(string *)key);
+}
+
+ __attribute__((unused))
+static u64 runic_hash(const u0 *key, usize _)
+{
+	UNUSED(_);
+	runic runes = *(runic *)key;
+	return hash_bytes(TO_BYTES(runes));
+}
+
+ __attribute__((unused))
+static u64 mem_hash(const u0 *key, usize _)
+{
+	UNUSED(_);
+	return hash_bytes(*(MemSlice *)key);
+}
+
+ __attribute__((unused))
+static u64 cstring_hash(const u0 *key, usize _)
+{
+	UNUSED(_);
+	return hash_string(from_cstring(*(byte **)key));
+}
+
+ __attribute__((unused))
+static u64 default_hash(const u0 *key, usize size)
+{  // just hashes the plain raw bytes.
+	return hash_bytes(VIEW(MemSlice, (umin *)key, 0, size));
+}
 
 /* Only define a `main` if ENTRY_FUNCTION is defined */
 #ifdef ENTRY_FUNCTION
