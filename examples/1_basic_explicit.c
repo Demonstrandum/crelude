@@ -1,11 +1,12 @@
 /*
  * Compile with:
- *   gcc -lcrelude ./1_basic_explicit -o basic-explicit
+ *   gcc -lcrelude -funsigned-char ./1_basic_explicit -o basic-explicit
  * Then run:
  *   ./basic-explicit a b c
  */
 
 #include <crelude/common.h>
+#include <crelude/io.h>
 #include <crelude/utf.h>
 
 newarray(CStringArray, const byte *);

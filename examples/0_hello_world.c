@@ -1,6 +1,6 @@
 /* ---
  * Compile with:
- *   gcc -lcrelude 0_hello_world.c -o hello-world
+ *   gcc -lcrelude -funsigned-char 0_hello_world.c -o hello-world
  * Run with:
  *   ./hello-world Cornelius
  * ---
@@ -8,6 +8,7 @@
 
 #define ENTRY_FUNCTION init
 #include <crelude/common.h>
+#include <crelude/io.h>
 
 ierr init(Arguments args)
 {
