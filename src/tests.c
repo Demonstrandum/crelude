@@ -294,7 +294,7 @@ ierr main(i32 argc, const byte **argv)
 		assert(is_empty_map(&dict));
 
 		mapof(i32, string) table = MMAKE(i32, string, 3);
-		assert(table.hasher == default_hash);
+		assert(table.hasher == upcast_hash);
 
 		string hello = STRING("Hello, ");
 		string world = STRING("World!");

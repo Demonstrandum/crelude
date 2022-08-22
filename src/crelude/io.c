@@ -280,7 +280,7 @@ string novel_vsprintf(const byte *format, va_list args)
 			#define SPRINT_ELEM(TYPE) do { \
 				newslice(TSlice, TYPE); \
 				newarray(TArray, TYPE); \
-				TSlice slice; \
+				TSlice slice = { 0 }; \
 				if (is_array_formatter) { \
 					TArray arr = va_arg(args, TArray); \
 					slice = SLICE(TSlice, arr, 0, -1); \
@@ -392,15 +392,95 @@ string novel_vsprintf(const byte *format, va_list args)
 			FREE_INSIDE(elem_repr);
 		} break;
 		default: {
-			// Send it off to internal `vsprintf`.
+			// Send it off to libc `vsprintf`.
 			string c_formatter = formatter_string(formatter);
-
+			// We cannot pass in `va_list args` to the libc printf,
+			// since it is technically undefined behaviour to use a
+			// va_list after it's been passed by value into another
+			// variadic function.  We must make a copy, and skip it.
+			va_list args_copy;
+			va_copy(args_copy, args);
 			byte *buf;
-			isize len = vasprintf(&buf, c_formatter.value, args);
+			isize len = vasprintf(&buf, c_formatter.value, args_copy);
+			va_end(args_copy);
 			string buf_slice = VIEW(string, buf, 0, len);
 			extend(&bytes, &buf_slice, sizeof(byte));
 			FREE(buf);
 			FREE(c_formatter.value);
+			// Skip/discard the argument!
+			switch (formatter.specifier) {
+			case 'i': case 'd':
+				// narrower types (h,hh) are promoted to int.
+				if (string_eq(formatter.length, STR("ll")))
+					va_arg(args, long long int);
+				else if (string_eq(formatter.length, STR("l")))
+					va_arg(args, long int);
+				else if (string_eq(formatter.length, STR("j")))
+					va_arg(args, imax);
+				else if (string_eq(formatter.length, STR("z")))
+					va_arg(args, isize);
+				else if (string_eq(formatter.length, STR("t")))
+					va_arg(args, iptr);
+				else
+					va_arg(args, int);
+				break;
+			case 'o': case 'u': case 'x': case 'X':
+				// narrower types (h,hh) are promoted to int.
+				if (string_eq(formatter.length, STR("ll")))
+					va_arg(args, unsigned long long int);
+				else if (string_eq(formatter.length, STR("l")))
+					va_arg(args, unsigned long int);
+				else if (string_eq(formatter.length, STR("j")))
+					va_arg(args, umax);
+				else if (string_eq(formatter.length, STR("z")))
+					va_arg(args, usize);
+				else if (string_eq(formatter.length, STR("t")))
+					va_arg(args, uptr);
+				else
+					va_arg(args, unsigned int);
+				break;
+			case 'c':
+				if (string_eq(formatter.length, STR("l")))
+					va_arg(args, wint_t);
+				else
+					va_arg(args, int);  // char is promoted to int in va_list
+				break;
+			case 'e': case 'f': case 'g': case 'a':
+			case 'E': case 'F': case 'G': case 'A':
+				if (string_eq(formatter.length, STR("L")))
+					va_arg(args, long double);
+				else
+					va_arg(args, double);
+				break;
+			case 's':
+				if (string_eq(formatter.length, STR("l")))
+					va_arg(args, wchar_t *);
+				else
+					va_arg(args, char *);
+				break;
+			case 'p':
+				va_arg(args, uptr); break;
+			case 'n':
+				if (string_eq(formatter.length, STR("hh")))
+					va_arg(args, signed char *);
+				else if (string_eq(formatter.length, STR("ll")))
+					va_arg(args, long long int *);
+				else if (string_eq(formatter.length, STR("h")))
+					va_arg(args, short int *);
+				else if (string_eq(formatter.length, STR("l")))
+					va_arg(args, long int *);
+				else if (string_eq(formatter.length, STR("j")))
+					va_arg(args, imax *);
+				else if (string_eq(formatter.length, STR("z")))
+					va_arg(args, usize *);
+				else if (string_eq(formatter.length, STR("t")))
+					va_arg(args, iptr *);
+				else
+					va_arg(args, int *);
+				break;
+			default:
+				panic("unknown specifier: %%%s", formatter.specifier);
+			}
 		} break;
 		}
 	}

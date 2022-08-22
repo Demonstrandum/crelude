@@ -1,16 +1,17 @@
 #!/bin/sh
 
-make clean
 export TARGET=tests_debug
-export CFLAGS=-ggdb
-export OPT=-Og
 
-make
+make clean
+make debug
 
-printf "Run \`gdb --args %s %s\`? [y/N]: " "$TARGET" "$*"
+GDB="$(which gdb || which lldb)"
+ARGS="--$(which gdb && echo args)"
+
+printf "Run \`$GDB $ARGS %s %s\`? [Y/n]: " "$TARGET" "$*"
 read -r REPLY
 RUN_GDB="$(echo "$REPLY" | awk '{print tolower($0)}')"
-[ -z "$RUN_GDB" ] && RUN_GDB="n"
+[ -z "$RUN_GDB" ] && RUN_GDB="y"
 [ "$RUN_GDB" = y ] && RUN_GDB=true || RUN_GDB=false
 
-$RUN_GDB && gdb --args "$TARGET" "$@"
+$RUN_GDB && $GDB $ARGS "$TARGET" "$@"
