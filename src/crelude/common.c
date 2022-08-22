@@ -468,6 +468,7 @@ static bool key_eq(const u0 *self, const u0 *key0, const u0 *key1)
 		return string_eq(*(string *)m0, *(string *)m1);
 	case HKT_CSTRING:
 		return 0 == strcmp(*(byte **)key0, *(byte **)key1);
+	case HKT_SMALL_INTEGER:
 	case HKT_RAW_BYTES:
 		return 0 == memcmp(key0, key1, map->key_size);
 	}
@@ -763,4 +764,3 @@ u0 dump_hashmap(u0 *self, byte *key_fmt, byte *value_fmt)
 }
 
 #endif
-

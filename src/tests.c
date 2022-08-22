@@ -6,6 +6,7 @@
 #include <crelude/io.h>
 #include <crelude/utf.h>
 #include <crelude/base64.h>
+#include <crelude/argparse.h>
 
 #include <stdio.h>
 #include <locale.h>
@@ -53,7 +54,7 @@ ierr main(i32 argc, const byte **argv)
 	Natural n = { 7 };  // How to use newtypes.
 	n.value = 4;  UNUSED(n);
 
-	/* UTF-8 <--> UCS-4, conversions. */
+	// --  UTF-8 <--> UCS-4, conversions. -- //
 	TEST("Converts between UTF-8 and UCS-4.") {
 		println("=== Chinese Characters ===");
 		utf8_ucs4_conversions("你好");
@@ -66,7 +67,7 @@ ierr main(i32 argc, const byte **argv)
 		// have the exact same number of human distinguishable 'graphemes'.
 	}
 
-	/* UTF-8 Escapes */
+	// -- UTF-8 Escapes -- //
 	TEST("Unescaped ASCII/UTF-8 strings to UTF-8") {
 		println("=== Unescaping Strings ===");
 		string unescaped = SMAKE(byte, 128);
@@ -236,20 +237,20 @@ ierr main(i32 argc, const byte **argv)
 		println("number of entries: %zu.", map.len);
 		ASSOCIATE(map, "hello", 38);
 		value = LOOKUP(map, "hello");
-		/* `value` points to the item mapped to by key "hello". */
+		// `value` points to the item mapped to by key "hello".
 		println("value (%p): %d", value, *value);
 		println("number of entries: %zu.", map.len);
-		/* drop value at key "hello" from table. */
+		// drop value at key "hello" from table.
 		DROP(map, "hello");
 		value = LOOKUP(map, "hello");
-		/* `value` should now point to NULL. */
+		// `value` should now point to NULL.
 		println("value (%p): -", value);
 		println("number of entries: %zu.", map.len);
 		puts("");
 
 		free_map(&map);
 
-		/* maps work with any key and value types. */
+		// maps work with any key and value types.
 		mapof(string, u16) dict = MMAKE(string, u16, 2);
 		assert(dict.hasher == string_hash);
 		println("hash(\"ad\") = %llX; hash(\"da\") = %llX;",
@@ -315,6 +316,53 @@ ierr main(i32 argc, const byte **argv)
 		free_map(&table);
 
 		assert(is_empty_map(&table));
+	}
+
+	TEST("Argument parsing") {
+		ArgParser ctx;
+		mapof(ArgID, Arg) options = MMAKE(ArgID, Arg, 15);
+	    ArgID arg_a, arg_b, arg_c, arg_q, arg_m, arg_l, arg_v, arg_n, arg_s;
+
+		// init for parsing
+		arginit(&ctx);
+		// register arguments
+		arg_a = argreg(&ctx, "a", nil, false, "Option A.");
+		arg_b = argreg(&ctx, "-b", nil, false, "Option B.");
+		arg_c = argreg(&ctx, "c", nil, false, "Option C.");
+		arg_q = argreg(&ctx, "q", "--quiet", false, "Stay quiet.");
+		arg_m = argreg(&ctx, "-m", "message", true, "Send a message.");
+		arg_l = argreg(&ctx, "-l", "--list", false, "List values.");
+		arg_v = argreg(&ctx, "-v", "--volume", true, "Sets the volume.");
+		arg_n = argreg(&ctx, "-n", "--number", true, "Sets the number.");
+		arg_s = argreg(&ctx, nil, "--skip", true, "Sets the skip count.");
+
+		// sample cli arguments
+		sliceof(char *) args = INIT(char *, {
+			"-abc", "+q",  // '+' toggles off instead.
+			"--message", "hello world",
+			"-l", "-v", "10", "-n43",  // short option with argument glued on.
+			"--skip=19"  // long option with argument glued.
+		});
+
+		ierr err;
+		foreach (arg, args) {
+			err = argparse(&ctx, &options, arg);
+			if (OK != err) {
+				eprintln("error parsing arguments: %S", ctx.error_message);
+				break;
+			}
+		}
+		if (OK == err) {
+			println("Option -a enabled? %b", (*LOOKUP(options, arg_a)).is_on);
+			println("Option -b enabled? %b", (*LOOKUP(options, arg_b)).is_on);
+			println("Option -c enabled? %b", (*LOOKUP(options, arg_c)).is_on);
+			println("Option -q enabled? %b", (*LOOKUP(options, arg_q)).is_on);
+			println("Option -m value?   %S", (*LOOKUP(options, arg_m)).value);
+			println("Option -l enabled? %b", (*LOOKUP(options, arg_l)).is_on);
+			println("Option -v value?   %S", (*LOOKUP(options, arg_v)).value);
+			println("Option -n value?   %S", (*LOOKUP(options, arg_n)).value);
+			println("Option -s value?   %S", (*LOOKUP(options, arg_s)).value);
+		}
 	}
 
 	return EXIT_SUCCESS;

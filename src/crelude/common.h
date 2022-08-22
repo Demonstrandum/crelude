@@ -117,7 +117,8 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 	HKT_RUNIC   = 1 << 1,
 	HKT_CSTRING = 1 << 2,
 	HKT_MEM_SLICE = 1 << 3, //< can be used for any slice, convert with TO_BYTES(...).
-	HKT_RAW_BYTES = 1 << 4  //< just hash the raw bytes.
+	HKT_RAW_BYTES = 1 << 4,  //< just hash the raw bytes.
+	HKT_SMALL_INTEGER = 1 << 5  //< integer size ≤ than hash size, just upcast.
 }; unqualify(enum, HashKeyType);
 #define HASHMAP_LOAD_THRESHOLD 0.85
 #define HASHMAP_GROWTH_FACTOR  2
@@ -155,12 +156,54 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 		runic: HKT_RUNIC, \
 		byte *: HKT_CSTRING, \
 		MemSlice: HKT_MEM_SLICE, \
+		char[8]: HKT_SMALL_INTEGER, \
+		char[7]: HKT_SMALL_INTEGER, \
+		char[6]: HKT_SMALL_INTEGER, \
+		char[5]: HKT_SMALL_INTEGER, \
+		char[4]: HKT_SMALL_INTEGER, \
+		char[3]: HKT_SMALL_INTEGER, \
+		char[2]: HKT_SMALL_INTEGER, \
+		char[1]: HKT_SMALL_INTEGER, \
+		byte: HKT_SMALL_INTEGER, \
+		signed char:        HKT_SMALL_INTEGER, \
+		signed short:       HKT_SMALL_INTEGER, \
+		signed int:         HKT_SMALL_INTEGER, \
+		signed long:        HKT_SMALL_INTEGER, \
+		signed long long:   HKT_SMALL_INTEGER, \
+		unsigned char:      HKT_SMALL_INTEGER, \
+		unsigned short:     HKT_SMALL_INTEGER, \
+		unsigned int:       HKT_SMALL_INTEGER, \
+		unsigned long:      HKT_SMALL_INTEGER, \
+		unsigned long long: HKT_SMALL_INTEGER, \
+		float:  HKT_SMALL_INTEGER, \
+		double: HKT_SMALL_INTEGER, \
 		default: HKT_RAW_BYTES), \
 	.hasher = _Generic(*(K *)NULL, \
 		string: string_hash, \
 		runic: runic_hash, \
 		byte *: cstring_hash, \
 		MemSlice: mem_hash, \
+		char[8]: upcast_hash, \
+		char[7]: upcast_hash, \
+		char[6]: upcast_hash, \
+		char[5]: upcast_hash, \
+		char[4]: upcast_hash, \
+		char[3]: upcast_hash, \
+		char[2]: upcast_hash, \
+		char[1]: upcast_hash, \
+		byte: upcast_hash, \
+		signed char:        upcast_hash, \
+		signed short:       upcast_hash, \
+		signed int:         upcast_hash, \
+		signed long:        upcast_hash, \
+		signed long long:   upcast_hash, \
+		unsigned char:      upcast_hash, \
+		unsigned short:     upcast_hash, \
+		unsigned int:       upcast_hash, \
+		unsigned long:      upcast_hash, \
+		unsigned long long: upcast_hash, \
+		float:  upcast_hash, \
+		double: upcast_hash, \
 		default: default_hash) \
 }
 
@@ -187,6 +230,8 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 
 #define NO_ERROR EXIT_SUCCESS
 #define OK EXIT_SUCCESS
+#define OKAY EXIT_SUCCESS
+#define FAIL EXIT_FAILURE
 
 #define NOOP ((void)0)
 #define nil NULL
@@ -289,12 +334,21 @@ typedef u32 rune;
 	typedef __uint128_t u128;
 #endif
 
+#define   _FLOAT_BIT (__SIZEOF_FLOAT__       * CHAR_BIT)
+#define  _DOUBLE_BIT (__SIZEOF_DOUBLE__      * CHAR_BIT)
+#define _LDOUBLE_BIT (__SIZEOF_LONG_DOUBLE__ * CHAR_BIT)
+
 #ifdef __STDC_IEC_559__
 	typedef  float f32;
 	typedef double f64;
+#else
+	#if _FLOAT_BIT == 32
+		typedef float f32;
+	#endif
+	#if _DOUBLE_BIT == 64
+		typedef double f64;
+	#endif
 #endif
-
-#define _LDOUBLE_BIT (__SIZEOF_LONG_DOUBLE__ * CHAR_BIT)
 
 #if (_LDOUBLE_BIT == 80)
 	typedef long double f80;
@@ -666,6 +720,8 @@ extern u0 dump_hashmap(u0 *self, byte *key_formatter, byte *value_formatter);
 	({ T _alt = (ALT); \
 	   *(T *)or(PTR, &_alt); })
 
+/// Wrap value in wrapper struct.
+#define WRAP(TYPE, VALUE) = ((TYPE){ .value = (VALUE) })
 /// Unwraps pointer/value in sizing wrapper struct.
 #define UNWRAP(STRUCTURE) (STRUCTURE).value
 /// Explicitly only extract pointer from array/slice.
@@ -841,6 +897,14 @@ static u64 mem_hash(const u0 *key, usize _)
 {
 	UNUSED(_);
 	return hash_bytes(*(MemSlice *)key);
+}
+
+ __attribute__((unused))
+static u64 upcast_hash(const u0 *key, usize size)
+{
+	u64 hash = 0;
+	memcpy(&hash, key, size);
+	return hash;  // no hashing, just cast the key to a u64.
 }
 
  __attribute__((unused))

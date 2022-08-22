@@ -1,4 +1,13 @@
-CC ?= gcc
+FIND_CC ?= $(shell \
+  if   cc --version | grep -qi gcc;   then echo gcc; \
+  elif cc --version | grep -qi clang; then echo clang; \
+  else echo cc; \
+  fi \
+)
+
+ifeq ($(CC),cc)
+CC := $(FIND_CC)
+endif
 
 TARGET ?= tests
 TARGET_LIB ?= libcrelude.so
@@ -14,7 +23,7 @@ OPT ?= -O3
 WARN := -Wall -Wpedantic -Wextra -Wshadow
 LINKS :=
 INCLUDES := -Isrc
-OPTIONS := -fPIC -funsigned-char -std=gnu11
+OPTIONS += -fPIC -funsigned-char -std=gnu11
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DDIR)/$(*F).d
 CFLAGS += $(DEPFLAGS) $(WARN) $(OPTIONS) $(OPT) $(INCLUDES)
 LDFLAGS += $(DEPFLAGS) -shared
@@ -32,8 +41,9 @@ endif
 
 MAIN := $(ODIR)/tests.o
 
-NOW := $(shell date +%s.%N)  # Eager.
-END  = $(shell date +%s.%N)  # Lazy.
+DATE := $(shell which gdate || which date)
+NOW := $(shell $(DATE) +%s.%N)  # Eager.
+END  = $(shell $(DATE) +%s.%N)  # Lazy.
 TIME = $(shell dc -e "20 k $(END) $(NOW) - 1000 * p")
 
 ifeq ($(PREFIX),)
@@ -52,6 +62,14 @@ all: pre-build $(TARGET) $(TARGET_LIB)
 	@printf "$(bold)\nBuild success:$(r) \`$(TARGET)\`.\n"
 	@printf "$(bold)Build success:$(r) \`$(TARGET_LIB)\`.\n"
 	@printf "$(bold)Took:$(r) %g ms.\n" "$(T)"
+
+debug-opts:
+	$(eval TARGET := tests_debug)
+	$(eval CFLAGS += -g$(shell which gdb && echo gdb3))
+	$(eval OPTIONS += -fstack-protector -fstack-protector-all)
+	$(eval OPT := -O$(shell which gdb && echo g || echo 0))
+
+debug: debug-opts all
 
 clean:
 	@echo "[~] Cleaning last build."
@@ -125,13 +143,13 @@ pre-build: $(ODIR) $(DDIR)
 $(TARGET): $(MAIN)
 	@echo "$(bold)Building test target.$(r)"
 	$(begin_command)
-	$(CC) $(OPT) -o $(TARGET) $(OBJS) $(MAIN) $(LINKS)
+	$(CC) $(OPT) $(OPTIONS) -o $(TARGET) $(OBJS) $(MAIN) $(LINKS)
 	$(end_command)
 
 $(TARGET_LIB): $(OBJS)
 	@echo "$(bold)Building shared library.$(r)"
 	$(begin_command)
-	$(CC) $(LDFLAGS) -o $@ $^
+	$(CC) $(OPTIONS) $(LDFLAGS) -o $@ $^
 	$(end_command)
 
 install: $(TARGET) $(HEADERS)
@@ -164,4 +182,7 @@ $(DEPS):
 
 include $(wildcard $(DEPS))
 
-.PHONY: all docs pre-build clean install
+whichcc:
+	@echo "$(CC)"
+
+.PHONY: all debug debug-opts docs pre-build clean install whichcc

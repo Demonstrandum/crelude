@@ -4,6 +4,8 @@ tests_*
 
 # Personal
 .todo
+.idea
+.vscode
 
 # Docs
 docs/src/*
