@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>_ArgParser - Crelude Documentation</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Documentation for Crelude, the C prelude/standard-library.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/index.html"><strong aria-hidden="true">1.1.</strong> Classes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Classes/structsymbol.html"><strong aria-hidden="true">1.1.1.</strong> symbol</a></li><li class="chapter-item expanded "><a href="../Classes/structStringBuilder.html"><strong aria-hidden="true">1.1.2.</strong> StringBuilder</a></li><li class="chapter-item expanded "><a href="../Classes/structstring.html"><strong aria-hidden="true">1.1.3.</strong> string</a></li><li class="chapter-item expanded "><a href="../Classes/structRunicBuilder.html"><strong aria-hidden="true">1.1.4.</strong> RunicBuilder</a></li><li class="chapter-item expanded "><a href="../Classes/structrunic.html"><strong aria-hidden="true">1.1.5.</strong> runic</a></li><li class="chapter-item expanded "><a href="../Classes/structMemSlice.html"><strong aria-hidden="true">1.1.6.</strong> MemSlice</a></li><li class="chapter-item expanded "><a href="../Classes/structMemArray.html"><strong aria-hidden="true">1.1.7.</strong> MemArray</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericSlice.html"><strong aria-hidden="true">1.1.8.</strong> GenericSlice</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericMap.html"><strong aria-hidden="true">1.1.9.</strong> GenericMap</a></li><li class="chapter-item expanded "><a href="../Classes/structGenericArray.html"><strong aria-hidden="true">1.1.10.</strong> GenericArray</a></li><li class="chapter-item expanded "><a href="../Classes/structArgs.html"><strong aria-hidden="true">1.1.11.</strong> Args</a></li><li class="chapter-item expanded "><a href="../Classes/struct__Natural.html"><strong aria-hidden="true">1.1.12.</strong> _Natural</a></li><li class="chapter-item expanded "><a href="../Classes/struct__atomic__t.html"><strong aria-hidden="true">1.1.13.</strong> _atomic_t</a></li><li class="chapter-item expanded "><a href="../Classes/struct__ArgTemplate.html"><strong aria-hidden="true">1.1.14.</strong> _ArgTemplate</a></li><li class="chapter-item expanded "><a href="../Classes/struct__ArgParser.html" class="active"><strong aria-hidden="true">1.1.15.</strong> _ArgParser</a></li><li class="chapter-item expanded "><a href="../Classes/struct__ArgID.html"><strong aria-hidden="true">1.1.16.</strong> _ArgID</a></li><li class="chapter-item expanded "><a href="../Classes/struct__Arg.html"><strong aria-hidden="true">1.1.17.</strong> _Arg</a></li></ol></li><li class="chapter-item expanded "><a href="../Files/index.html"><strong aria-hidden="true">1.2.</strong> Files</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../Files/dir_68267d1309a1af8e8297ef4c3efbcdba.html"><strong aria-hidden="true">1.2.1.</strong> src</a></li><li class="chapter-item expanded "><a href="../Files/dir_21e32e04f18f8d48a02ea1aac13d6f2b.html"><strong aria-hidden="true">1.2.2.</strong> src/crelude</a></li><li class="chapter-item expanded "><a href="../Files/argparse_8c.html"><strong aria-hidden="true">1.2.3.</strong> argparse.c</a></li><li class="chapter-item expanded "><a href="../Files/argparse_8h.html"><strong aria-hidden="true">1.2.4.</strong> argparse.h</a></li><li class="chapter-item expanded "><a href="../Files/base64_8c.html"><strong aria-hidden="true">1.2.5.</strong> base64.c</a></li><li class="chapter-item expanded "><a href="../Files/base64_8h.html"><strong aria-hidden="true">1.2.6.</strong> base64.h</a></li><li class="chapter-item expanded "><a href="../Files/common_8c.html"><strong aria-hidden="true">1.2.7.</strong> common.c</a></li><li class="chapter-item expanded "><a href="../Files/common_8h.html"><strong aria-hidden="true">1.2.8.</strong> common.h</a></li><li class="chapter-item expanded "><a href="../Files/io_8c.html"><strong aria-hidden="true">1.2.9.</strong> io.c</a></li><li class="chapter-item expanded "><a href="../Files/io_8h.html"><strong aria-hidden="true">1.2.10.</strong> io.h</a></li><li class="chapter-item expanded "><a href="../Files/log_8h.html"><strong aria-hidden="true">1.2.11.</strong> log.h</a></li><li class="chapter-item expanded "><a href="../Files/utf_8c.html"><strong aria-hidden="true">1.2.12.</strong> utf.c</a></li><li class="chapter-item expanded "><a href="../Files/utf_8h.html"><strong aria-hidden="true">1.2.13.</strong> utf.h</a></li><li class="chapter-item expanded "><a href="../Files/tests_8c.html"><strong aria-hidden="true">1.2.14.</strong> tests.c</a></li></ol></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Crelude Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <hr />
+<p>title: _ArgParser</p>
+<hr />
+<h1 id="_argparser"><a class="header" href="#_argparser">_ArgParser</a></h1>
+<p><code>#include &lt;argparse.h&gt;</code></p>
+<h2 id="public-attributes"><a class="header" href="#public-attributes">Public Attributes</a></h2>
+<div class="table-wrapper"><table><thead><tr><th></th><th>Name</th></tr></thead><tbody>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u32">u32</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-magic">magic</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/argparse_8h.html#typedef-argtemplate">ArgTemplate</a> *</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-len">len</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-cap">cap</a></strong></td></tr>
+<tr><td>struct _ArgParser::@5</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-templates">templates</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u64">u64</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-hash">hash</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-byte">byte</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td>struct _ArgParser::@6::@8::@9::@10</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-key">key</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u0">u0</a> *</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-next">next</a></strong></td></tr>
+<tr><td>struct _ArgParser::@6::@8::@9 *</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td>struct _ArgParser::@6::@8</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-buckets">buckets</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value_size">value_size</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-key_size">key_size</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-node_size">node_size</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-hash_offset">hash_offset</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-key_offset">key_offset</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value_offset">value_offset</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-next_offset">next_offset</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#enum-hashkeytype">HashKeyType</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-key_type">key_type</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-u64">u64</a>(*</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-hasher">hasher</a></strong></td></tr>
+<tr><td>struct _ArgParser::@6</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-index_of_short_form">index_of_short_form</a></strong></td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td>struct _ArgParser::@7::@12::@13::@14</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-key">key</a></strong></td></tr>
+<tr><td>struct _ArgParser::@7::@12::@13 *</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-value">value</a></strong></td></tr>
+<tr><td>struct _ArgParser::@7::@12</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-buckets">buckets</a></strong></td></tr>
+<tr><td>struct _ArgParser::@7</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-index_of_long_form">index_of_long_form</a></strong></td></tr>
+<tr><td>bool</td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-awaiting_value">awaiting_value</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/argparse_8h.html#typedef-argid">ArgID</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-awaiting_value_id">awaiting_value_id</a></strong></td></tr>
+<tr><td><a href="/crelude/Files/common_8h.html#typedef-usize">usize</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-string_count">string_count</a></strong></td></tr>
+<tr><td><a href="/crelude/Classes/structstring.html">string</a></td><td><strong><a href="/crelude/Classes/struct__ArgParser.html#variable-error_message">error_message</a></strong></td></tr>
+</tbody></table>
+</div>
+<h2 id="public-attributes-documentation"><a class="header" href="#public-attributes-documentation">Public Attributes Documentation</a></h2>
+<h3 id="variable-magic"><a class="header" href="#variable-magic">variable magic</a></h3>
+<pre><code class="language-cpp">u32 magic;
+</code></pre>
+<h3 id="variable-value"><a class="header" href="#variable-value">variable value</a></h3>
+<pre><code class="language-cpp">ArgTemplate * value;
+</code></pre>
+<h3 id="variable-len"><a class="header" href="#variable-len">variable len</a></h3>
+<pre><code class="language-cpp">usize len;
+</code></pre>
+<h3 id="variable-cap"><a class="header" href="#variable-cap">variable cap</a></h3>
+<pre><code class="language-cpp">usize cap;
+</code></pre>
+<h3 id="variable-templates"><a class="header" href="#variable-templates">variable templates</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@5 templates;
+</code></pre>
+<h3 id="variable-hash"><a class="header" href="#variable-hash">variable hash</a></h3>
+<pre><code class="language-cpp">u64 hash;
+</code></pre>
+<h3 id="variable-value-1"><a class="header" href="#variable-value-1">variable value</a></h3>
+<pre><code class="language-cpp">byte value;
+</code></pre>
+<h3 id="variable-key"><a class="header" href="#variable-key">variable key</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@6::@8::@9::@10 key;
+</code></pre>
+<h3 id="variable-value-2"><a class="header" href="#variable-value-2">variable value</a></h3>
+<pre><code class="language-cpp">usize value;
+</code></pre>
+<h3 id="variable-next"><a class="header" href="#variable-next">variable next</a></h3>
+<pre><code class="language-cpp">u0 * next;
+</code></pre>
+<h3 id="variable-value-3"><a class="header" href="#variable-value-3">variable value</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@6::@8::@9 * value;
+</code></pre>
+<h3 id="variable-buckets"><a class="header" href="#variable-buckets">variable buckets</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@6::@8 buckets;
+</code></pre>
+<h3 id="variable-value_size"><a class="header" href="#variable-value_size">variable value_size</a></h3>
+<pre><code class="language-cpp">usize value_size;
+</code></pre>
+<h3 id="variable-key_size"><a class="header" href="#variable-key_size">variable key_size</a></h3>
+<pre><code class="language-cpp">usize key_size;
+</code></pre>
+<h3 id="variable-node_size"><a class="header" href="#variable-node_size">variable node_size</a></h3>
+<pre><code class="language-cpp">usize node_size;
+</code></pre>
+<h3 id="variable-hash_offset"><a class="header" href="#variable-hash_offset">variable hash_offset</a></h3>
+<pre><code class="language-cpp">usize hash_offset;
+</code></pre>
+<h3 id="variable-key_offset"><a class="header" href="#variable-key_offset">variable key_offset</a></h3>
+<pre><code class="language-cpp">usize key_offset;
+</code></pre>
+<h3 id="variable-value_offset"><a class="header" href="#variable-value_offset">variable value_offset</a></h3>
+<pre><code class="language-cpp">usize value_offset;
+</code></pre>
+<h3 id="variable-next_offset"><a class="header" href="#variable-next_offset">variable next_offset</a></h3>
+<pre><code class="language-cpp">usize next_offset;
+</code></pre>
+<h3 id="variable-key_type"><a class="header" href="#variable-key_type">variable key_type</a></h3>
+<pre><code class="language-cpp">HashKeyType key_type;
+</code></pre>
+<h3 id="variable-hasher"><a class="header" href="#variable-hasher">variable hasher</a></h3>
+<pre><code class="language-cpp">u64(* hasher;
+</code></pre>
+<h3 id="variable-index_of_short_form"><a class="header" href="#variable-index_of_short_form">variable index_of_short_form</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@6 index_of_short_form;
+</code></pre>
+<h3 id="variable-value-4"><a class="header" href="#variable-value-4">variable value</a></h3>
+<pre><code class="language-cpp">string value;
+</code></pre>
+<h3 id="variable-key-1"><a class="header" href="#variable-key-1">variable key</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@7::@12::@13::@14 key;
+</code></pre>
+<h3 id="variable-value-5"><a class="header" href="#variable-value-5">variable value</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@7::@12::@13 * value;
+</code></pre>
+<h3 id="variable-buckets-1"><a class="header" href="#variable-buckets-1">variable buckets</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@7::@12 buckets;
+</code></pre>
+<h3 id="variable-index_of_long_form"><a class="header" href="#variable-index_of_long_form">variable index_of_long_form</a></h3>
+<pre><code class="language-cpp">struct _ArgParser::@7 index_of_long_form;
+</code></pre>
+<h3 id="variable-awaiting_value"><a class="header" href="#variable-awaiting_value">variable awaiting_value</a></h3>
+<pre><code class="language-cpp">bool awaiting_value;
+</code></pre>
+<h3 id="variable-awaiting_value_id"><a class="header" href="#variable-awaiting_value_id">variable awaiting_value_id</a></h3>
+<pre><code class="language-cpp">ArgID awaiting_value_id;
+</code></pre>
+<h3 id="variable-string_count"><a class="header" href="#variable-string_count">variable string_count</a></h3>
+<pre><code class="language-cpp">usize string_count;
+</code></pre>
+<h3 id="variable-error_message"><a class="header" href="#variable-error_message">variable error_message</a></h3>
+<pre><code class="language-cpp">string error_message;
+</code></pre>
+<hr />
+<p>Updated on 23 August 2022 at 00:54:19 UTC</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../Classes/struct__ArgTemplate.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../Classes/struct__ArgID.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../Classes/struct__ArgTemplate.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../Classes/struct__ArgID.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
