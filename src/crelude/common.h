@@ -143,6 +143,7 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 	u0 *next; /* < next hash-node. */ \
 }
 #define MMAKE(K, V, CAP) { \
+	.len = 0, \
 	.buckets = AMAKE(hashnode(K, V), CAP), \
 	.key_size = sizeof(K), \
 	.value_size = sizeof(V), \
@@ -164,7 +165,6 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 		char[3]: HKT_SMALL_INTEGER, \
 		char[2]: HKT_SMALL_INTEGER, \
 		char[1]: HKT_SMALL_INTEGER, \
-		byte: HKT_SMALL_INTEGER, \
 		signed char:        HKT_SMALL_INTEGER, \
 		signed short:       HKT_SMALL_INTEGER, \
 		signed int:         HKT_SMALL_INTEGER, \
@@ -191,7 +191,6 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 		char[3]: upcast_hash, \
 		char[2]: upcast_hash, \
 		char[1]: upcast_hash, \
-		byte: upcast_hash, \
 		signed char:        upcast_hash, \
 		signed short:       upcast_hash, \
 		signed int:         upcast_hash, \
@@ -206,6 +205,11 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 		double: upcast_hash, \
 		default: default_hash) \
 }
+/// Create new map / initialise map from map variable.
+#define MNEW(VARIABLE, CAP) (typeof(VARIABLE))MMAKE( \
+	typeof((VARIABLE).buckets.value[0].key.value), \
+	typeof((VARIABLE).buckets.value[0].value), \
+	CAP)
 
 #define NTH(LIST, N) UNWRAP((LIST))[(N)]
 #define GET(LIST, N) __extension__\
@@ -234,7 +238,7 @@ enum HashKeyType {  // Use this to pick a default hash method/function.
 #define FAIL EXIT_FAILURE
 
 #define NOOP ((void)0)
-#define nil NULL
+#define nil ((void *)NULL)
 
 #define FLOOR(T, N) __extension__\
 	({ typeof(N) _n = (N); \
@@ -412,7 +416,7 @@ bool is_little_endian(void);
 /// Read big-endian integer.
 u128 big_endian(umin *start, usize bytes);
 /// Given a slice, swap the two blocks within the slice
-/// formed by selecting a pivot point.
+/// formed by selecting a pivot point (in-place).
 /// ```
 /// [----A----|---B---] -> [---B---|----A----]
 ///           ^ pivot
@@ -422,6 +426,11 @@ u128 big_endian(umin *start, usize bytes);
 /// @param[in] width The `sizeof(T)` where `T` is
 ///                  the type of element in the slice.
 extern u0 swap(u0 *self, usize pivot, usize width);
+/// Swaps two equally sized blocks of memory, overwriting each other.
+/// @param[in,out] a Block of memory `a`, to be swapped for `b`.
+/// @param[in,out] b Block of memory `b`, to be swapped for `a`.
+/// @param[in] bytes The common size of block `a` and `b` in bytes.
+extern u0 memswap(umin *a, umin *b, usize bytes);
 /// Resizes the array, i.e. changes the capacity to a given value.
 /// Akin to `realloc`.
 /// @returns How much of the array is empty (i.e. `cap - len`).
@@ -496,6 +505,8 @@ extern string from_cstring(const byte *);
 extern bool string_eq(const string, const string);
 /// Compare two strings for alphabetic rank.
 extern i16 string_cmp(const string, const string);
+/// Compare two strings for alphabetic rank upto a given number of bytes.
+extern i16 string_ncmp(const string, const string, usize n);
 /// Hash a string.
 extern u64 hash_string(const string);
 /// Hash a byte slice.
@@ -767,12 +778,16 @@ extern u0 dump_hashmap(u0 *self, byte *key_formatter, byte *value_formatter);
 	.cap = (CAP), \
 	.value = emalloc((CAP), sizeof(TYPE)) \
 }
+/// Create new array / initialise array from array variable.
+#define ANEW(VARIABLE, CAP) (typeof(VARIABLE))AMAKE(typeof((VARIABLE).value[0]), CAP)
 
 /// Heap allocates a constant sized slice type.
 #define SMAKE(TYPE, LEN) { \
 	.len = (LEN), \
 	.value = emalloc((LEN), sizeof(TYPE)) \
 }
+/// Create new slice / initialise slice from slice variable.
+#define SNEW(VARIABLE, LEN) (typeof(VARIABLE))SMAKE(typeof((VARIABLE).value[0]), LEN)
 
 /// Take a slice/substring/view of sized type.
 #define SLICE(TYPE, OBJ, START, END) ((TYPE){ \
@@ -859,18 +874,20 @@ extern u0 dump_hashmap(u0 *self, byte *key_formatter, byte *value_formatter);
 /// ```
 #define FOR_EACH(ELEM, ELEMS) \
 	for (struct { typeof(*(ELEMS).value) item; \
-			      typeof((ELEMS).value) ptr, first; \
+			      typeof((ELEMS).value) ptr, start; \
 				  usize index; \
-				  bool once; \
-				} it = { *(ELEMS).value, \
-				         (ELEMS).value, \
-				         (ELEMS).value, \
-				         0, true \
+				  bool first, once; \
+				} it = { .item = *(ELEMS).value, \
+				         .ptr = (ELEMS).value, \
+				         .start = (ELEMS).value, \
+				         .index = 0, \
+						 .first = true, \
+						 .once = true \
 				       }; it.once; it.once = false) \
 		for (typeof(*(ELEMS).value) ELEM = *(ELEMS).value; \
 		    it.index < (ELEMS).len; \
-			++it.ptr, it.index = (it.ptr - it.first), \
-			  it.item = *it.ptr, ELEM = it.item)
+			++it.ptr, it.index = (it.ptr - it.start), \
+			  it.item = *it.ptr, it.first = false, ELEM = it.item)
 
 #define foreach FOR_EACH
 

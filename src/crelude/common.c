@@ -101,7 +101,7 @@ u128 big_endian(umin *start, usize bytes)
 	return *(u128 *)mem;
 }
 
-static u0 memswap(umin *a, umin *b, usize bytes)
+u0 memswap(umin *a, umin *b, usize bytes)
 {
 	usize words = bytes / WORD_SIZE;
 	usize trail = words * WORD_SIZE;  //< Where left-over bytes start.
@@ -379,6 +379,9 @@ bool string_eq(string self, const string other)
 			return false;
 	return true;
 }
+
+i16 string_ncmp(const string self, const string other, usize n)
+{ return strncmp(UNWRAP(self), UNWRAP(other), n); }
 
 i16 string_cmp(const string self, const string other)
 {

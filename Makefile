@@ -9,6 +9,8 @@ ifeq ($(CC),cc)
 CC := $(FIND_CC)
 endif
 
+ARCH ?= amd64
+
 TARGET ?= tests
 TARGET_LIB ?= libcrelude.so
 TARGET_INCLUDE ?= crelude
@@ -46,9 +48,7 @@ NOW := $(shell $(DATE) +%s.%N)  # Eager.
 END  = $(shell $(DATE) +%s.%N)  # Lazy.
 TIME = $(shell dc -e "20 k $(END) $(NOW) - 1000 * p")
 
-ifeq ($(PREFIX),)
-	PREFIX := /usr
-endif
+PREFIX ?= /usr
 
 bold := $(shell tput bold)
 dim := $(shell tput dim)
@@ -86,11 +86,11 @@ clean:
 fresh: clean all
 
 DOXYBOOK_VER ?= 1.3.5
-DOXYBOOK_TAR ?= linux-amd64
+DOXYBOOK_TAR ?= linux-$(ARCH)
 DOXYBOOK_ZIP ?= doxybook2-$(DOXYBOOK_TAR)-v$(DOXYBOOK_VER).zip
 DOXYBOOK_BIN ?= ./docs/doxybook2/bin/doxybook2
 
-docs/doxybook2-linux-amd64-v1.3.5.zip:
+docs/$(DOXYBOOK_ZIP):
 	$(begin_command)
 	curl -L https://github.com/matusnovak/doxybook2/releases/download/v$(DOXYBOOK_VER)/$(DOXYBOOK_ZIP) > ./docs/$(DOXYBOOK_ZIP)
 	$(end_command)

@@ -52,14 +52,22 @@ record(ArgParser) {
 ///     arg_m = argreg(&ctx, "m", "message", true, "Write your message.");
 ///     arg_l = argreg(&ctx, "-l", "--list",   false, "List values");
 ///     for (usize i = 0; i < argc; ++i)
-///        argparse(&ctx, &args, argv[i]);   // TODO: check returned error code.
+///        argparse_c(&ctx, &args, argv[i]);   // TODO: check returned error code.
 ArgID argreg(ArgParser *ctx, char *short_form, char *long_form, bool takes_value, char *help);
 
 /// Initialise argument parser.
 u0 arginit(ArgParser *ctx);
 
-/// Parse arguments one value of ARGV at the time.
-ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg);
+/// Parse arguments one value of `argv` at the time.
+ierr argparse_c(ArgParser *ctx, u0 *map_id_to_arg, char *arg);
+
+/// Parse arguments one `string` value from `argv` at the time.
+ierr argparse(ArgParser *ctx, u0 *map_id_to_arg, string arg);
 
 /// Parse arguments from argc and argv.
-ierr argparseall(ArgParser *ctx, void *map_id_to_arg, usize argc, char **argv);
+ierr argparseall_c(ArgParser *ctx, u0 *map_id_to_arg, usize argc, char **argv);
+
+#ifdef ENTRY_FUNCTION
+/// Parse arguments from `Arguments`.
+ierr argparseall(ArgParser *ctx, u0 *map_id_to_arg, Arguments args);
+#endif

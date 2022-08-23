@@ -337,12 +337,14 @@ ierr main(i32 argc, const byte **argv)
 		arg_s = argreg(&ctx, nil, "--skip", true, "Sets the skip count.");
 
 		// sample cli arguments
-		sliceof(char *) args = INIT(char *, {
-			"-abc", "+q",  // '+' toggles off instead.
-			"--message", "hello world",
-			"-l", "-v", "10", "-n43",  // short option with argument glued on.
-			"--skip=19"  // long option with argument glued.
+		sliceof(string) args = INIT(string, {
+			STRING("-abc"), STRING("+q"),  // '+' toggles off instead.
+			STRING("--message"), STRING("hello world"),
+			STRING("-l"), STRING("-v"), STRING("10"),
+			STRING("-n43"),      // short option with argument glued on.
+			STRING("--skip=19")  // long option with argument glued on.
 		});
+		// ./prog -abc +q --message "hello world" -l -v 10 -n43 --skip=19
 
 		ierr err;
 		foreach (arg, args) {
@@ -353,15 +355,15 @@ ierr main(i32 argc, const byte **argv)
 			}
 		}
 		if (OK == err) {
-			println("Option -a enabled? %b", (*LOOKUP(options, arg_a)).is_on);
-			println("Option -b enabled? %b", (*LOOKUP(options, arg_b)).is_on);
-			println("Option -c enabled? %b", (*LOOKUP(options, arg_c)).is_on);
-			println("Option -q enabled? %b", (*LOOKUP(options, arg_q)).is_on);
-			println("Option -m value?   %S", (*LOOKUP(options, arg_m)).value);
-			println("Option -l enabled? %b", (*LOOKUP(options, arg_l)).is_on);
-			println("Option -v value?   %S", (*LOOKUP(options, arg_v)).value);
-			println("Option -n value?   %S", (*LOOKUP(options, arg_n)).value);
-			println("Option -s value?   %S", (*LOOKUP(options, arg_s)).value);
+			println("Option -a enabled?   %b", (*LOOKUP(options, arg_a)).is_on);
+			println("Option -b enabled?   %b", (*LOOKUP(options, arg_b)).is_on);
+			println("Option -c enabled?   %b", (*LOOKUP(options, arg_c)).is_on);
+			println("Option -q enabled?   %b", (*LOOKUP(options, arg_q)).is_on);
+			println("Option -m value?     %S", (*LOOKUP(options, arg_m)).value);
+			println("Option -l enabled?   %b", (*LOOKUP(options, arg_l)).is_on);
+			println("Option -v value?     %S", (*LOOKUP(options, arg_v)).value);
+			println("Option -n value?     %S", (*LOOKUP(options, arg_n)).value);
+			println("Option --skip value? %S", (*LOOKUP(options, arg_s)).value);
 		}
 	}
 

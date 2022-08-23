@@ -1,6 +1,5 @@
 #include "argparse.h"
 #include "common.h"
-#include "utf.h"
 #include "io.h"
 
 #ifndef IMPLEMENTATION
@@ -8,9 +7,9 @@
 u0 arginit(ArgParser *ctx)
 {
     ctx->magic = ARGP_MAGIC_INIT_CONST;
-    ctx->templates = (typeof(ctx->templates))AMAKE(ArgTemplate, 15);
-    ctx->index_of_short_form = (typeof(ctx->index_of_short_form))MMAKE(byte,   usize, 15);
-    ctx->index_of_long_form  = (typeof(ctx->index_of_long_form) )MMAKE(string, usize, 15);
+    ctx->templates = ANEW(ctx->templates, 15);
+    ctx->index_of_short_form = MNEW(ctx->index_of_short_form, 15);
+    ctx->index_of_long_form  = MNEW(ctx->index_of_long_form, 15);
     ctx->awaiting_value = false;
     ctx->string_count = 0;
     ctx->error_message = EMPTY(string);
@@ -23,14 +22,14 @@ ArgID argreg(ArgParser *ctx, char *short_form, char *long_form, bool takes_value
 
     usize index = ctx->templates.len;
     ArgID id = { (u16)index };
-    string short_form_str = nil == short_form ? EMPTY(string) : to_string(short_form);
-    string  long_form_str = nil ==  long_form ? EMPTY(string) : to_string(long_form);
+    string short_form_str = nil == short_form ? EMPTY(string) : from_cstring(short_form);
+    string  long_form_str = nil ==  long_form ? EMPTY(string) : from_cstring(long_form);
     ArgTemplate template = {
         .id = id,
         .short_form = short_form_str,
         .long_form = long_form_str,
         .takes_value = takes_value,
-        .help = to_string(help),
+        .help = from_cstring(help),
     };
 
     PUSH(ctx->templates, template);
@@ -40,37 +39,41 @@ ArgID argreg(ArgParser *ctx, char *short_form, char *long_form, bool takes_value
     }
     unless (nil == long_form) {
         if (0 == strncmp(long_form, "--", 2)) long_form += 2;
-        ASSOCIATE(ctx->index_of_long_form, to_string(long_form), index);
+        ASSOCIATE(ctx->index_of_long_form, from_cstring(long_form), index);
     }
 
     return id;
 }
 
-ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
+ierr argparse_c(ArgParser *ctx, u0 *map_id_to_arg, char *arg)
+{
+    return argparse(ctx, map_id_to_arg, from_cstring(arg));
+}
+
+ierr argparse(ArgParser *ctx, u0 *map_id_to_arg, string arg)
 {
     ArgTemplate template;
     Arg argument;
     ArgID arg_id;
     usize *id = nil;
     char *equal_sign = nil;
-    string value = to_string(arg);
-
+    bool disabled = '+' == GET(arg, 0);
 
     if (ctx->awaiting_value) {
         // set value of argument awaiting a value.
-        argument = (Arg){ .value = to_string(arg), .is_on = true };
+        argument = (Arg){ .value = arg, .is_on = true };
         associate(map_id_to_arg, &ctx->awaiting_value_id, &argument);
         ctx->awaiting_value = false;
-    } else if (0 == strncmp(arg, "--", 2)) {
+    } else if (0 == string_ncmp(arg, STR("--"), 2)) {
         // parsing long-form argument.
-        equal_sign = strchr(arg, '=');
+        equal_sign = strchr(UNWRAP(arg), '=');
         if (nil != equal_sign)
-            value = SLICE(string, value, 0, equal_sign - arg);
-        value = SLICE(string, value, 2, -1);  // skip leading '--'
+            arg = SLICE(string, arg, 0, equal_sign - UNWRAP(arg));
+        arg = SLICE(string, arg, 2, -1);  // skip leading '--'
 
-        id = LOOKUP(ctx->index_of_long_form, value);
+        id = LOOKUP(ctx->index_of_long_form, arg);
         if (nil == id) {
-            ctx->error_message = sprint("no such argument `--%S' exists.", value);
+            ctx->error_message = sprint("no such argument `--%S' exists.", arg);
             return ARGPARSE_UNKNOWN;
         }
         arg_id = (ArgID){ *id };
@@ -80,7 +83,7 @@ ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
             // takes an argument.
             if (nil != equal_sign) {
                 // value comes after equal sign.
-                argument = (Arg){ .value = to_string(equal_sign + 1), .is_on = true };
+                argument = (Arg){ .value = from_cstring(equal_sign + 1), .is_on = true };
                 associate(map_id_to_arg, &arg_id, &argument);
             } else {
                 // value comes in the next argument.
@@ -92,10 +95,10 @@ ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
             argument = (Arg){ .value = EMPTY(string), .is_on = true };
             associate(map_id_to_arg, &arg_id, &argument);
         }
-    } else if ('-' == arg[0] || '+' == arg[0]) {
+    } else if ('-' == GET(arg, 0) || '+' == GET(arg, 0)) {
         // parsing short-form argument(s).
-        value = SLICE(string, value, 1, -1);  // skip the dash (-)
-        foreach (opt, value) {
+        arg = SLICE(string, arg, 1, -1);  // skip the dash (-)
+        foreach (opt, arg) {
             id = LOOKUP(ctx->index_of_short_form, opt);
             if (nil == id) {
                 ctx->error_message = sprint("no such argument `-%c' exists.", opt);
@@ -106,13 +109,13 @@ ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
             template = GET(ctx->templates, *id);
             if (template.takes_value) {
                 // takes an argument.
-                if (value.len != 1 && !it.first) {
-                    // option mixed in with other options: not allowed (ambiguous).
+                if (arg.len != 1 && !it.first) {
+                    // option with argument mixed in with other options: not allowed (ambiguous).
                     ctx->error_message = sprint("argument `-%c' takes a value, and must stand alone.", opt);
                     return ARGPARSE_INVALID;
-                } else if (value.len != 1) {
+                } else if (arg.len != 1) {
                     // the argument is glued onto the end (e.g. `-n13` <-> `-n 13`)
-                    argument = (Arg){ .value = SLICE(string, value, 1, -1), .is_on = true };
+                    argument = (Arg){ .value = SLICE(string, arg, 1, -1), .is_on = true };
                     associate(map_id_to_arg, &arg_id, &argument);
                     break;  // the argument has been consumed, no further options.
                 } else {
@@ -122,12 +125,12 @@ ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
                 }
             } else {
                 // is a toggle argument.
-                argument = (Arg){ .value = EMPTY(string), .is_on = arg[0] == '-' };
+                argument = (Arg){ .value = EMPTY(string), .is_on = !disabled };
                 associate(map_id_to_arg, &arg_id, &argument);
             }
         }
     } else {
-        ctx->error_message = sprint("unexpected string `%S' when parsing arguments.", value);
+        ctx->error_message = sprint("unexpected string `%S' when parsing arguments.", arg);
         return ARGPARSE_UNEXPECTED;
     }
 
@@ -135,14 +138,26 @@ ierr argparse(ArgParser *ctx, void *map_id_to_arg, char *arg)
     return ARGPARSE_OK;
 }
 
-ierr argparseall(ArgParser *ctx, void *map_id_to_arg, usize argc, char **argv)
+ierr argparseall_c(ArgParser *ctx, u0 *map_id_to_arg, usize argc, char **argv)
 {
     ierr err = OK;
 
     for (usize i = 0; i < argc; ++i)
-        if (OK != (err = argparse(ctx, map_id_to_arg, argv[i]))) break;
+        if (OK != (err = argparse_c(ctx, map_id_to_arg, argv[i]))) break;
 
     return err;
 }
+
+#ifdef ENTRY_FUNCTION
+ierr argparseall(ArgParser *ctx, u0 *map_id_to_arg, Arguments args)
+{
+    ierr err = OK;
+
+    foreach (arg, args)
+        unless (OK == (err = argparse(ctx, map_id_to_arg, arg))) break;
+
+    return err;
+}
+#endif
 
 #endif
